@@ -14,12 +14,15 @@ end
 
 desc "build it"
 task :scutum do
-	sh "qmake"
-	sh "make"
+	sh "cd build && make"
 end
 
 desc "clean"
 task :clean do
-	sh "make clean"
-	sh "rm -f scutum Makefile"
+	sh "rm -rf scutum Makefile build"
+end
+
+desc "setup"
+task :setup do
+	sh "mkdir build && cd build && cmake .."
 end

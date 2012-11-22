@@ -86,11 +86,13 @@ MainWindow::MainWindow(const QUrl& url)
     //QMenu *effectMenu = menuBar()->addMenu(tr("&Effect"));
     //effectMenu->addAction("Highlight all links", this, SLOT(highlightAllLinks()));
 
+#if 0
     rotateAction = new QAction(this);
     rotateAction->setIcon(style()->standardIcon(QStyle::SP_FileDialogDetailedView));
     rotateAction->setCheckable(true);
     rotateAction->setText(tr("Turn images upside down"));
     connect(rotateAction, SIGNAL(toggled(bool)), this, SLOT(rotateImages(bool)));
+#endif
     //effectMenu->addAction(rotateAction);
 
     QMenu *toolsMenu = menuBar()->addMenu(tr("&Tools"));
@@ -159,7 +161,7 @@ void MainWindow::finishLoading(bool)
     adjustTitle();
     view->page()->mainFrame()->evaluateJavaScript(jQuery);
 
-    rotateImages(rotateAction->isChecked());
+    //rotateImages(rotateAction->isChecked());
 }
 //! [6]
 
