@@ -9,7 +9,7 @@ end
 
 desc "test"
 task :test do
-	sh "cd src && make test"
+	sh "cd build && ./scutum"
 end
 
 desc "build it"
