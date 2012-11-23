@@ -61,6 +61,7 @@ MainWindow::MainWindow(const QUrl& url)
 
 //! [2]
     m_tabwidget = new QTabWidget();
+    m_tabwidget->setTabsClosable(true);
     loadTabView(url);
 
     locationEdit = new QLineEdit(this);
@@ -138,7 +139,7 @@ void MainWindow::changeLocation()
     l_view = qobject_cast<QWebView*>(m_tabwidget->currentWidget());
     l_view->setUrl(url);
     l_view->setFocus();
-    m_tabwidget->setTabText(m_tabwidget->currentIndex(), url.toString());
+    m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
 }
 //! [4]
 
@@ -223,10 +224,17 @@ void MainWindow::newTab(){
     
 }
 
+QString MainWindow::shortUrl(const QUrl& url){
+	QString qs = url.toString();
+	qs.remove(0,7);
+	if (qs.count() > 10) qs.resize(10);
+	return qs;
+}
+
 void MainWindow::loadTabView(QUrl url){
     view = new QWebView(this);
     m_tabwidget->addTab(view, "");
-    m_tabwidget->setTabText(m_tabwidget->currentIndex(), url.toString());
+    m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
     view->load(url);
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));

@@ -15,13 +15,14 @@ SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 SET(QtApp_RCCS jquery.qrc)
 SET(QT_USE_QTWEBKIT TRUE)
 
-SET(scutum_HEADERS mainwindow.h)
+SET(scutum_HEADERS mainwindow.h webtabwidget.hpp)
 
 QT4_WRAP_CPP(scutum_HEADERS_MOC ${scutum_HEADERS})
 
 set(scutum_SOURCES
 main.cpp
 mainwindow.cpp
+webtabwidget.cpp
 )
 
 #target_link_libraries(scutum "")

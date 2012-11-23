@@ -57,6 +57,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(const QUrl& url);
+    QString shortUrl(const QUrl& url);
 
 protected slots:
 
