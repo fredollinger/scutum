@@ -50,8 +50,6 @@ MainWindow::MainWindow(const QUrl& url)
 {
     progress = 0;
 
-    m_tabwidget = new QTabWidget();
-
     QFile file;
     file.setFileName(":/jquery.min.js");
     file.open(QIODevice::ReadOnly);
@@ -62,6 +60,7 @@ MainWindow::MainWindow(const QUrl& url)
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 //! [2]
+    m_tabwidget = new QTabWidget();
     loadTabView(url);
 
     locationEdit = new QLineEdit(this);
@@ -88,23 +87,13 @@ MainWindow::MainWindow(const QUrl& url)
 
 //! [3]
 
-    //QMenu *effectMenu = menuBar()->addMenu(tr("&Effect"));
-    //effectMenu->addAction("Highlight all links", this, SLOT(highlightAllLinks()));
-
-#if 0
-    rotateAction = new QAction(this);
-    rotateAction->setIcon(style()->standardIcon(QStyle::SP_FileDialogDetailedView));
-    rotateAction->setCheckable(true);
-    rotateAction->setText(tr("Turn images upside down"));
-    connect(rotateAction, SIGNAL(toggled(bool)), this, SLOT(rotateImages(bool)));
-#endif
-    //effectMenu->addAction(rotateAction);
-
+/*
     QMenu *toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(tr("Remove GIF images"), this, SLOT(removeGifImages()));
     toolsMenu->addAction(tr("Remove all inline frames"), this, SLOT(removeInlineFrames()));
     toolsMenu->addAction(tr("Remove all object elements"), this, SLOT(removeObjectElements()));
     toolsMenu->addAction(tr("Remove all embedded elements"), this, SLOT(removeEmbeddedElements()));
+*/
 
 
     //setCentralWidget(view);
@@ -226,13 +215,18 @@ void MainWindow::removeEmbeddedElements()
 }
 
 void MainWindow::newTab(){
+    int index;
     view = new QWebView(this);
-    m_tabwidget->addTab(view, "");
+    index = m_tabwidget->addTab(view, tr("NEW"));
+    qDebug() << "Setting index to: " << index;
+    m_tabwidget->setCurrentIndex(index);
+    
 }
 
 void MainWindow::loadTabView(QUrl url){
     view = new QWebView(this);
     m_tabwidget->addTab(view, "");
+    m_tabwidget->setTabText(m_tabwidget->currentIndex(), url.toString());
     view->load(url);
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
