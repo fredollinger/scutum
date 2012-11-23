@@ -103,6 +103,7 @@ MainWindow::MainWindow(const QUrl& url)
 
     setCentralWidget(view);
     setUnifiedTitleAndToolBarOnMac(true);
+    showMaximized();
 }
 //! [3]
 
