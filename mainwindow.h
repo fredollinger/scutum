@@ -40,12 +40,17 @@
 
 #include <QtGui>
 
+#ifndef __MAIN_WINDOW_H__
+#define __MAIN_WINDOW_H__
+
 class QWebView;
 QT_BEGIN_NAMESPACE
 class QLineEdit;
+class QTabWidget;
 QT_END_NAMESPACE
 
 //! [1]
+namespace scutum{
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -77,5 +82,9 @@ private:
     QLineEdit *locationEdit;
     QAction *rotateAction;
     int progress;
+    QTabWidget *m_tabwidget;
+
 //! [1]
 };
+} // namespace scutum
+#endif //__MAIN_WINDOW_H__

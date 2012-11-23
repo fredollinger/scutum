@@ -38,15 +38,19 @@
 **
 ****************************************************************************/
 
+
 #include <QtGui>
 #include <QtWebKit>
 #include "mainwindow.h"
 
 //! [1]
 
+namespace scutum{
 MainWindow::MainWindow(const QUrl& url)
 {
     progress = 0;
+
+    m_tabwidget = new QTabWidget();
 
     QFile file;
     file.setFileName(":/jquery.min.js");
@@ -83,6 +87,7 @@ MainWindow::MainWindow(const QUrl& url)
     viewMenu->addAction(viewSourceAction);
 
 //! [3]
+
     //QMenu *effectMenu = menuBar()->addMenu(tr("&Effect"));
     //effectMenu->addAction("Highlight all links", this, SLOT(highlightAllLinks()));
 
@@ -101,7 +106,11 @@ MainWindow::MainWindow(const QUrl& url)
     toolsMenu->addAction(tr("Remove all object elements"), this, SLOT(removeObjectElements()));
     toolsMenu->addAction(tr("Remove all embedded elements"), this, SLOT(removeEmbeddedElements()));
 
-    setCentralWidget(view);
+    // Create a new tab and set is as the current one
+    m_tabwidget->addTab(view, "");
+
+    //setCentralWidget(view);
+    setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);
     showMaximized();
 }
@@ -214,4 +223,4 @@ void MainWindow::removeEmbeddedElements()
     view->page()->mainFrame()->evaluateJavaScript(code);
 }
 //! [9]
-
+} // namespace scutum
