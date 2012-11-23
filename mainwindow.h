@@ -61,10 +61,13 @@ public:
 protected slots:
 
     void adjustLocation();
-    void changeLocation();
     void adjustTitle();
-    void setProgress(int p);
+    void changeLocation();
     void finishLoading(bool);
+    /* Given a URL, load it in a new tab */
+    void loadTabView(QUrl url);
+    void newTab(void);
+    void setProgress(int p);
 
     void viewSource();
     void slotSourceDownloaded();

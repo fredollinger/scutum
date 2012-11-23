@@ -62,12 +62,7 @@ MainWindow::MainWindow(const QUrl& url)
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 //! [2]
-    view = new QWebView(this);
-    view->load(url);
-    connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
-    connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
-    connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
-    connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
+    loadTabView(url);
 
     locationEdit = new QLineEdit(this);
     locationEdit->setSizePolicy(QSizePolicy::Expanding, locationEdit->sizePolicy().verticalPolicy());
@@ -85,6 +80,11 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* viewSourceAction = new QAction("Page Source", this);
     connect(viewSourceAction, SIGNAL(triggered()), SLOT(viewSource()));
     viewMenu->addAction(viewSourceAction);
+
+    QAction* viewNewTab = new QAction("New Tab", this);
+    connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
+    viewMenu->addAction(viewNewTab);
+
 
 //! [3]
 
@@ -106,8 +106,6 @@ MainWindow::MainWindow(const QUrl& url)
     toolsMenu->addAction(tr("Remove all object elements"), this, SLOT(removeObjectElements()));
     toolsMenu->addAction(tr("Remove all embedded elements"), this, SLOT(removeEmbeddedElements()));
 
-    // Create a new tab and set is as the current one
-    m_tabwidget->addTab(view, "");
 
     //setCentralWidget(view);
     setCentralWidget(m_tabwidget);
@@ -143,11 +141,15 @@ void MainWindow::adjustLocation()
 void MainWindow::changeLocation()
 {
     QUrl url = QUrl(locationEdit->text());
-    if (!url.toString().contains("//:")){
+    if (!url.toString().contains("://")){
 	url = QUrl("http://" + url.toString());
     } 
-    view->setUrl(url);
-    view->setFocus();
+
+    QWebView *l_view;
+    l_view = qobject_cast<QWebView*>(m_tabwidget->currentWidget());
+    l_view->setUrl(url);
+    l_view->setFocus();
+    m_tabwidget->setTabText(m_tabwidget->currentIndex(), url.toString());
 }
 //! [4]
 
@@ -221,6 +223,21 @@ void MainWindow::removeEmbeddedElements()
 {
     QString code = "$('embed').remove()";
     view->page()->mainFrame()->evaluateJavaScript(code);
+}
+
+void MainWindow::newTab(){
+    view = new QWebView(this);
+    m_tabwidget->addTab(view, "");
+}
+
+void MainWindow::loadTabView(QUrl url){
+    view = new QWebView(this);
+    m_tabwidget->addTab(view, "");
+    view->load(url);
+    connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+    connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
+    connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
+    connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 }
 //! [9]
 } // namespace scutum
