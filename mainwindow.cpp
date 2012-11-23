@@ -133,7 +133,10 @@ void MainWindow::adjustLocation()
 void MainWindow::changeLocation()
 {
     QUrl url = QUrl(locationEdit->text());
-    view->load(url);
+    if (!url.toString().contains("//:")){
+	url = QUrl("http://" + url.toString());
+    } 
+    view->setUrl(url);
     view->setFocus();
 }
 //! [4]
