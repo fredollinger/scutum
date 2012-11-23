@@ -34,8 +34,9 @@ Q_OBJECT
 public:
     WebTabWidget(QWidget* pParent = 0);
     ~WebTabWidget();
-protected:
-	QWebView *m_view;
+    void loadTabView(QUrl url);
+    QString shortUrl(const QUrl& url);
+    void newWebTab(void);
 };
 
 } // namespace scutum

@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include <QtGui>
+#include "webtabwidget.hpp"
 
 #ifndef __MAIN_WINDOW_H__
 #define __MAIN_WINDOW_H__
@@ -46,7 +47,6 @@
 class QWebView;
 QT_BEGIN_NAMESPACE
 class QLineEdit;
-class QTabWidget;
 QT_END_NAMESPACE
 
 //! [1]
@@ -82,11 +82,11 @@ protected slots:
 
 private:
     QString jQuery;
-    QWebView *view;
+    //QWebView *view;
     QLineEdit *locationEdit;
     QAction *rotateAction;
     int progress;
-    QTabWidget *m_tabwidget;
+    WebTabWidget *m_tabwidget;
 
 //! [1]
 };

@@ -22,7 +22,7 @@
  */
 
 #include "webtabwidget.hpp"
-
+#include <QDebug>
 namespace scutum{
 /**
  * Class constructor.
@@ -38,6 +38,36 @@ WebTabWidget::WebTabWidget(QWidget* pParent)
  */
 WebTabWidget::~WebTabWidget(){} 
 
-} // namespace scutum
 
+
+QString WebTabWidget::shortUrl(const QUrl& url){
+	QString qs = url.toString();
+	qs.remove(0,7);
+	if (qs.count() > 10) qs.resize(10);
+	return qs;
+}
+
+void WebTabWidget::loadTabView(QUrl url){
+    QWebView *view = new QWebView(this);
+    addTab(view, "");
+    setTabText(currentIndex(), shortUrl(url));
+    view->load(url);
+	/*
+    connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+    connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
+    connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
+    connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
+	*/
+}
+//! [9]
+
+void WebTabWidget::newWebTab(){
+    int index;
+    QWebView *view = new QWebView(this);
+    index = addTab(view, tr("NEW"));
+    qDebug() << "Setting index to: " << index;
+    setCurrentIndex(index);
+}
+
+} // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

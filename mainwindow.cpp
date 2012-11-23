@@ -60,19 +60,21 @@ MainWindow::MainWindow(const QUrl& url)
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
 //! [2]
-    m_tabwidget = new QTabWidget();
+    m_tabwidget = new WebTabWidget();
     m_tabwidget->setTabsClosable(true);
-    loadTabView(url);
+    m_tabwidget->loadTabView(url);
 
     locationEdit = new QLineEdit(this);
     locationEdit->setSizePolicy(QSizePolicy::Expanding, locationEdit->sizePolicy().verticalPolicy());
     connect(locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
 
     QToolBar *toolBar = addToolBar(tr("Navigation"));
+	/*
     toolBar->addAction(view->pageAction(QWebPage::Back));
     toolBar->addAction(view->pageAction(QWebPage::Forward));
     toolBar->addAction(view->pageAction(QWebPage::Reload));
     toolBar->addAction(view->pageAction(QWebPage::Stop));
+	*/
     toolBar->addWidget(locationEdit);
 //! [2]
 
@@ -106,10 +108,12 @@ MainWindow::MainWindow(const QUrl& url)
 
 void MainWindow::viewSource()
 {
+/*
     QNetworkAccessManager* accessManager = view->page()->networkAccessManager();
     QNetworkRequest request(view->url());
     QNetworkReply* reply = accessManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(slotSourceDownloaded()));
+*/
 }
 
 void MainWindow::slotSourceDownloaded()
@@ -125,7 +129,7 @@ void MainWindow::slotSourceDownloaded()
 //! [4]
 void MainWindow::adjustLocation()
 {
-    locationEdit->setText(view->url().toString());
+    //locationEdit->setText(view->url().toString());
 }
 
 void MainWindow::changeLocation()
@@ -146,10 +150,12 @@ void MainWindow::changeLocation()
 //! [5]
 void MainWindow::adjustTitle()
 {
+#if 0
     if (progress <= 0 || progress >= 100)
         setWindowTitle(view->title());
     else
         setWindowTitle(QString("%1 (%2%)").arg(view->title()).arg(progress));
+#endif
 }
 
 void MainWindow::setProgress(int p)
@@ -164,7 +170,7 @@ void MainWindow::finishLoading(bool)
 {
     progress = 100;
     adjustTitle();
-    view->page()->mainFrame()->evaluateJavaScript(jQuery);
+    //view->page()->mainFrame()->evaluateJavaScript(jQuery);
 
     //rotateImages(rotateAction->isChecked());
 }
@@ -174,7 +180,7 @@ void MainWindow::finishLoading(bool)
 void MainWindow::highlightAllLinks()
 {
     QString code = "$('a').each( function () { $(this).css('background-color', 'yellow') } )";
-    view->page()->mainFrame()->evaluateJavaScript(code);
+    //view->page()->mainFrame()->evaluateJavaScript(code);
 }
 //! [7]
 
@@ -186,7 +192,7 @@ void MainWindow::rotateImages(bool invert)
         code = "$('img').each( function () { $(this).css('-webkit-transition', '-webkit-transform 2s'); $(this).css('-webkit-transform', 'rotate(180deg)') } )";
     else
         code = "$('img').each( function () { $(this).css('-webkit-transition', '-webkit-transform 2s'); $(this).css('-webkit-transform', 'rotate(0deg)') } )";
-    view->page()->mainFrame()->evaluateJavaScript(code);
+    //view->page()->mainFrame()->evaluateJavaScript(code);
 }
 //! [8]
 
@@ -194,33 +200,36 @@ void MainWindow::rotateImages(bool invert)
 void MainWindow::removeGifImages()
 {
     QString code = "$('[src*=gif]').remove()";
-    view->page()->mainFrame()->evaluateJavaScript(code);
+    //view->page()->mainFrame()->evaluateJavaScript(code);
 }
 
 void MainWindow::removeInlineFrames()
 {
     QString code = "$('iframe').remove()";
-    view->page()->mainFrame()->evaluateJavaScript(code);
+    //view->page()->mainFrame()->evaluateJavaScript(code);
 }
 
 void MainWindow::removeObjectElements()
 {
     QString code = "$('object').remove()";
-    view->page()->mainFrame()->evaluateJavaScript(code);
+    //view->page()->mainFrame()->evaluateJavaScript(code);
 }
 
 void MainWindow::removeEmbeddedElements()
 {
     QString code = "$('embed').remove()";
-    view->page()->mainFrame()->evaluateJavaScript(code);
+    //view->page()->mainFrame()->evaluateJavaScript(code);
 }
 
 void MainWindow::newTab(){
+    m_tabwidget->newWebTab();
+/*
     int index;
-    view = new QWebView(this);
+    QWebView *view = new QWebView(this);
     index = m_tabwidget->addTab(view, tr("NEW"));
     qDebug() << "Setting index to: " << index;
     m_tabwidget->setCurrentIndex(index);
+*/
     
 }
 
@@ -232,14 +241,17 @@ QString MainWindow::shortUrl(const QUrl& url){
 }
 
 void MainWindow::loadTabView(QUrl url){
-    view = new QWebView(this);
+    QWebView *view = new QWebView(this);
     m_tabwidget->addTab(view, "");
     m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
     view->load(url);
+/*
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
     connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
     connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
+*/
 }
 //! [9]
+
 } // namespace scutum
