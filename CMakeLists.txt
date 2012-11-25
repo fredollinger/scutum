@@ -6,13 +6,13 @@ FIND_PACKAGE(Qt4 REQUIRED)
 INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-QT4_ADD_RESOURCES(QtApp_RCC_SRCS ${QtApp_RCCS})
+SET(scutum_RCCS jquery.qrc)
+QT4_ADD_RESOURCES(scutum_RCC_SRCS ${scutum_RCCS})
 
 include_directories("/usr/include/qt4/QtWebKit")
 
 SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 
-SET(QtApp_RCCS jquery.qrc)
 SET(QT_USE_QTWEBKIT TRUE)
 
 SET(scutum_HEADERS 
@@ -32,6 +32,8 @@ webtab.cpp
 #target_link_libraries(scutum "")
 
 ADD_EXECUTABLE(scutum ${scutum_SOURCES} 
+    ${scutum_HEADERS_MOC}
+    ${scutum_RCC_SRCS}
     ${scutum_HEADERS_MOC})
 TARGET_LINK_LIBRARIES(scutum ${QT_LIBRARIES})
 

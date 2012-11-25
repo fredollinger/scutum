@@ -24,5 +24,5 @@ end
 
 desc "setup"
 task :setup do
-	sh "mkdir build && cd build && cmake .."
+	sh "mkdir -p build && cd build && cmake .."
 end

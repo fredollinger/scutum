@@ -50,6 +50,8 @@ MainWindow::MainWindow(const QUrl& url)
 {
     progress = 0;
 
+    setWindowIcon ( QIcon(":/scutum.png"));
+
     QFile file;
     file.setFileName(":/jquery.min.js");
     file.open(QIODevice::ReadOnly);
