@@ -66,24 +66,7 @@ MainWindow::MainWindow(const QUrl& url)
     m_tabwidget->setTabsClosable(true);
     m_tabwidget->loadTabView(url);
 
-/*
-    locationEdit = new QLineEdit(this);
-    locationEdit->setSizePolicy(QSizePolicy::Expanding, locationEdit->sizePolicy().verticalPolicy());
-    connect(locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
-
-    QToolBar *toolBar = addToolBar(tr("Navigation"));
-    toolBar->addAction(view->pageAction(QWebPage::Back));
-    toolBar->addAction(view->pageAction(QWebPage::Forward));
-    toolBar->addAction(view->pageAction(QWebPage::Reload));
-    toolBar->addAction(view->pageAction(QWebPage::Stop));
-	*/
-    //toolBar->addWidget(locationEdit);
-//! [2]
-
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
-    //QAction* viewSourceAction = new QAction("Page Source", this);
-    //connect(viewSourceAction, SIGNAL(triggered()), SLOT(viewSource()));
-    //viewMenu->addAction(viewSourceAction);
 
     QAction* viewNewTab = new QAction("New Tab", this);
     connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
@@ -102,12 +85,6 @@ void MainWindow::slotSourceDownloaded()
     textEdit->show();
     textEdit->setPlainText(reply->readAll());
     reply->deleteLater();
-}
-
-//! [4]
-void MainWindow::adjustLocation()
-{
-    //locationEdit->setText(view->url().toString());
 }
 
 void MainWindow::changeLocation()
@@ -236,14 +213,17 @@ bool MainWindow::event(QEvent *event){
   if (event->type() == QEvent::KeyPress) {
     QKeyEvent *ke = static_cast<QKeyEvent *>(event);
     if (ke->key() == Qt::Key_Plus) {
-      qDebug() << "plus";
       m_tabwidget->increaseFontSize();
       // return true to end handling of event, false to pass it on
       return QWidget::event(event);
       // return true;
     }
-    if (ke->key() == Qt::Key_Minus) {
+    else if (ke->key() == Qt::Key_Minus) {
       m_tabwidget->decreaseFontSize();
+      return QWidget::event(event);
+    }
+    else if (ke->key() == Qt::Key_F && ke->modifiers() == Qt::ControlModifier ) {
+      m_tabwidget->showSearchBar();
       return QWidget::event(event);
     }
   }

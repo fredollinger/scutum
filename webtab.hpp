@@ -40,8 +40,10 @@ public:
   WebTab(QWidget* pParent = 0);
   ~WebTab();
   QString title(void);
+	QToolBar *m_find;
 	QToolBar *m_tool;
 	QWebView *m_view;
+	QLineEdit *m_findEdit;
 	QLineEdit *m_locationEdit;
   void decreaseFontSize(void);
   void increaseFontSize(void);
@@ -50,6 +52,9 @@ public slots:
   void adjustLocation(void);
   void adjustTitle(void);
   void changeLocation(void);
+  void hideSearchBar(void);
+  void searchPage(void);
+  void showSearchBar(void);
 signals:
   void titleChanged(WebTab*);
 

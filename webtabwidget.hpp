@@ -43,6 +43,7 @@ public:
 public slots:
     void adjustTitle(WebTab*);
     void closeTab(int);
+    void showSearchBar(void);
 };
 
 } // namespace scutum

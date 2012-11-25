@@ -60,8 +60,6 @@ public:
     QString shortUrl(const QUrl& url);
 
 protected slots:
-
-    void adjustLocation();
     void adjustTitle();
     void changeLocation();
     void finishLoading(bool);

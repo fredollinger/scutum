@@ -22,6 +22,7 @@
  */
 
 #include "webtab.hpp"
+#include <QAction>
 #include <QVBoxLayout>
 #include <QDebug>
 namespace scutum{
@@ -37,21 +38,35 @@ WebTab::WebTab(QWidget* pParent)
   connect(m_view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   QVBoxLayout *layout = new QVBoxLayout();
 
+  m_locationEdit = new QLineEdit(this);
+  m_locationEdit->setSizePolicy(QSizePolicy::Expanding, m_locationEdit->sizePolicy().verticalPolicy());
+  connect(m_locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
+
   m_tool->addAction(m_view->pageAction(QWebPage::Back));
   m_tool->addAction(m_view->pageAction(QWebPage::Forward));
   m_tool->addAction(m_view->pageAction(QWebPage::Reload));
   m_tool->addAction(m_view->pageAction(QWebPage::Stop));
-
-  m_locationEdit = new QLineEdit(this);
-  m_locationEdit->setSizePolicy(QSizePolicy::Expanding, m_locationEdit->sizePolicy().verticalPolicy());
-  connect(m_locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
-  connect(m_view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
   m_tool->addWidget(m_locationEdit);
+
+  m_find = new QToolBar();
+  m_findEdit = new QLineEdit(this);
+  m_findEdit->setSizePolicy(QSizePolicy::Expanding, m_findEdit->sizePolicy().verticalPolicy());
+
+  m_find->addWidget(m_findEdit);
+  QIcon closeIcon = QIcon::fromTheme("window-close");
+  QAction *closeAct = new QAction(closeIcon, "", this);
+  m_find->addAction(closeAct);
+  connect(m_findEdit, SIGNAL(returnPressed()), SLOT(searchPage()));
+
+  connect(m_view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
+  connect(closeAct, SIGNAL(triggered()), SLOT(hideSearchBar()));
+  m_find->hide();
 
   setLayout(layout);
 
   layout->addWidget(m_tool);
   layout->addWidget(m_view);
+  layout->addWidget(m_find);
 }
 
 /**
@@ -92,6 +107,21 @@ void WebTab::decreaseFontSize(void) {
 
 void WebTab::adjustLocation() {
     m_locationEdit->setText(m_view->url().toString());
+}
+
+void WebTab::searchPage() {
+    m_view->page()->findText(m_findEdit->text(), QWebPage::HighlightAllOccurrences);
+    m_find->hide();
+    m_view->setFocus();
+}
+
+void WebTab::showSearchBar() {
+  m_find->show();
+  m_findEdit->setFocus();
+}
+
+void WebTab::hideSearchBar() {
+  m_find->hide();
 }
 
 } // namespace scutum
