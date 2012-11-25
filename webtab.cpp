@@ -81,6 +81,13 @@ QString WebTab::title(void) {
   return m_view->title();
 }
 
+void WebTab::increaseFontSize(void) {
+        m_view->setZoomFactor(m_view->zoomFactor()+.1);
+}
+
+void WebTab::decreaseFontSize(void) {
+        m_view->setZoomFactor(m_view->zoomFactor()-.1);
+}
 
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

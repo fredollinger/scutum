@@ -35,6 +35,8 @@ Q_OBJECT
 public:
     WebTabWidget(QWidget* pParent = 0);
     ~WebTabWidget();
+    void increaseFontSize(void);
+    void decreaseFontSize(void);
     void loadTabView(QUrl url);
     QString shortUrl(const QUrl& url);
     void newWebTab(void);

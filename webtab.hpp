@@ -37,14 +37,15 @@ namespace scutum{
 class WebTab: public QGroupBox{
 Q_OBJECT
 public:
-    WebTab(QWidget* pParent = 0);
-    ~WebTab();
-    void load(QUrl url);
-    QString title(void);
-private:
+  WebTab(QWidget* pParent = 0);
+  ~WebTab();
+  QString title(void);
 	QToolBar *m_tool;
 	QWebView *m_view;
 	QLineEdit *m_locationEdit;
+  void decreaseFontSize(void);
+  void increaseFontSize(void);
+  void load(QUrl url);
 public slots:
   void adjustTitle(void);
   void changeLocation(void);

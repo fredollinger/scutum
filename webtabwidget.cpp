@@ -50,9 +50,13 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 void WebTabWidget::loadTabView(QUrl url){
     //QGroupBox *view = new QGroupBox(this);
   //  QWebView *view = new QWebView(this);
+  /*
     const QString qs = shortUrl(url);
     WebTab *view = new WebTab(this);
     addTab(view, qs);
+    */
+    newWebTab();
+    WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
     view->load(url);
 }
     //setTabText(currentIndex(), qs);
@@ -79,6 +83,16 @@ void WebTabWidget::adjustTitle(WebTab *tab){
     QString qs = tab->title();
 	  if (qs.count() > 10) qs.resize(10);
     setTabText(indexOf(tab), qs);
+}
+
+void WebTabWidget::increaseFontSize(){
+  WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
+  w->increaseFontSize();
+}
+
+void WebTabWidget::decreaseFontSize(){
+  WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
+  w->decreaseFontSize();
 }
 
 } // namespace scutum

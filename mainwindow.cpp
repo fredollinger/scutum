@@ -231,6 +231,23 @@ void MainWindow::loadTabView(QUrl url){
     connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
 */
 }
-//! [9]
+
+bool MainWindow::event(QEvent *event){
+  if (event->type() == QEvent::KeyPress) {
+    QKeyEvent *ke = static_cast<QKeyEvent *>(event);
+    if (ke->key() == Qt::Key_Plus) {
+      qDebug() << "plus";
+      m_tabwidget->increaseFontSize();
+      // return true to end handling of event, false to pass it on
+      return QWidget::event(event);
+      // return true;
+    }
+    if (ke->key() == Qt::Key_Minus) {
+      m_tabwidget->decreaseFontSize();
+      return QWidget::event(event);
+    }
+  }
+  return QWidget::event(event);
+}
 
 } // namespace scutum

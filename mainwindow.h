@@ -87,6 +87,7 @@ private:
     QAction *rotateAction;
     int progress;
     WebTabWidget *m_tabwidget;
+    bool event(QEvent *event);
 
 //! [1]
 };
