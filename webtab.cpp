@@ -45,6 +45,7 @@ WebTab::WebTab(QWidget* pParent)
   m_locationEdit = new QLineEdit(this);
   m_locationEdit->setSizePolicy(QSizePolicy::Expanding, m_locationEdit->sizePolicy().verticalPolicy());
   connect(m_locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
+  connect(m_view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
   m_tool->addWidget(m_locationEdit);
 
   setLayout(layout);
@@ -87,6 +88,10 @@ void WebTab::increaseFontSize(void) {
 
 void WebTab::decreaseFontSize(void) {
         m_view->setZoomFactor(m_view->zoomFactor()-.1);
+}
+
+void WebTab::adjustLocation() {
+    m_locationEdit->setText(m_view->url().toString());
 }
 
 } // namespace scutum

@@ -33,6 +33,7 @@ namespace scutum{
 WebTabWidget::WebTabWidget(QWidget* pParent) 
 	: QTabWidget(pParent)
 {
+    connect(this, SIGNAL(tabCloseRequested(int)), SLOT(closeTab(int)));
 }
 
 /**
@@ -93,6 +94,18 @@ void WebTabWidget::increaseFontSize(){
 void WebTabWidget::decreaseFontSize(){
   WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
   w->decreaseFontSize();
+}
+
+void WebTabWidget::closeTab(int index){
+  qDebug() << __PRETTY_FUNCTION__ << count();
+  if (count() < 2){
+    newWebTab();
+  }
+
+  WebTab *tab = qobject_cast<WebTab*>(widget(index));
+  removeTab(index);
+  delete tab;
+
 }
 
 } // namespace scutum

@@ -47,6 +47,7 @@ public:
   void increaseFontSize(void);
   void load(QUrl url);
 public slots:
+  void adjustLocation(void);
   void adjustTitle(void);
   void changeLocation(void);
 signals:
