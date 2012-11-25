@@ -22,6 +22,7 @@
  */
 
 #include "webtab.hpp"
+#include <QVBoxLayout>
 #include <QDebug>
 namespace scutum{
 /**
@@ -29,10 +30,26 @@ namespace scutum{
  * @param	pParent	The parent widget
  */
 WebTab::WebTab(QWidget* pParent) 
-	: QHBoxLayout(pParent)
+	: QGroupBox(pParent)
 {
-    QToolBar *m_tool = new QToolBar();
-    QWebView *m_view = new QWebView();
+  m_tool = new QToolBar();
+  m_view = new QWebView();
+  QVBoxLayout *layout = new QVBoxLayout();
+
+  m_tool->addAction(m_view->pageAction(QWebPage::Back));
+  m_tool->addAction(m_view->pageAction(QWebPage::Forward));
+  m_tool->addAction(m_view->pageAction(QWebPage::Reload));
+  m_tool->addAction(m_view->pageAction(QWebPage::Stop));
+
+  m_locationEdit = new QLineEdit(this);
+  m_locationEdit->setSizePolicy(QSizePolicy::Expanding, m_locationEdit->sizePolicy().verticalPolicy());
+  connect(m_locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
+  m_tool->addWidget(m_locationEdit);
+
+  setLayout(layout);
+
+  layout->addWidget(m_tool);
+  layout->addWidget(m_view);
 }
 
 /**
@@ -40,9 +57,22 @@ WebTab::WebTab(QWidget* pParent)
  */
 WebTab::~WebTab(){} 
 
-void WebTab::loadUrl(QUrl url){
+void WebTab::load(QUrl url){
     m_view->load(url);
 }
+
+void WebTab::changeLocation() {
+    QUrl url = QUrl(m_locationEdit->text());
+    if (!url.toString().contains("://")){
+	url = QUrl("http://" + url.toString());
+    } 
+
+    //m_view = qobject_cast<QWebView*>(m_tabwidget->currentWidget());
+    m_view->setUrl(url);
+    m_view->setFocus();
+    //m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
+}
+//! [4]
 
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

@@ -21,8 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "webtab.hpp"
 #include "webtabwidget.hpp"
 #include <QDebug>
+#include <QGroupBox>
 namespace scutum{
 /**
  * Class constructor.
@@ -38,8 +40,6 @@ WebTabWidget::WebTabWidget(QWidget* pParent)
  */
 WebTabWidget::~WebTabWidget(){} 
 
-
-
 QString WebTabWidget::shortUrl(const QUrl& url){
 	QString qs = url.toString();
 	qs.remove(0,7);
@@ -48,22 +48,27 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QUrl url){
-    QWebView *view = new QWebView(this);
-    addTab(view, "");
-    setTabText(currentIndex(), shortUrl(url));
+    //QGroupBox *view = new QGroupBox(this);
+  //  QWebView *view = new QWebView(this);
+    const QString qs = shortUrl(url);
+    WebTab *view = new WebTab(this);
+    addTab(view, qs);
     view->load(url);
+}
+    //setTabText(currentIndex(), qs);
 	/*
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
     connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
     connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
-	*/
 }
+	*/
 //! [9]
 
 void WebTabWidget::newWebTab(){
     int index;
-    QWebView *view = new QWebView(this);
+    WebTab *view = new WebTab(this);
+    //QWebView *view = new QWebView(this);
     index = addTab(view, tr("NEW"));
     qDebug() << "Setting index to: " << index;
     setCurrentIndex(index);

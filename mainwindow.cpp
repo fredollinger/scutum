@@ -66,18 +66,18 @@ MainWindow::MainWindow(const QUrl& url)
     m_tabwidget->setTabsClosable(true);
     m_tabwidget->loadTabView(url);
 
+/*
     locationEdit = new QLineEdit(this);
     locationEdit->setSizePolicy(QSizePolicy::Expanding, locationEdit->sizePolicy().verticalPolicy());
     connect(locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
 
     QToolBar *toolBar = addToolBar(tr("Navigation"));
-	/*
     toolBar->addAction(view->pageAction(QWebPage::Back));
     toolBar->addAction(view->pageAction(QWebPage::Forward));
     toolBar->addAction(view->pageAction(QWebPage::Reload));
     toolBar->addAction(view->pageAction(QWebPage::Stop));
 	*/
-    toolBar->addWidget(locationEdit);
+    //toolBar->addWidget(locationEdit);
 //! [2]
 
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
@@ -243,10 +243,11 @@ QString MainWindow::shortUrl(const QUrl& url){
 }
 
 void MainWindow::loadTabView(QUrl url){
-    QWebView *view = new QWebView(this);
+//    QWebView *view = new QWebView(this);
+    WebTabWidget *view = new WebTabWidget(this);
     m_tabwidget->addTab(view, "");
     m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
-    view->load(url);
+//    view->load(url);
 /*
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));

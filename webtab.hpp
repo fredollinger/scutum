@@ -25,23 +25,30 @@
 #ifndef __WEB_TAB__
 #define __WEB_TAB__
 
-#include <QHBoxLayout>
-#include <QTabWidget>
+#include <QGroupBox>
+#include <QLineEdit>
 #include <QToolBar>
 #include <QWebView>
+//#include <QTabWidget>
 
 namespace scutum{
-class WebTab: public QHBoxLayout{
+//class WebTab: public QGridLayout{
+//class WebTab: public QWidget{
+class WebTab: public QGroupBox{
 Q_OBJECT
 public:
     WebTab(QWidget* pParent = 0);
     ~WebTab();
-    void loadUrl(QUrl url);
+    void load(QUrl url);
 private:
 	QToolBar *m_tool;
 	QWebView *m_view;
+	QLineEdit *m_locationEdit;
+public slots:
+  void changeLocation(void);
+
 };
 
 } // namespace scutum
 #endif // __WEB_TAB__
-// Sun Oct  9 16:49:32 PDT 2011
+// Sun Nov 25 12:07:13 PST 2012
