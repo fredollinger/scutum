@@ -72,6 +72,13 @@ void WebTabWidget::newWebTab(){
     index = addTab(view, tr("NEW"));
     qDebug() << "Setting index to: " << index;
     setCurrentIndex(index);
+    connect(view, SIGNAL(titleChanged(WebTab*)), SLOT(adjustTitle(WebTab*)));
+}
+
+void WebTabWidget::adjustTitle(WebTab *tab){
+    QString qs = tab->title();
+	  if (qs.count() > 10) qs.resize(10);
+    setTabText(indexOf(tab), qs);
 }
 
 } // namespace scutum

@@ -34,6 +34,7 @@ WebTab::WebTab(QWidget* pParent)
 {
   m_tool = new QToolBar();
   m_view = new QWebView();
+  connect(m_view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   QVBoxLayout *layout = new QVBoxLayout();
 
   m_tool->addAction(m_view->pageAction(QWebPage::Back));
@@ -64,15 +65,22 @@ void WebTab::load(QUrl url){
 void WebTab::changeLocation() {
     QUrl url = QUrl(m_locationEdit->text());
     if (!url.toString().contains("://")){
-	url = QUrl("http://" + url.toString());
+	    url = QUrl("http://" + url.toString());
     } 
 
-    //m_view = qobject_cast<QWebView*>(m_tabwidget->currentWidget());
     m_view->setUrl(url);
     m_view->setFocus();
     //m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
 }
-//! [4]
+
+void WebTab::adjustTitle() {
+          emit titleChanged(this);
+}
+
+QString WebTab::title(void) {
+  return m_view->title();
+}
+
 
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

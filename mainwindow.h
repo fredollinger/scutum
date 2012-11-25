@@ -70,7 +70,7 @@ protected slots:
     void newTab(void);
     void setProgress(int p);
 
-    void viewSource();
+    //void viewSource();
     void slotSourceDownloaded();
 
     void highlightAllLinks();

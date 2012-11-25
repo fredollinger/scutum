@@ -29,6 +29,7 @@
 #include <QWebView>
 
 namespace scutum{
+class WebTab;
 class WebTabWidget : public QTabWidget {
 Q_OBJECT
 public:
@@ -37,6 +38,8 @@ public:
     void loadTabView(QUrl url);
     QString shortUrl(const QUrl& url);
     void newWebTab(void);
+public slots:
+    void adjustTitle(WebTab*);
 };
 
 } // namespace scutum

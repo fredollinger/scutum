@@ -81,41 +81,17 @@ MainWindow::MainWindow(const QUrl& url)
 //! [2]
 
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
-    QAction* viewSourceAction = new QAction("Page Source", this);
-    connect(viewSourceAction, SIGNAL(triggered()), SLOT(viewSource()));
-    viewMenu->addAction(viewSourceAction);
+    //QAction* viewSourceAction = new QAction("Page Source", this);
+    //connect(viewSourceAction, SIGNAL(triggered()), SLOT(viewSource()));
+    //viewMenu->addAction(viewSourceAction);
 
     QAction* viewNewTab = new QAction("New Tab", this);
     connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
     viewMenu->addAction(viewNewTab);
 
-
-//! [3]
-
-/*
-    QMenu *toolsMenu = menuBar()->addMenu(tr("&Tools"));
-    toolsMenu->addAction(tr("Remove GIF images"), this, SLOT(removeGifImages()));
-    toolsMenu->addAction(tr("Remove all inline frames"), this, SLOT(removeInlineFrames()));
-    toolsMenu->addAction(tr("Remove all object elements"), this, SLOT(removeObjectElements()));
-    toolsMenu->addAction(tr("Remove all embedded elements"), this, SLOT(removeEmbeddedElements()));
-*/
-
-
-    //setCentralWidget(view);
     setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);
     showMaximized();
-}
-//! [3]
-
-void MainWindow::viewSource()
-{
-/*
-    QNetworkAccessManager* accessManager = view->page()->networkAccessManager();
-    QNetworkRequest request(view->url());
-    QNetworkReply* reply = accessManager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(slotSourceDownloaded()));
-*/
 }
 
 void MainWindow::slotSourceDownloaded()

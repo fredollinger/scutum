@@ -40,12 +40,16 @@ public:
     WebTab(QWidget* pParent = 0);
     ~WebTab();
     void load(QUrl url);
+    QString title(void);
 private:
 	QToolBar *m_tool;
 	QWebView *m_view;
 	QLineEdit *m_locationEdit;
 public slots:
+  void adjustTitle(void);
   void changeLocation(void);
+signals:
+  void titleChanged(WebTab*);
 
 };
 
