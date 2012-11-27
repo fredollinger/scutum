@@ -34,7 +34,7 @@ WebTab::WebTab(QWidget* pParent)
 	: QGroupBox(pParent)
 {
   m_tool = new QToolBar();
-  m_view = new QWebView();
+  m_view = new ScutView();
   connect(m_view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   QVBoxLayout *layout = new QVBoxLayout();
 

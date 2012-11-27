@@ -28,8 +28,8 @@
 #include <QGroupBox>
 #include <QLineEdit>
 #include <QToolBar>
-#include <QWebView>
-//#include <QTabWidget>
+
+#include "scutview.hpp"
 
 namespace scutum{
 //class WebTab: public QGridLayout{
@@ -42,7 +42,7 @@ public:
   QString title(void);
 	QToolBar *m_find;
 	QToolBar *m_tool;
-	QWebView *m_view;
+	ScutView *m_view;
 	QLineEdit *m_findEdit;
 	QLineEdit *m_locationEdit;
   void decreaseFontSize(void);

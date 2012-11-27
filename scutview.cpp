@@ -31,8 +31,12 @@ ScutView::ScutView(QWidget* pParent)
 	: QWebView(pParent)
 {}
 
-/**
- * Class destructor.
- */
 ScutView::~ScutView(){}
+
+void ScutView::contextMenuEvent ( QContextMenuEvent * ev ){
+	qDebug() << __PRETTY_FUNCTION__;
+	return;
+}
+
 } // namespace scutum
+

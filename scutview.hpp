@@ -33,6 +33,8 @@ Q_OBJECT
 public:
   ScutView(QWidget* pParent = 0);
   ~ScutView();
+protected:
+	void contextMenuEvent ( QContextMenuEvent * ev );
 };
 } // namespace scutum
 #endif //  __SCUT_VIEW__
