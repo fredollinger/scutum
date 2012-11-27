@@ -35,6 +35,7 @@ ScutView::~ScutView(){}
 
 void ScutView::contextMenuEvent ( QContextMenuEvent * ev ){
 	qDebug() << __PRETTY_FUNCTION__;
+	QWebView::contextMenuEvent(ev);
 	return;
 }
 
