@@ -129,5 +129,9 @@ void WebTab::reload() {
   m_view->reload();
 }
 
+ScutView* WebTab::view() {
+  return m_view;
+}
+
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

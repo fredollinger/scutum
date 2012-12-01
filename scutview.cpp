@@ -34,17 +34,41 @@ ScutView::ScutView(QWidget* pParent)
   connect(page() 
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
   , SLOT(linkHovered ( const QString&, const QString&, const QString &)) );
+
+
+
 }
 
 ScutView::~ScutView(){}
 
+void ScutView::showLinkMenu (){
+    QPoint pos = QCursor::pos();
+    QPoint globalPos = mapToGlobal(pos);
+
+    QMenu *linkMenu = page()->createStandardContextMenu();
+    QAction* openInNewTabAct = new QAction(tr("Open In New Tab"), this);
+    connect(openInNewTabAct, SIGNAL(triggered()), SLOT(openInNewTab()));
+    linkMenu->addAction(openInNewTabAct);
+    linkMenu->exec(pos);
+}
+
+void ScutView::openInNewTab(){
+	qDebug() << __PRETTY_FUNCTION__ << m_link;
+  emit sigOpenInNewTab(QUrl(m_link));
+}
+
 void ScutView::contextMenuEvent ( QContextMenuEvent * ev ){
-	qDebug() << __PRETTY_FUNCTION__;
+  if (m_isLinkHovered){
+	  qDebug() << __PRETTY_FUNCTION__ << m_link;
+    showLinkMenu();
+    return;       
+  }
 	QWebView::contextMenuEvent(ev);
 	return;
 }
 
 void ScutView::linkHovered ( const QString & link, const QString & title, const QString & textContent ){
+
 
   if (link.isEmpty()){
     m_isLinkHovered = false;
@@ -52,9 +76,10 @@ void ScutView::linkHovered ( const QString & link, const QString & title, const 
   }
 
   m_isLinkHovered = true;
-  QString m_link = link;
-  QString m_title = title;
-  QString m_textContent = textContent;
+  m_link = link;
+  m_title = title;
+  m_textContent = textContent;
+	qDebug() << __PRETTY_FUNCTION__ << m_link;
   return;
 }
 

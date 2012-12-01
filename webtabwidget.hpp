@@ -38,8 +38,6 @@ public:
     ~WebTabWidget();
     void increaseFontSize(void);
     void decreaseFontSize(void);
-    void loadTabView(QUrl url);
-    void newWebTab(void);
     void reload(void);
 
     QString shortUrl(const QUrl& url);
@@ -48,6 +46,8 @@ public:
 public slots:
     void adjustTitle(WebTab*);
     void closeTab(int);
+    void newWebTab(const QString&);
+    void loadTabView(QUrl url);
     void showSearchBar(void);
 };
 

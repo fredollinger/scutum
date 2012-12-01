@@ -25,6 +25,7 @@
 #ifndef __SCUT_VIEW__
 #define __SCUT_VIEW__
 
+#include <QMenu>
 #include <QWebView>
 
 namespace scutum{
@@ -33,15 +34,23 @@ Q_OBJECT
 public:
   ScutView(QWidget* pParent = 0);
   ~ScutView();
+  void showLinkMenu(void);
 protected:
   bool m_isLinkHovered;
+
   QString m_link; 
   QString m_title; 
   QString m_textContent;
 
+
 	void contextMenuEvent ( QContextMenuEvent * ev );
 public slots:
   void linkHovered ( const QString & link, const QString & title, const QString & textContent );
+  void openInNewTab(void);
+
+signals:
+  void sigOpenInNewTab(QUrl);
+
 };
 } // namespace scutum
 #endif //  __SCUT_VIEW__

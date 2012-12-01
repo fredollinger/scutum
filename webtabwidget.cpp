@@ -49,35 +49,27 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QUrl url){
-    //QGroupBox *view = new QGroupBox(this);
-  //  QWebView *view = new QWebView(this);
-  /*
-    const QString qs = shortUrl(url);
-    WebTab *view = new WebTab(this);
-    addTab(view, qs);
-    */
-    newWebTab();
+    qDebug() << __PRETTY_FUNCTION__ << url.toString();
+    newWebTab(tr("NEW"));
     WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
     view->load(url);
 }
-    //setTabText(currentIndex(), qs);
+
 	/*
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
     connect(view, SIGNAL(loadProgress(int)), SLOT(setProgress(int)));
     connect(view, SIGNAL(loadFinished(bool)), SLOT(finishLoading(bool)));
-}
 	*/
-//! [9]
 
-void WebTabWidget::newWebTab(){
+void WebTabWidget::newWebTab(const QString &title){
     int index;
-    WebTab *view = new WebTab(this);
-    //QWebView *view = new QWebView(this);
-    index = addTab(view, tr("NEW"));
+    WebTab *tab = new WebTab(this);
+    index = addTab(tab, title);
     qDebug() << "Setting index to: " << index;
     setCurrentIndex(index);
-    connect(view, SIGNAL(titleChanged(WebTab*)), SLOT(adjustTitle(WebTab*)));
+    connect(tab, SIGNAL(titleChanged(WebTab*)), SLOT(adjustTitle(WebTab*)));
+    connect(tab->view(), SIGNAL(sigOpenInNewTab(QUrl)), SLOT(loadTabView(QUrl)));
 }
 
 void WebTabWidget::adjustTitle(WebTab *tab){
@@ -97,9 +89,8 @@ void WebTabWidget::decreaseFontSize(){
 }
 
 void WebTabWidget::closeTab(int index){
-  qDebug() << __PRETTY_FUNCTION__ << count();
   if (count() < 2){
-    newWebTab();
+    newWebTab(tr("NEW"));
   }
 
   WebTab *tab = qobject_cast<WebTab*>(widget(index));

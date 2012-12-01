@@ -49,6 +49,7 @@ public:
   void increaseFontSize(void);
   void load(QUrl url);
   void reload(void);
+	ScutView* view(void);
 public slots:
   void adjustLocation(void);
   void adjustTitle(void);

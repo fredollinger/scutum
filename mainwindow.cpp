@@ -177,15 +177,7 @@ void MainWindow::removeEmbeddedElements()
 }
 
 void MainWindow::newTab(){
-    m_tabwidget->newWebTab();
-/*
-    int index;
-    QWebView *view = new QWebView(this);
-    index = m_tabwidget->addTab(view, tr("NEW"));
-    qDebug() << "Setting index to: " << index;
-    m_tabwidget->setCurrentIndex(index);
-*/
-    
+    m_tabwidget->newWebTab(tr("NEW"));
 }
 
 QString MainWindow::shortUrl(const QUrl& url){
@@ -231,7 +223,7 @@ bool MainWindow::event(QEvent *event){
       return QWidget::event(event);
     }
     else if (ke->key() == Qt::Key_T && ke->modifiers() == Qt::ControlModifier ) {
-      m_tabwidget->newWebTab();
+      m_tabwidget->newWebTab(tr("NEW"));
       return QWidget::event(event);
     }
   }
