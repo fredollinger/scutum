@@ -34,7 +34,14 @@ public:
   ScutView(QWidget* pParent = 0);
   ~ScutView();
 protected:
+  bool m_isLinkHovered;
+  QString m_link; 
+  QString m_title; 
+  QString m_textContent;
+
 	void contextMenuEvent ( QContextMenuEvent * ev );
+public slots:
+  void linkHovered ( const QString & link, const QString & title, const QString & textContent );
 };
 } // namespace scutum
 #endif //  __SCUT_VIEW__

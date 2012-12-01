@@ -28,8 +28,13 @@
 
 namespace scutum{
 ScutView::ScutView(QWidget* pParent) 
-	: QWebView(pParent)
-{}
+	: QWebView(pParent) 
+  , m_isLinkHovered(false)
+{
+  connect(page() 
+  , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
+  , SLOT(linkHovered ( const QString&, const QString&, const QString &)) );
+}
 
 ScutView::~ScutView(){}
 
@@ -39,5 +44,19 @@ void ScutView::contextMenuEvent ( QContextMenuEvent * ev ){
 	return;
 }
 
-} // namespace scutum
+void ScutView::linkHovered ( const QString & link, const QString & title, const QString & textContent ){
 
+  if (link.isEmpty()){
+    m_isLinkHovered = false;
+    return;
+  }
+
+  m_isLinkHovered = true;
+  QString m_link = link;
+  QString m_title = title;
+  QString m_textContent = textContent;
+  return;
+}
+
+} // namespace scutum
+// Sat Dec  1 11:46:27 PST 2012
