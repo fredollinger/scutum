@@ -32,14 +32,19 @@ namespace scutum{
 class WebTab;
 class WebTabWidget : public QTabWidget {
 Q_OBJECT
+// BEGIN WEBTAB PUBLIC
 public:
     WebTabWidget(QWidget* pParent = 0);
     ~WebTabWidget();
     void increaseFontSize(void);
     void decreaseFontSize(void);
     void loadTabView(QUrl url);
-    QString shortUrl(const QUrl& url);
     void newWebTab(void);
+    void reload(void);
+
+    QString shortUrl(const QUrl& url);
+// END WEBTAB PUBLIC
+
 public slots:
     void adjustTitle(WebTab*);
     void closeTab(int);

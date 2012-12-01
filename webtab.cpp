@@ -125,5 +125,9 @@ void WebTab::hideSearchBar() {
   m_find->hide();
 }
 
+void WebTab::reload() {
+  m_view->reload();
+}
+
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

@@ -113,5 +113,10 @@ void WebTabWidget::showSearchBar(){
   w->showSearchBar();
 }
 
+void WebTabWidget::reload(){
+  WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
+  w->reload();
+}
+
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

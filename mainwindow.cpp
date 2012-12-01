@@ -226,6 +226,10 @@ bool MainWindow::event(QEvent *event){
       m_tabwidget->showSearchBar();
       return QWidget::event(event);
     }
+    else if (ke->key() == Qt::Key_R && ke->modifiers() == Qt::ControlModifier ) {
+      m_tabwidget->reload();
+      return QWidget::event(event);
+    }
     else if (ke->key() == Qt::Key_T && ke->modifiers() == Qt::ControlModifier ) {
       m_tabwidget->newWebTab();
       return QWidget::event(event);
