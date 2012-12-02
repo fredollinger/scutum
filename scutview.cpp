@@ -23,6 +23,8 @@
 
 #include "scutview.hpp"
 #include <QAction>
+#include <QApplication>
+#include <QClipboard>
 #include <QDebug>
 #include <QWebView>
 
@@ -35,7 +37,15 @@ ScutView::ScutView(QWidget* pParent)
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
   , SLOT(linkHovered ( const QString&, const QString&, const QString &)) );
 
+  m_linkMenu = new QMenu();
 
+  QAction* openInNewTabAct = new QAction(tr("Open In New Tab"), this);
+  connect(openInNewTabAct, SIGNAL(triggered()), SLOT(openInNewTab()));
+  m_linkMenu->addAction(openInNewTabAct);
+
+  QAction* copyLinkAct = new QAction(tr("Copy Link"), this);
+  connect(copyLinkAct, SIGNAL(triggered()), SLOT(copyLink()));
+  m_linkMenu->addAction(copyLinkAct);
 
 }
 
@@ -45,21 +55,15 @@ void ScutView::showLinkMenu (){
     QPoint pos = QCursor::pos();
     QPoint globalPos = mapToGlobal(pos);
 
-    QMenu *linkMenu = page()->createStandardContextMenu();
-    QAction* openInNewTabAct = new QAction(tr("Open In New Tab"), this);
-    connect(openInNewTabAct, SIGNAL(triggered()), SLOT(openInNewTab()));
-    linkMenu->addAction(openInNewTabAct);
-    linkMenu->exec(pos);
+    m_linkMenu->exec(pos);
 }
 
 void ScutView::openInNewTab(){
-	qDebug() << __PRETTY_FUNCTION__ << m_link;
   emit sigOpenInNewTab(QUrl(m_link));
 }
 
 void ScutView::contextMenuEvent ( QContextMenuEvent * ev ){
   if (m_isLinkHovered){
-	  qDebug() << __PRETTY_FUNCTION__ << m_link;
     showLinkMenu();
     return;       
   }
@@ -79,8 +83,12 @@ void ScutView::linkHovered ( const QString & link, const QString & title, const 
   m_link = link;
   m_title = title;
   m_textContent = textContent;
-	qDebug() << __PRETTY_FUNCTION__ << m_link;
   return;
+}
+
+void ScutView::copyLink (){
+ QClipboard *clipboard = QApplication::clipboard();
+ clipboard->setText(m_link);
 }
 
 } // namespace scutum

@@ -38,6 +38,8 @@ public:
 protected:
   bool m_isLinkHovered;
 
+  QMenu *m_linkMenu; 
+
   QString m_link; 
   QString m_title; 
   QString m_textContent;
@@ -45,6 +47,7 @@ protected:
 
 	void contextMenuEvent ( QContextMenuEvent * ev );
 public slots:
+  void copyLink(void);
   void linkHovered ( const QString & link, const QString & title, const QString & textContent );
   void openInNewTab(void);
 
