@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
+#include <QFileDialog>
 #include <QDebug>
 #include <QWebView>
 
@@ -32,6 +33,7 @@ namespace scutum{
 ScutView::ScutView(QWidget* pParent) 
 	: QWebView(pParent) 
   , m_isLinkHovered(false)
+  , m_lastPath("")
 {
   connect(page() 
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
@@ -46,6 +48,10 @@ ScutView::ScutView(QWidget* pParent)
   QAction* copyLinkAct = new QAction(tr("Copy Link"), this);
   connect(copyLinkAct, SIGNAL(triggered()), SLOT(copyLink()));
   m_linkMenu->addAction(copyLinkAct);
+
+  QAction* saveLinkAct = new QAction(tr("Download Link"), this);
+  connect(saveLinkAct, SIGNAL(triggered()), SLOT(saveLink()));
+  m_linkMenu->addAction(saveLinkAct);
 
 }
 
@@ -89,6 +95,14 @@ void ScutView::linkHovered ( const QString & link, const QString & title, const 
 void ScutView::copyLink (){
  QClipboard *clipboard = QApplication::clipboard();
  clipboard->setText(m_link);
+}
+
+void ScutView::saveLink (){
+  QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Save File"), m_lastPath, tr("Any Files (*)"));
+  QString qs = "wget -E " + m_link + " -O " + fileName;
+  system (qs.toStdString().c_str());
+  return;
 }
 
 } // namespace scutum

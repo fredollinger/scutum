@@ -40,6 +40,7 @@ protected:
 
   QMenu *m_linkMenu; 
 
+  QString m_lastPath; 
   QString m_link; 
   QString m_title; 
   QString m_textContent;
@@ -50,6 +51,7 @@ public slots:
   void copyLink(void);
   void linkHovered ( const QString & link, const QString & title, const QString & textContent );
   void openInNewTab(void);
+  void saveLink(void);
 
 signals:
   void sigOpenInNewTab(QUrl);
