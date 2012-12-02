@@ -111,7 +111,7 @@ void WebTab::adjustLocation() {
 
 void WebTab::searchPage() {
     m_view->page()->findText(m_findEdit->text(), QWebPage::HighlightAllOccurrences);
-    m_view->page()->findText(m_findEdit->text(), 0);
+    m_view->page()->findText(m_findEdit->text(), QWebPage::FindWrapsAroundDocument);
     m_find->hide();
     m_view->setFocus();
 }
