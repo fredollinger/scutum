@@ -25,6 +25,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
+#include <QDir>
 #include <QFileDialog>
 #include <QDebug>
 #include <QWebView>
@@ -33,7 +34,7 @@ namespace scutum{
 ScutView::ScutView(QWidget* pParent) 
 	: QWebView(pParent) 
   , m_isLinkHovered(false)
-  , m_lastPath("")
+  , m_lastPath(QDir::homePath ())
 {
   connect(page() 
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
@@ -95,6 +96,11 @@ void ScutView::linkHovered ( const QString & link, const QString & title, const 
 void ScutView::copyLink (){
  QClipboard *clipboard = QApplication::clipboard();
  clipboard->setText(m_link);
+}
+
+void ScutView::copyHighlightedText (){
+ QClipboard *clipboard = QApplication::clipboard();
+ clipboard->setText(selectedText());
 }
 
 void ScutView::saveLink (){

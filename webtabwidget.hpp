@@ -36,6 +36,8 @@ Q_OBJECT
 public:
     WebTabWidget(QWidget* pParent = 0);
     ~WebTabWidget();
+    void findNext(void);
+    void findPrevious(void);
     void increaseFontSize(void);
     void decreaseFontSize(void);
     void reload(void);
@@ -49,6 +51,7 @@ public slots:
     void newWebTab(const QString&);
     void loadTabView(QUrl url);
     void showSearchBar(void);
+    void copyHighlightedText(void);
 };
 
 } // namespace scutum

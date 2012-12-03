@@ -48,6 +48,7 @@ protected:
 
 	void contextMenuEvent ( QContextMenuEvent * ev );
 public slots:
+  void copyHighlightedText(void);
   void copyLink(void);
   void linkHovered ( const QString & link, const QString & title, const QString & textContent );
   void openInNewTab(void);

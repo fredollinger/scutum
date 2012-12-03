@@ -109,5 +109,19 @@ void WebTabWidget::reload(){
   w->reload();
 }
 
+void WebTabWidget::copyHighlightedText(){
+    qDebug() << __PRETTY_FUNCTION__; 
+    WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+    tab->view()->copyHighlightedText();
+}
+
+void WebTabWidget::findNext(){
+  return;
+}
+
+void WebTabWidget::findPrevious(){
+  return;
+}
+
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

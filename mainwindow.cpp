@@ -210,12 +210,25 @@ bool MainWindow::event(QEvent *event){
       return QWidget::event(event);
       // return true;
     }
+
     else if (ke->key() == Qt::Key_Minus) {
       m_tabwidget->decreaseFontSize();
       return QWidget::event(event);
     }
+    else if (ke->key() == Qt::Key_C && ke->modifiers() == Qt::ControlModifier ) {
+      m_tabwidget->copyHighlightedText();
+      return QWidget::event(event);
+    }
     else if (ke->key() == Qt::Key_F && ke->modifiers() == Qt::ControlModifier ) {
       m_tabwidget->showSearchBar();
+      return QWidget::event(event);
+    }
+    else if (ke->key() == Qt::Key_N ) {
+      m_tabwidget->findNext();
+      return QWidget::event(event);
+    }
+    else if (ke->key() == Qt::Key_P ) {
+      m_tabwidget->findPrevious();
       return QWidget::event(event);
     }
     else if (ke->key() == Qt::Key_R && ke->modifiers() == Qt::ControlModifier ) {
