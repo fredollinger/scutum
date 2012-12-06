@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include <QtGui>
+#include <QMainWindow>
 #include "webtabwidget.hpp"
 
 #ifndef __MAIN_WINDOW_H__

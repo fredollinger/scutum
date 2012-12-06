@@ -40,7 +40,11 @@
 
 
 #include <QtGui>
+#include <QLineEdit>
+#include <QMenuBar>
+#include <QTextEdit>
 #include <QtWebKit>
+
 #include "mainwindow.h"
 
 //! [1]

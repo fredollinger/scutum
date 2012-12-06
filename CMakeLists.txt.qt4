@@ -34,7 +34,6 @@ webtabwidget.cpp
 #target_link_libraries(scutum "")
 
 ADD_EXECUTABLE(scutum ${scutum_SOURCES} 
-    ${scutum_HEADERS_MOC}
     ${scutum_RCC_SRCS}
     ${scutum_HEADERS_MOC})
 TARGET_LINK_LIBRARIES(scutum ${QT_LIBRARIES})
