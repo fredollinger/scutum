@@ -55,6 +55,13 @@ void WebTabWidget::loadTabView(QUrl url){
     view->load(url);
 }
 
+void WebTabWidget::loadTabView(const QString &qs, const QString &title="about"){
+    qDebug() << __PRETTY_FUNCTION__ << qs;
+    newWebTab(tr("NEW"));
+    //WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
+    //view->load(url);
+}
+
 	/*
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
     connect(view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));

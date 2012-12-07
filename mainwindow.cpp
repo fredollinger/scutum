@@ -68,9 +68,13 @@ MainWindow::MainWindow(const QUrl& url)
 
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
-    QAction* viewNewTab = new QAction("New Tab", this);
+    QAction* viewNewTab = new QAction(tr("New Tab"), this);
     connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
     viewMenu->addAction(viewNewTab);
+
+    QAction* aboutTab = new QAction(tr("About"), this);
+    connect(aboutTab, SIGNAL(triggered()), SLOT(aboutTab()));
+    viewMenu->addAction(aboutTab);
 
     setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);
@@ -181,7 +185,10 @@ void MainWindow::newTab(){
 }
 
 void MainWindow::aboutTab(){
-    m_tabwidget->newWebTab(tr("About"));
+    //QResource r( ":/about.html" );
+    //QByteArray b( reinterpret_cast< const char* >( r.data() ), r.size() );
+    m_tabwidget->loadTabView(QUrl("http://fredollinger.com/scutum/about/pointohthree.html"));
+    //m_tabwidget->loadTabView(QString(b), tr("About"));
 }
 
 QString MainWindow::shortUrl(const QUrl& url){

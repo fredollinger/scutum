@@ -80,13 +80,17 @@ void WebTab::load(QUrl url){
 
 void WebTab::changeLocation() {
     QUrl url = QUrl(m_locationEdit->text());
-    if (!url.toString().contains("://")){
+
+    if ("about:" == url.toString()){
+	    url = QUrl("http://fredollinger.com/scutum/about/pointohthree.html");
+    }
+
+    else if (!url.toString().contains("://")){
 	    url = QUrl("http://" + url.toString());
     } 
 
     m_view->setUrl(url);
     m_view->setFocus();
-    //m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
 }
 
 void WebTab::adjustTitle() {
