@@ -50,6 +50,7 @@ public slots:
     void copyHighlightedText(void);
     void closeTab(int);
     void loadTabView(QUrl url);
+    void loadTabView(QUrl url, const QString &title);
     void loadTabView(const QString&, const QString&);
     void newBookmark(void);
     void newWebTab(const QString&);

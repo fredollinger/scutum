@@ -55,7 +55,13 @@ void WebTabWidget::loadTabView(QUrl url){
     view->load(url);
 }
 
-void WebTabWidget::loadTabView(const QString &qs, const QString &title="about"){
+void WebTabWidget::loadTabView(QUrl url, const QString &title){
+    newWebTab(title);
+    WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
+    view->load(url);
+}
+
+void WebTabWidget::loadTabView(const QString &qs, const QString &title){
     qDebug() << __PRETTY_FUNCTION__ << qs;
     newWebTab(tr("NEW"));
     //WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));

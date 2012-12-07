@@ -21,6 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "scutcommon.hpp"
 #include "webtab.hpp"
 #include <QAction>
 #include <QVBoxLayout>
@@ -82,7 +83,7 @@ void WebTab::changeLocation() {
     QUrl url = QUrl(m_locationEdit->text());
 
     if ("about:" == url.toString()){
-	    url = QUrl("http://fredollinger.com/scutum/about/pointohthree.html");
+	    url = QUrl(SCUT_VERSION_PAGE);
     }
 
     else if (!url.toString().contains("://")){

@@ -12,14 +12,18 @@ find_package(Qt5Widgets REQUIRED)
 
 # The Qt5Widgets_INCLUDES also includes the include directories for
 # dependencies QtCore and QtGui
-include_directories(${Qt5Widgets_INCLUDES})
+include_directories(${Qt5Widgets_INCLUDES} 
+/opt/qt5/include/Qt
+/opt/qt5/include/QtCore 
+/opt/qt5/include/QtWidgets 
+)
 
 # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
 add_definitions(${Qt5Widgets_DEFINITIONS})
 
 # Executables fail to build with Qt 5 in the default configuration
 # without -fPIE. We add that here.
-set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -L/opt/qt5/lib")
+set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -I/opt/qt5/include -L/opt/qt5/lib" )
 
 #SET(scutum_HEADERS )
 

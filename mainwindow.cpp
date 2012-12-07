@@ -42,6 +42,7 @@
 #include <QtGui>
 #include <QtWebKit>
 #include "mainwindow.h"
+#include "scutcommon.hpp"
 
 //! [1]
 
@@ -203,7 +204,7 @@ void MainWindow::newTab(){
 void MainWindow::aboutTab(){
     //QResource r( ":/about.html" );
     //QByteArray b( reinterpret_cast< const char* >( r.data() ), r.size() );
-    m_tabwidget->loadTabView(QUrl("http://fredollinger.com/scutum/about/pointohthree.html"));
+    m_tabwidget->loadTabView(QUrl( SCUT_VERSION_PAGE), tr("about:") );
     //m_tabwidget->loadTabView(QString(b), tr("About"));
 }
 
