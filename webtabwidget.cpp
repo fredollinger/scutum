@@ -134,5 +134,11 @@ void WebTabWidget::findPrevious(){
   return;
 }
 
+void WebTabWidget::viewBookmarks(){
+}
+
+void WebTabWidget::newBookmark(){
+}
+
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012

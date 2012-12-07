@@ -1,0 +1,550 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head profile="http://gmpg.org/xfn/11"><script type="text/javascript" src="http://www.kdab.com/wp-content/w3tc/min/02f821f6.cd6ae8.js"></script>
+	<title>KDAB - Using CMake with Qt 5</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<meta name="robots" content="index,follow" />
+
+	<link rel="canonical" href="http://www.kdab.com/using-cmake-with-qt-5/" />
+
+	<link rel="stylesheet" type="text/css" href="http://www.kdab.com/wp-content/themes/kdab_theme/style.css" />
+
+	<link rel="pingback" href="http://www.kdab.com/xmlrpc.php" />
+
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Feed" href="http://www.kdab.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Comments Feed" href="http://www.kdab.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title=" &raquo; Using CMake with Qt 5 Comments Feed" href="http://www.kdab.com/using-cmake-with-qt-5/feed/" />
+<link rel='stylesheet' id='cptchStylesheet-css'  href='http://www.kdab.com/wp-content/plugins/captcha/css/style.css?ver=3.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp3_soap_connector_style-css'  href='http://www.kdab.com/wp-content/plugins/wp3_soap_connector/css/wp3_soap_connector_style.css?ver=3.4.2' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack-widgets-css'  href='http://www.kdab.com/wp-content/plugins/jetpack/modules/widgets/widgets.css?ver=20121003' type='text/css' media='all' />
+<link rel='stylesheet' id='sharedaddy-css'  href='http://www.kdab.com/wp-content/plugins/jetpack/modules/sharedaddy/sharing.css?ver=0.3.1' type='text/css' media='all' />
+<link rel='stylesheet' id='core3.0-css'  href='http://www.kdab.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0' type='text/css' media='all' />
+<link rel='stylesheet' id='core-Default3.0-css'  href='http://www.kdab.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/styles/shCoreDefault.css?ver=3.0' type='text/css' media='all' />
+<link rel='stylesheet' id='theme-Default3.0-css'  href='http://www.kdab.com/wp-content/plugins/wp-syntaxhighlighter/syntaxhighlighter3/styles/shThemeDefault.css?ver=3.0' type='text/css' media='all' />
+
+
+
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.kdab.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.kdab.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='KDAB inaugurates first in-depth multithreading training' href='http://www.kdab.com/kdab-inaugurates-first-in-depth-multithreading-training-in-berlin/' />
+<link rel='next' title='Setting up Kinect for programming in Linux (part 2)' href='http://www.kdab.com/setting-up-kinect-for-programming-in-linux-part-2/' />
+
+<link rel='canonical' href='http://www.kdab.com/using-cmake-with-qt-5/' />
+<link rel='shortlink' href='http://wp.me/p2b2Fz-rK' />
+
+<!-- WP SyntaxHighlighter Ver.1.7.3 CSS for code Begin -->
+<style type='text/css'>
+.syntaxhighlighter,
+.syntaxhighlighter a,
+.syntaxhighlighter div,
+.syntaxhighlighter code,
+.syntaxhighlighter table,
+.syntaxhighlighter table td,
+.syntaxhighlighter table tr,
+.syntaxhighlighter table tbody,
+.syntaxhighlighter table thead,
+.syntaxhighlighter table caption,
+.syntaxhighlighter textarea {
+font-size: 11px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+.syntaxhighlighter table caption {
+/* For Title(Caption) */  
+font-size: 14px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+.syntaxhighlighter.nogutter td.code .line {
+/* Set the left padding space when no-gutter in ver. 3.0 */  
+padding-left: 30px !important;
+padding-top:2px !important;
+padding-bottom:2px !important;
+}
+.syntaxhighlighter {
+/* For Chrome/Safari(WebKit) */  
+/* Hide the superfluous vertical scrollbar in ver. 3.0 */  
+overflow-y: hidden !important;
+padding: 1px !important;
+}
+.widget-area.syntaxhighlighter a,
+.widget-area.syntaxhighlighter div,
+.widget-area.syntaxhighlighter code,
+.widget-area.syntaxhighlighter table,
+.widget-area.syntaxhighlighter table td,
+.widget-area.syntaxhighlighter table tr,
+.widget-area.syntaxhighlighter table tbody,
+.widget-area.syntaxhighlighter table thead,
+.widget-area.syntaxhighlighter table caption,
+.widget-area.syntaxhighlighter textarea {
+/* For Widget */  
+font-size: 14px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+.widget-area table caption {
+/* For Widget */  
+/* For Title(Caption) */  
+font-size: 10px !important; /* Set the font size in pixels */  
+font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace !important; /* Set the font type */  
+}
+div.line {lheight:25px;}
+
+
+</style>
+<!-- WP SyntaxHighlighter Ver.1.7.3 CSS for code End -->
+     
+     
+     
+     	<meta name="keywords" content="qt, cascades, cross-platform, programming, software, c++, qt training, qt add-ons, qt consulting" />
+
+
+	
+	
+	
+	
+
+	<script type="text/javascript">
+		/*<![CDATA[*/
+		jQuery.noConflict();
+		/*]]>*/
+	</script>
+<script type="text/javascript">
+//<![CDATA[
+	var screen_res = ""; 
+	function writeCookie(name,value,hours) {
+		var the_cookie = name+"="+escape(value)+"; expires=";
+		var expires = "";
+		hours=hours+0; //convert to number
+		if (hours > 0) { //0==expires on browser close
+			var cdate = new Date();
+			cdate.setTime(cdate.getTime()+(hours*60*60*1000));
+			expires = expires+cdate.toGMTString();
+		} 
+		document.cookie = the_cookie+expires+"; path=/; domain=";
+	}
+	screen_res = screen.width+" x "+screen.height;
+	if (screen_res==" x ") screen_res = window.screen.width+" x "+window.screen.height;
+	if (screen_res==" x ") screen_res = screen.availWidth+" x "+screen.availHeight;
+	if (screen_res!=" x ") { 
+		writeCookie("wassup_screen_res",screen_res,"48"); //keep 2 days
+	} else {
+		screen_res = "";
+	}
+//]]>
+</script>
+
+</head>
+
+<body class="single single-post postid-1720 single-format-standard mac firefox ff3">
+
+<div id="wrapper" class="hfeed">   
+
+    <div id="header">
+    
+        <div id="branding">
+
+	
+        <div id="access">
+            <div class="skip-link"><a href="#content" title="Skip navigation to the content">Skip to content</a></div>
+<div id="access-search">
+                <form id="searchform" method="get" action="http://www.kdab.com">
+                    <div>
+                        <input id="s" name="s" type="text" value=" search.." onfocus="if (this.value == ' search..') {this.value = '';}" onblur="this.value = ' search..';" size="32" tabindex="1" />
+                        <!-- <input id="searchsubmit" name="searchsubmit" type="submit" value="Search" tabindex="2" />-->
+                    </div>
+                </form>
+            </div>
+
+			<div class="menu"><ul id="menu-main-menu" class="sf-menu"><li id="menu-item-250" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-250"><a href="http://www.kdab.com/">Home</a></li>
+<li id="menu-item-1170" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1170"><a href="http://www.kdab.com/kdab-consulting/">Consulting</a></li>
+<li id="menu-item-287" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-287"><a href="http://www.kdab.com/training/">Training</a></li>
+<li id="menu-item-1194" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1194"><a href="http://www.kdab.com/kdab-products/">Products</a></li>
+<li id="menu-item-2234" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-2234"><a href="http://www.kdab.com/category/blogs/">Blog</a></li>
+<li id="menu-item-322" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-322"><a href="http://www.kdab.com/about-us/">About</a></li>
+<li id="menu-item-418" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-418"><a href="http://www.kdab.com/kdab-contact-details/">Contact</a></li>
+</ul></div>            
+        </div><!-- #access -->
+		</div><!--  #branding -->
+
+	</div><!-- #header-->
+        <div id="submenu"><div id="nav"<div class="menu-news-container"><ul id="menu-news" class="menu"><li id="menu-item-1230" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1230"><a href="http://www.kdab.com/category/blogs/">KDAB Blogs</a></li>
+</ul></div></div></div>    
+    <div id="main">
+    
+		<div id="container">
+			
+						
+			<div id="content">
+		
+    	        			
+				<div id="post-1720" class="post-1720 post type-post status-publish format-standard hentry category-blogs category-kdab-on-qt"><h1 class="entry-title">Using CMake with Qt 5</h1>
+<div class="entry-meta"><span class="meta-prep meta-prep-entry-date">Published: </span><span class="entry-date"><abbr class="published" title="2012-05-21T10:47:39+0000">May 21, 2012</abbr></span> by Stephen Kelly</div><!-- .entry-meta -->
+					<div class="entry-content">
+<p><a href="http://cmake.org/">CMake</a> is a buildsystem generator <a href="http://news.gmane.org/gmane.comp.programming.tools.cmake.devel">developed in the open</a>, and widely used for Qt based development. Especially when creating large or complex software, CMake can be more suitable to use than QMake. KDE was even the tipping point for the popularity of CMake in general, and with Qt 4 in particular, according to <a href="http://www.youtube.com/watch?v=8Ut9o4OdSC0">Bill Hoffman</a>. KDAB engineers have contributed some features to CMake to ensure that the Qt 5 support for CMake is as good as possible.</p>
+<p>KDAB contributed <a href="http://www.kdab.com/kdab-engineers-contribute-better-cmake-integration-to-qt/">some new CMake Config files for Qt 5</a> to ensure that the integration between Qt and CMake can be even better. The updated documentation for using CMake with Qt 5 is <a href="https://codereview.qt-project.org/#change,25864">has been reviewed</a> and <a href="http://doc-snapshot.qt-project.org/5.0/cmake-manual.html">generated</a> and repeats the relevant information in this blog post.</p>
+<h3>Finding Qt 5</h3>
+<p>One of the major changes when using CMake with Qt is the result of <a href="http://labs.qt.nokia.com/2010/10/26/qt-is-going-modular/">increased modularity in Qt itself</a>. Whereas when finding Qt 4, with CMake you use</p>
+<pre>  find_package(Qt4 COMPONENTS QTCORE QTGUI)
+</pre>
+<p>To find Qt 5 you can find all of the modules you wish to use with separate commands:</p>
+<pre>  find_package(Qt5Widgets)
+  find_package(Qt5Declarative)
+</pre>
+<p>There is likely to be a way in the future to specify the specific modules in one command, but this will not be available with Qt 5.0:</p>
+<pre>  find_package(Qt5 COMPONENTS Widgets Declarative)
+</pre>
+<h3>Building Qt 5 projects with CMake</h3>
+<p>Once the package has been found, Qt 4 users would use the CMake variables <tt>${QT_INCLUDES}</tt> to set the include directories while compiling, and <tt>${QT_LIBRARIES}</tt> or <tt>${QT_GUI_LIBRARIES}</tt> while linking. Users of CMake with Qt 4 may have also used the <tt>${QT_USE_FILE}</tt> to semi-automatically include the required include directories and required defines.</p>
+<p>With the modular Qt 5 system, the variables will instead be <tt>${Qt5Widgets_INCLUDE_DIRS}</tt>, <tt>${Qt5Widgets_LIBRARIES}</tt>, <tt>${Qt5Declarative_INCLUDE_DIRS}</tt>, <tt>${Qt5Declarative_LIBRARIES}</tt> etc for each module used.</p>
+<p>This is a source-incompatibility in your CMake based buildsystem which will affect porting from Qt 4 to Qt 5. Luckily though, it is easy to add source compatibility back to the CMake variables and macros using some <a href="http://quickgit.kde.org/index.php?p=extra-cmake-modules.git&amp;a=blob&amp;f=modules%2FECMQt4To5Porting.cmake">simple</a> variable <a href="http://quickgit.kde.org/index.php?p=extra-cmake-modules.git&amp;a=blob&amp;f=modules%2FFindQt5Transitional.cmake">mappings</a>.</p>
+<p>Building executables with Qt 5 is slightly more complex than with Qt 4. One of the changes to how Qt 5 is built and packaged compared to Qt 4 is that the <tt>-reduce-relocations</tt> configure option became the default. The effect of this is that compilations are run with the <tt>-Bsymbolic-functions</tt> option, which makes function pointer comparison ineffective, <a href="https://codereview.qt-project.org/#change,14528">unless the <tt>-fPIE</tt> flag is also supplied</a> when building executables, or <tt>-fPIC</tt> when building libraries for position independent code.</p>
+<p>If Qt is configured manually, it is of course possible to configure with <tt>-no-reduce-relocations</tt> and avoid the issue, but the default will be a requirement for all third parties to add compiler flags for position independent code. This can be done in the normal way with CMake:</p>
+<pre>  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}
+    ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+</pre>
+<p>There is a <tt>Qt5&amp;ltmodule&gt;_EXECUTABLE_COMPILE_FLAGS</tt> variable for each module available in Qt 5 which expands to either <tt>-fPIE</tt> or the empty string, depending on how Qt was configured. Hoewever, the <tt>-fPIE</tt> flag is really only for executables and should not be used for libraries.</p>
+<p>Setting <tt>-fPIC</tt> globally even when building executables may also work sufficiently, but shouldn&#8217;t be the first option.</p>
+<pre>  set(CMAKE_CXX_FLAGS "-fPIC")
+</pre>
+<p>Together with some other newer features in CMake, such as <a href="http://blogs.kde.org/node/4495">automated moc invokation</a>, a simple CMake based build system using Qt 5 which is roughly equivalent to a Qt 4 buildsystem will look something like this:</p>
+<pre>  cmake_minimum_required(2.8.7)
+  project(hello-world)
+
+  # Tell CMake to run moc when necessary:
+  set(CMAKE_AUTOMOC ON)
+  # As moc files are generated in the binary dir, tell CMake
+  # to always look for includes there:
+  set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+  # Widgets finds its own dependencies (QtGui and QtCore).
+  find_package(Qt5Widgets REQUIRED)
+
+  # The Qt5Widgets_INCLUDES also includes the include directories for
+  # dependencies QtCore and QtGui
+  include_directories(${Qt5Widgets_INCLUDES})
+
+  # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
+  add_definitions(${Qt5Widgets_DEFINITIONS})
+
+  # Executables fail to build with Qt 5 in the default configuration
+  # without -fPIE. We add that here.
+  set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+
+  add_executable(hello_world main.cpp mainwindow.cpp)
+
+  # The Qt5Widgets_LIBRARIES variable also includes QtGui and QtCore
+  target_link_libraries(hello_world ${Qt5Widgets_LIBRARIES})
+</pre>
+<p>You can see though that there is a lot of repetition in the snippet, and a lot of things to take care of using.</p>
+<p>The <tt>Qt5Widgets_EXECUTABLE_COMPILE_FLAGS</tt> use is particularly forgettable, and even difficult to get right &#8211; it should not be used if building shared libraries for example, so it requires some maintenance if that is required within the same scope as building an executable.</p>
+<p>There is even a subtle bug which people who have unit tested their Qt 4 core-only code will know. If the <tt>-DQT_GUI_LIB</tt> definition is set (which happens if using <tt>QT_USE_FILE</tt> for example), all unit tests need to link to QtGui, even though it is not used by the tests.</p>
+<p>That is because of some magic in the header files of QtTest. The workaround is either careful scoping of targets and directories, or tricky manual manipulation of the definitions or <a href="http://thread.gmane.org/gmane.comp.programming.tools.cmake.user/42097">variables controlling how Qt 4 is found</a>.</p>
+<h3>Towards more modern CMake usage</h3>
+<p>Starting with <a href="http://www.kitware.com/news/home/browse/CMake%3F2012_04_19%26CMake+2.8.8+is+Now+Available">CMake 2.8.8</a>, we can do a lot better:</p>
+<pre>  cmake_minimum_required(2.8.8)
+  project(hello-world)
+
+  # Tell CMake to run moc when necessary:
+  set(CMAKE_AUTOMOC ON)
+  # As moc files are generated in the binary dir, tell CMake
+  # to always look for includes there:
+  set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+  # Widgets finds its own dependencies.
+  find_package(Qt5Widgets REQUIRED)
+
+  add_executable(hello_world main.cpp mainwindow.cpp)
+
+  qt5_use_modules(hello_world Widgets)
+</pre>
+<p>The <tt>qt5_use_modules</tt> CMake function encapsulates all of the set-up required to use a Qt module. It can be used with multiple arguments at once for brevity, such as:</p>
+<pre>  qt5_use_modules(hello_world Widgets Declarative)
+</pre>
+<p>This is similar to how qmake operates:</p>
+<pre>  TARGET = hello_world
+  QT += widgets declarative
+</pre>
+<p>All properties are scoped to the particular target the function is used with, instead of being scoped to the CMakeLists.txt file it appears in, and affecting all libraries and executables.</p>
+<p>For example in this snippet:</p>
+<pre>  add_executable(hello_world main.cpp mainwindow.cpp)
+  add_library(hello_library lib.cpp)
+  add_executable(hello_coretest test.cpp)
+
+  find_package(Qt5Widgets)
+
+  qt5_use_package(hello_world Widgets)
+  qt5_use_package(hello_library Core)
+  qt5_use_package(hello_coretest Test)
+</pre>
+<p>Because all of the settings are scoped to the target (executable or library) they operate on, the <tt>-fPIE</tt> doesn&#8217;t get used when building the <tt>hello_library</tt> library, and the <tt>-DQT_GUI_LIB</tt> doesn&#8217;t get used when building <tt>hello_coretest</tt>.</p>
+<p>It&#8217;s a much cleaner way to write CMake based build systems.</p>
+<p>Looking forward, we expect a <a href="http://thread.gmane.org/gmane.comp.programming.tools.cmake.devel/3615">similar but more powerful feature to be possible in upstream CMake</a> too, so that you can expect to be able to use a similar function with any CMake package.</p>
+<h3>Implementation details</h3>
+<p>One of the features of CMake that many developers who used it will be familiar with is <a href="http://www.vtk.org/Wiki/CMake:How_To_Find_Libraries"><tt>Find files</tt></a>. The idea is to write a <tt>Find file</tt> for each dependency your project depends on, or use an existing <tt>Find file</tt> provided elsewhere. CMake provides a large set of <tt>Find files</tt> already, and KDE is preparing to make the <tt>Find files</tt> developed through the years <a href="http://thread.gmane.org/gmane.comp.kde.devel.buildsystem/6397/focus=6400">available</a> to all users of CMake.</p>
+<p>One of the <tt>Find files</tt> provided by CMake is the FindQt4.cmake file. This file is responsible for finding Qt on your system so that you can invoke:</p>
+<pre>  find_package(Qt4)
+</pre>
+<p>That Find file makes available the variables <tt>${QT_INCLUDES}</tt> to set the location of header files, and <tt>${QT_QTGUI_LIBRARIES}</tt> for linking, for example.</p>
+<p>One of the disadvantages of this file being part of CMake, and not part of Qt, is that the file could get out-of-date. For example, when Qt 4.6 was released in December 2009 it included a new QtMultimedia module. Support for that module was <a href="http://public.kitware.com/Bug/view.php?id=10675">not complete</a> until CMake 2.8.2, released in <a href="http://www.kitware.com/blog/home/post/45">June 2010</a>.</p>
+<p>That means that if someone wanted to use QtMultimedia, they could either have to wait for and then depend on the new CMake release, or attempt to copy the <tt>Find file</tt> into their project to work with their existing CMake version. The copying may not even work if the updated <tt>Find file</tt> uses features of the newer CMake.</p>
+<p>Behind the scenes, Qt 5 is now found in a slightly different way too. Apart from making it possible to find your dependencies using a <tt>Find file</tt>, CMake is also able to read files provided by the dependency itself to locate the libraries and header files. Such files are called <tt>Config files</tt>, and usually they are <a href="http://www.vtk.org/Wiki/CMake/Tutorials/How_to_create_a_ProjectConfig.cmake_file">generated by CMake itself</a>.</p>
+<p>A Qt 5 build, will also generate the <tt>CMake Config files</tt>, but without causing Qt 5 to depend on CMake itself.</p>
+<p>The primary benefit of this is that the features of Qt (and the modules of Qt) which can be used with CMake do not depend on the version of CMake being used. All <a href="http://qt-project.org/wiki/Qt-Essentials-Modules">Qt Essentials Modules</a> and <a href="http://qt-project.org/wiki/Qt-Add-ons-Modules">Qt Addons Modules</a> will create their own <tt>CMake Config file</tt>, and the features provided by the modules will be made available through the CMake macros and variables immediately.</p>
+<p>As new modules become available, they will also be usable with CMake as soon as they are checked into a repository, so experimenting or prototyping can begin immediately and does not have to wait for a new CMake release.</p>
+<p>Another benefit of using <tt>Config files</tt> instead of find files is that the config files have access to all aspects of the build of Qt itself including how it was configured and where it is installed to, which helps keep complexity under control when supporting static builds, and cross compiling for example.</p>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing"><div class="sd-content"><ul><li class="share-facebook"><a rel="nofollow" class="share-facebook sd-button share-icon no-text" href="http://www.kdab.com/using-cmake-with-qt-5/?share=facebook" title="Share on Facebook" id="sharing-facebook-1720"><span></span></a></li><li class="share-twitter"><a rel="nofollow" class="share-twitter sd-button share-icon no-text" href="http://www.kdab.com/using-cmake-with-qt-5/?share=twitter" title="Click to share on Twitter" id="sharing-twitter-1720"><span></span></a></li><li class="share-end"></li></ul><div class="sharing-clear"></div></div></div></div>
+											</div><!-- .entry-content -->
+									</div><!-- #post -->
+					<div id="comments">
+
+
+
+
+
+				<div id="comments-list" class="comments">
+					<h3><span>8</span> Comments</h3>
+				
+					<ol>
+    	<li id="comment-52" class="comment c c-y2012 c-m05 c-d21 c-h12 alt depth-1">
+    		    		<div class="comment-author vcard"><img alt='' src='http://1.gravatar.com/avatar/10b4ae517f6332a96d5c5cd218958201?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n">Laszlo Papp</span></div>
+    		<div class="comment-meta">Posted May 21, 2012 at 11:17 am <span class="meta-sep">|</span> <a href="#comment-52" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>Great job! Thank you for sharing this information. <img src='http://www.kdab.com/wp-includes/images/smilies/icon_smile.gif' alt=':-)' class='wp-smiley' /> </p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=52#respond' onclick='return addComment.moveForm("comment-52", "52", "respond", "1720")'>Reply</a></div>			</li>
+    	<li id="comment-53" class="comment c1 c-y2012 c-m05 c-d21 c-h12 depth-1">
+    		    		<div class="comment-author vcard"><img alt='' src='http://1.gravatar.com/avatar/5acffb3fde70f28b9eab13eb78a25e63?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n"><a href='http://www.elpauer.org' rel='external nofollow' class='url url'>Pau Garcia i Quiles</a></span></div>
+    		<div class="comment-meta">Posted May 21, 2012 at 11:17 am <span class="meta-sep">|</span> <a href="#comment-53" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>One of the main advantages of:</p>
+<p>find_package(Qt4 COMPONENTS QTCORE QTGUI)</p>
+<p>over:</p>
+<p>  find_package(Qt5Widgets)<br />
+  find_package(Qt5Declarative)</p>
+<p>is the QT_LIBRARIES would contain all the required libraries, i. e. Qt5Widgets <b>and its dependencies</b>, therefore you were able to do just:</p>
+<p>target_link_libraries( myqtapp ${QT_LIBRARIES})</p>
+<p>How is this resolved with this &#8220;one FindQtModuleName.cmake per Qt module&#8221; approach?</p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=53#respond' onclick='return addComment.moveForm("comment-53", "53", "respond", "1720")'>Reply</a></div>			</li>
+    	<li id="comment-54" class="comment c2 byuser comment-author-steveire bypostauthor c-y2012 c-m05 c-d21 c-h12 alt depth-1">
+    		    		<div class="comment-author vcard"><img alt='' src='http://0.gravatar.com/avatar/8980ce74ed28288ab7ff8bff512d9d41?s=80&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n">steveire</span></div>
+    		<div class="comment-meta">Posted May 21, 2012 at 11:54 am <span class="meta-sep">|</span> <a href="#comment-54" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>Hi Pau,</p>
+<p>There are two solutions to that issue. One of them is that we will likely have a single Qt5Config.cmake file in the future (Qt 5.1 maybe?) which will probably work similar to how you describe. </p>
+<p>The initial feature set for the CMake stuff couldn&#8217;t be complete for Qt 5.0 because of time constraints, and because CMake required some new features (Alex Neundorf added lots of required stuff in CMake 2.8.8). </p>
+<p>The other solution is that finding Qt5Widgets already finds its dependencies. So</p>
+<p>  find_package(Qt5Widgets)</p>
+<p>is enough for that.</p>
+<p>I think it should be preferred to just use only</p>
+<p>  find_package(Qt5Core)</p>
+<p>and then use</p>
+<p>  qt5_use_modules(myqtapp Widgets Qml)</p>
+<p>to find and link to those dependencies. You still need to list the required modules in only one place in the code.</p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=54#respond' onclick='return addComment.moveForm("comment-54", "54", "respond", "1720")'>Reply</a></div>			<ul class='children'>
+    	<li id="comment-55" class="comment c3 c-y2012 c-m05 c-d21 c-h13 depth-2">
+    		    		<div class="comment-author vcard"><img alt='' src='http://1.gravatar.com/avatar/5acffb3fde70f28b9eab13eb78a25e63?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n"><a href='http://www.elpauer.org' rel='external nofollow' class='url url'>Pau Garcia i Quiles</a></span></div>
+    		<div class="comment-meta">Posted May 21, 2012 at 12:50 pm <span class="meta-sep">|</span> <a href="#comment-55" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>Stephen,</p>
+<p>Currently you can already do:</p>
+<p>find_package(Qt4 COMPONENTS QtDeclarative)</p>
+<p>and it will find the dependencies of QtDeclarative, no need for the additional find_package(Qt4Core).</p>
+<p>What&#8217;s the advantage of the one-finder-per-module you are proposing over single-finder-for-all-modules like we have for Qt4? </p>
+<p>All this &#8220;qt5_use_modules&#8221; looks a lot like what we had in the past with FindQt4.cmake, when you had to use variables:</p>
+<p>set(QT_USE_QTDECLARATIVE TRUE)</p>
+<p>To me, it&#8217;s like we are going 4 years in the past <img src='http://www.kdab.com/wp-includes/images/smilies/icon_confused.gif' alt=':-?' class='wp-smiley' /> </p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=55#respond' onclick='return addComment.moveForm("comment-55", "55", "respond", "1720")'>Reply</a></div>			<ul class='children'>
+    	<li id="comment-56" class="comment c4 byuser comment-author-steveire bypostauthor c-y2012 c-m05 c-d21 c-h14 alt depth-3">
+    		    		<div class="comment-author vcard"><img alt='' src='http://0.gravatar.com/avatar/8980ce74ed28288ab7ff8bff512d9d41?s=80&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n">steveire</span></div>
+    		<div class="comment-meta">Posted May 21, 2012 at 1:46 pm <span class="meta-sep">|</span> <a href="#comment-56" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>Hi Pau,</p>
+<p>Yes, FindQt4 is also dependencies-aware, as you say.</p>
+<p>One reason we went for the one-finder-per-module solution (It&#8217;s in the repo and working, not just a proposal) instead of single-finder-for-all-modules was that CMake upstream didn&#8217;t have all the required features when the development started (<a href="http://thread.gmane.org/gmane.comp.programming.tools.cmake.devel/3119" rel="nofollow">http://thread.gmane.org/gmane.comp.programming.tools.cmake.devel/3119</a>). At the time development started, CMake 2.8.6 was the most recent version. CMake 2.8.8 possibly now has all the required features, but it will still need to be written and tested.</p>
+<p>Additionally, this is what we were able to achieve concensus on, which allowed the introduction of a catch-all solution in the future (<a href="http://lists.qt-project.org/pipermail/development/2011-October/000119.html" rel="nofollow">http://lists.qt-project.org/pipermail/development/2011-October/000119.html</a>).</p>
+<p>The main difference between set(QT_USE_QTDECLARATIVE TRUE) and qt5_use_modules(myqtap Declarative) is that the latter is scoped to the target, instead of being scoped to the directory it is used in. That is very much forward-looking in the way CMake is used, not a 4 year old concept.</p>
+<p>I&#8217;m sure the monolithic directory-scoped method can work, but extra hands to make it finished are of course welcome. So if you want to be able to do that, feel free to start the work <img src='http://www.kdab.com/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /> .</p>
+<p>Beyond that, I think a more suitable place to have this discussion would be the kde-buildsystem or Qt development mailing list. <img src='http://www.kdab.com/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /> </p>
+<p>Thanks for this feedback!</p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=56#respond' onclick='return addComment.moveForm("comment-56", "56", "respond", "1720")'>Reply</a></div>			</li>
+</ul>
+</li>
+</ul>
+</li>
+    	<li id="comment-363" class="comment c5 c-y2012 c-m11 c-d28 c-h12 depth-1">
+    		    		<div class="comment-author vcard"><img alt='' src='http://1.gravatar.com/avatar/10b4ae517f6332a96d5c5cd218958201?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n">Laszlo Papp</span></div>
+    		<div class="comment-meta">Posted November 28, 2012 at 11:26 am <span class="meta-sep">|</span> <a href="#comment-363" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p># The Qt5Widgets_INCLUDES also includes the include directories for<br />
+  # dependencies QtCore and QtGui<br />
+  include_directories(${Qt5Widgets_INCLUDES})</p>
+<p>-&gt; This should probably be INCLUDE_DIRS to avoid the issues for the next reader like me. <img src='http://www.kdab.com/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /> </p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=363#respond' onclick='return addComment.moveForm("comment-363", "363", "respond", "1720")'>Reply</a></div>			</li>
+    	<li id="comment-366" class="comment c6 c-y2012 c-m11 c-d29 c-h08 alt depth-1">
+    		    		<div class="comment-author vcard"><img alt='' src='http://1.gravatar.com/avatar/10b4ae517f6332a96d5c5cd218958201?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n">Laszlo Papp</span></div>
+    		<div class="comment-meta">Posted November 29, 2012 at 7:46 am <span class="meta-sep">|</span> <a href="#comment-366" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>You have mentioned that in the description, but I presume people also build libraries, not just executables. I have not tried yet as I am not front of my development environment, but I am curious: can we use &#8220;qt5_use_modules&#8221; for &#8220;add_library&#8221; too as it would make sense to me to simplify the process for that, too, and not just executables?</p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=366#respond' onclick='return addComment.moveForm("comment-366", "366", "respond", "1720")'>Reply</a></div>			</li>
+    	<li id="comment-367" class="comment c7 c-y2012 c-m11 c-d29 c-h08 depth-1">
+    		    		<div class="comment-author vcard"><img alt='' src='http://1.gravatar.com/avatar/10b4ae517f6332a96d5c5cd218958201?s=80&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D80&amp;r=G' class='photo avatar avatar-80 photo' height='80' width='80' /> <span class="fn n">Laszlo Papp</span></div>
+    		<div class="comment-meta">Posted November 29, 2012 at 7:53 am <span class="meta-sep">|</span> <a href="#comment-367" title="Permalink to this comment">Permalink</a></div>
+                <div class="comment-content">
+        		<p>Due to the previous reasoning, I would personally prefer the variable &#8220;Qt5&amp;ltmodule&gt;_EXECUTABLE_COMPILE_FLAGS&#8221; be &#8220;Qt5&amp;ltmodule&gt;_COMPILE_FLAGS&#8221; as it could not be only used for executables, and the naming could be more generic.</p>
+<p>Perhaps it is too late now unfortunately to change as people started to use it. It is a good question if there is a use case where executables and libraries have to be separated into different variables because cmake has something that cannot figure out behind the scene.</p>
+    		</div>
+			<div class="comment-reply-link"><a class='comment-reply-link' href='/using-cmake-with-qt-5/?replytocom=367#respond' onclick='return addComment.moveForm("comment-367", "367", "respond", "1720")'>Reply</a></div>			</li>
+					</ol>
+
+        			<div id="comments-nav-below" class="comment-navigation">
+        			     <div class="paginated-comments-links"></div>
+                    </div>
+					
+				</div><!-- #comments-list .comments -->
+
+			
+
+
+
+								<div id="respond">
+				<h3 id="reply-title">Post a Comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="/using-cmake-with-qt-5/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://www.kdab.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email is <em>never</em> published nor shared. Required fields are marked <span class="required">*</span></p>							<div id="form-section-author" class="form-section"><div class="form-label"><label for="author">Name</label> <span class="required">*</span></div><div class="form-input"><input id="author" name="author" type="text" value="" size="30" maxlength="20" tabindex="3" aria-required='true' /></div></div><!-- #form-section-author .form-section -->
+<div id="form-section-email" class="form-section"><div class="form-label"><label for="email">Email</label> <span class="required">*</span></div><div class="form-input"><input id="email" name="email" type="text" value="" size="30" maxlength="50" tabindex="4" aria-required='true' /></div></div><!-- #form-section-email .form-section -->
+<div id="form-section-url" class="form-section"><div class="form-label"><label for="url">Website</label></div><div class="form-input"><input id="url" name="url" type="text" value="" size="30" maxlength="50" tabindex="5" /></div></div><!-- #form-section-url .form-section -->
+<p class="cptch_block"><br />	<input type="hidden" name="cptch_result" value="rfw=" /><input type="hidden" value="Version: 2.26" />
+	nine &minus; <input type="text" name="cptch_number" value="" maxlength="2" size="2" style="width:20px;margin-bottom:0;display:inline;font-size: 12px;width: 30px;" /> = 8</p>												<div id="form-section-comment" class="form-section"><div class="form-label"><label for="comment">Comment</label></div><div class="form-textarea"><textarea id="comment" name="comment" cols="45" rows="8" tabindex="6" aria-required="true"></textarea></div></div><!-- #form-section-comment .form-section -->						<div id="form-allowed-tags" class="form-section"><p><span>You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:</span> <code>&lt;a href=&quot;&quot; title=&quot;&quot;&gt; &lt;abbr title=&quot;&quot;&gt; &lt;acronym title=&quot;&quot;&gt; &lt;b&gt; &lt;blockquote cite=&quot;&quot;&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=&quot;&quot;&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=&quot;&quot;&gt; &lt;strike&gt; &lt;strong&gt; </code></p></div>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Post Comment" />
+							<input type='hidden' name='comment_post_ID' value='1720' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p>					</form>
+							</div><!-- #respond -->
+						
+			</div><!-- #comments -->
+		
+			</div><!-- #content -->
+			
+			 
+			
+		</div><!-- #container -->
+		
+
+<div id="primary" class="aside main-aside">
+	<ul class="xoxo">
+<li id="author_image-2" class="widgetcontainer author_image"><div class="entry_author_image"><img src="http://www.kdab.com/wp-content/authors/steveire-2.jpg" alt="" /></div>
+
+</li>
+	</ul>
+</div><!-- #primary .aside -->
+
+<div id="secondary" class="aside main-aside">
+	<ul class="xoxo">
+<li id="text-10" class="widgetcontainer widget_text"><h3 class="widgettitle">RSS</h3>
+			<div class="textwidget"><a href="http://feeds.feedburner.com/KdabBlogs?format=xml" title="Subscribe to KDAB Blogs" rel="alternate" type="application/rss+xml" ><img src="http://www.feedburner.com/fb/images/pub/feed-icon32x32.png" alt="" style="border:0;display:block;margin: 0 auto"/></a></div>
+		</li>
+	</ul>
+</div><!-- #secondary .aside -->
+
+    </div><!-- #main -->
+    
+    <div id="footer-images">
+<div id="footer-above">
+<p style="text-align: right; margin-bottom: 0px;"><img src="/wp-content/uploads/stories/kde_patron_small.png" alt="KDE Patron" title="KDE Patron" style="border: 0px none; margin-bottom: 0px; vertical-align: middle;" height="24" width="91" /><img src="/wp-content/uploads/stories/qt_certifiedpartner_128_2.jpg" alt="Qt Partner" title="Qt Partner" style="border: 0px none; margin-bottom: 0px; vertical-align: middle;" height="58" width="128" /></p>
+</div>
+</div>
+<!-- our welcome blurb ends here -->
+    
+
+	<div id="footer">
+    
+            
+        <div id="siteinfo">        
+
+    	<p>Head Office, Hagfors, Sweden: Klarälvdalens Datakonsult AB <br />   
+E-mail: <a href="mailto:info@kdab.com">info@kdab.com</a> Phone: +46 (0)563 540090</p>    
+		</div><!-- #siteinfo -->
+    
+    	        
+	</div><!-- #footer -->
+	
+    </div><!-- #wrapper .hfeed -->  
+
+<script type='text/javascript'>slimstat_tid='ae635';slimstat_path='http://www.kdab.com/wp-content/plugins/wp-slimstat';slimstat_blog_id='1';slimstat_session_id='b3e6ba5c6f339bff3e455dd2d16c1ed6';</script>
+
+<!--[if IE]>
+<script language=javascript>
+//<![CDATA[
+	if (screen_res=="") {
+		screen_res = screen.width + " x " + screen.height;
+	}
+	if (screen_res!=" x ") {
+		var cdate = new Date();
+		cdate.setTime(cdate.getTime()+(48*60*60*1000));
+		var cexpires = cdate.toGMTString();
+		//var the_cookie = "wassup_screen_res="+escape(screen_res)+"; expires="+cexpires;
+		document.cookie = "wassup_screen_res=" + escape(screen_res)+ "; path=/; domain=" + document.domain;
+
+	}
+//]]>
+</script>
+<![endif]--><!--
+<p class="small"> WassUp 1.8.3.1 timestamp: 2012-12-07 06:59:04PM UTC (07:59PM)<br />
+If above timestamp is not current time, this page is cached.</p> -->
+<script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2012Decaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+
+	<div style="display:none">
+	<div class="grofile-hash-map-10b4ae517f6332a96d5c5cd218958201">
+	</div>
+	<div class="grofile-hash-map-5acffb3fde70f28b9eab13eb78a25e63">
+	</div>
+	<div class="grofile-hash-map-8980ce74ed28288ab7ff8bff512d9d41">
+	</div>
+	</div>
+
+		<script type="text/javascript" charset="utf-8">
+		jQuery(document).ready(function(){
+			jQuery( '.share-facebook' ).click(function(){
+				window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript" charset="utf-8">
+		jQuery(document).ready(function(){
+			jQuery( '.share-twitter' ).click(function(){
+				window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+		<script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201249'></script>
+
+	<script src="http://stats.wordpress.com/e-201249.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	st_go({v:'ext',j:'1:1.8.2',blog:'32184545',post:'1720'});
+	var load_cmc = function(){linktracker_init(32184545,1720,2);};
+	if ( typeof addLoadEvent != 'undefined' ) addLoadEvent(load_cmc);
+	else load_cmc();
+	</script>
+</body>
+</html>
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Minified using disk: basic
+Page Caching using disk: enhanced
+Database Caching 7/34 queries in 0.092 seconds using disk: basic
+Object Caching 1178/1229 objects using disk: basic
+
+Served from: www.kdab.com @ 2012-12-07 19:59:04 -->

@@ -66,6 +66,8 @@ MainWindow::MainWindow(const QUrl& url)
     m_tabwidget->setTabsClosable(true);
     m_tabwidget->loadTabView(url);
 
+
+    // BEGIN VIEW MENU
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
     QAction* viewNewTab = new QAction(tr("New Tab"), this);
@@ -75,6 +77,20 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* aboutTab = new QAction(tr("About"), this);
     connect(aboutTab, SIGNAL(triggered()), SLOT(aboutTab()));
     viewMenu->addAction(aboutTab);
+    // END VIEW MENU
+
+    // BEGIN BOOKMARKS MENU
+    QMenu *bookmarksMenu = menuBar()->addMenu(tr("&Bookmarks"));
+
+    QAction* newBookmark = new QAction(tr("New Bookmark"), this);
+    connect(newBookmark, SIGNAL(triggered()), m_tabwidget, SLOT(newBookmark()));
+    bookmarksMenu->addAction(newBookmark);
+
+    QAction* viewBookmarks = new QAction(tr("View Bookmark"), this);
+    connect(viewBookmarks, SIGNAL(triggered()), m_tabwidget, SLOT(viewBookmarks()));
+    bookmarksMenu->addAction(viewBookmarks);
+
+    // END BOOKMARKS MENU
 
     setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);

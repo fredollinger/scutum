@@ -47,14 +47,16 @@ public:
 
 public slots:
     void adjustTitle(WebTab*);
+    void copyHighlightedText(void);
     void closeTab(int);
-    void newWebTab(const QString&);
     void loadTabView(QUrl url);
     void loadTabView(const QString&, const QString&);
+    void newBookmark(void);
+    void newWebTab(const QString&);
     void showSearchBar(void);
-    void copyHighlightedText(void);
+    void viewBookmarks(void);
 };
 
 } // namespace scutum
 #endif // __WEB_TAB_WIDGET__
-// Sun Oct  9 16:49:32 PDT 2011
+// Fri Dec  7 10:21:08 PST 2012

@@ -12,14 +12,7 @@ find_package(Qt5Widgets REQUIRED)
 
 # The Qt5Widgets_INCLUDES also includes the include directories for
 # dependencies QtCore and QtGui
-include_directories(${Qt5Widgets_INCLUDES} 
-/opt/qt5/include
-/opt/qt5/include/QtCore
-/opt/qt5/include/QtGui
-/opt/qt5/include/QtNetwork
-/opt/qt5/include/QtWebKit
-/opt/qt5/include/QtWidgets 
-)
+include_directories(${Qt5Widgets_INCLUDES})
 
 # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
 add_definitions(${Qt5Widgets_DEFINITIONS})
@@ -28,19 +21,10 @@ add_definitions(${Qt5Widgets_DEFINITIONS})
 # without -fPIE. We add that here.
 set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -L/opt/qt5/lib")
 
-SET(scutum_HEADERS 
-mainwindow.h 
-scutview.hpp
-webtab.hpp
-webtabwidget.hpp
-)
+#SET(scutum_HEADERS )
 
 set(scutum_SOURCES
-main.cpp
-mainwindow.cpp
-scutview.cpp
-webtab.cpp
-webtabwidget.cpp
+hello5.cpp
 )
 
 add_executable(scutum 

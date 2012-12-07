@@ -23,13 +23,13 @@ task :clean do
 end
 
 desc "Setup for a qt4 build"
-task :qt4 do
-	sh "cp CMakeLists.txt.qt4 CMakeLists.txt && mkdir -p build && cd build && cmake .."
+task :qt4 => :clean do
+	sh "cp CMakeLists.txt.qt4 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake scutum"
 end
 
 desc "Setup for a qt5 build"
 desc "setup qt5"
 task :qt5 do
-	sh "export PATH=/opt/qt5/bin:$PATH && cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .."
+	sh "export QMAKESPEC=/opt/qt5/mkspecs/linux-g++ && export QTDIR=/opt/qt5 && export PATH=/opt/qt5/bin:$PATH && cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
   puts "SUCCESS: set up for qt5. Now type 'rake'"
 end
