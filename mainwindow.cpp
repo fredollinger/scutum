@@ -40,11 +40,7 @@
 
 
 #include <QtGui>
-#include <QLineEdit>
-#include <QMenuBar>
-#include <QTextEdit>
 #include <QtWebKit>
-
 #include "mainwindow.h"
 
 //! [1]
@@ -181,7 +177,11 @@ void MainWindow::removeEmbeddedElements()
 }
 
 void MainWindow::newTab(){
-    m_tabwidget->newWebTab(tr("NEW"));
+    m_tabwidget->newWebTab(tr("New"));
+}
+
+void MainWindow::aboutTab(){
+    m_tabwidget->newWebTab(tr("About"));
 }
 
 QString MainWindow::shortUrl(const QUrl& url){

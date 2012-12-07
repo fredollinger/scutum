@@ -3,6 +3,9 @@
         <file>jquery.min.js</file>
     </qresource>
     <qresource prefix="/" >
-        <file>scutum.png</file>
+        <file>resources/images/scutum.png</file>
+    </qresource>
+    <qresource prefix="/" >
+        <file>resources/html/about.html</file>
     </qresource>
 </RCC>

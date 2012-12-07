@@ -66,6 +66,7 @@ protected slots:
     void finishLoading(bool);
     /* Given a URL, load it in a new tab */
     void loadTabView(QUrl url);
+    void aboutTab(void);
     void newTab(void);
     void setProgress(int p);
 
