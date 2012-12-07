@@ -230,15 +230,16 @@ bool MainWindow::event(QEvent *event){
       m_tabwidget->copyHighlightedText();
       return QWidget::event(event);
     }
-    else if (ke->key() == Qt::Key_F && ke->modifiers() == Qt::ControlModifier ) {
+    else if (ke->key() == Qt::Key_F && ke->modifiers() == Qt::ControlModifier ||  
+             ke->key() == Qt::Key_Slash) {
       m_tabwidget->showSearchBar();
       return QWidget::event(event);
     }
-    else if (ke->key() == Qt::Key_N ) {
+    else if (ke->key() == Qt::Key_N || ke->key() == Qt::Key_Asterisk ) {
       m_tabwidget->findNext();
       return QWidget::event(event);
     }
-    else if (ke->key() == Qt::Key_P ) {
+    else if (ke->key() == Qt::Key_P ||  ke->key() == Qt::Key_NumberSign) {
       m_tabwidget->findPrevious();
       return QWidget::event(event);
     }

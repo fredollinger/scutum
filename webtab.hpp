@@ -56,6 +56,7 @@ public slots:
   void changeLocation(void);
   void hideSearchBar(void);
   void searchPage(void);
+  void searchPageBackwards(void);
   void showSearchBar(void);
 signals:
   void titleChanged(WebTab*);

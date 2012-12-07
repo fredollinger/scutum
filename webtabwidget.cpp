@@ -123,10 +123,14 @@ void WebTabWidget::copyHighlightedText(){
 }
 
 void WebTabWidget::findNext(){
+  WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+  tab->searchPage();
   return;
 }
 
 void WebTabWidget::findPrevious(){
+  WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+  tab->searchPageBackwards();
   return;
 }
 

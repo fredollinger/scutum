@@ -137,5 +137,12 @@ ScutView* WebTab::view() {
   return m_view;
 }
 
+void WebTab::searchPageBackwards() {
+    m_view->page()->findText(m_findEdit->text(), QWebPage::HighlightAllOccurrences);
+    m_view->page()->findText(m_findEdit->text(), QWebPage::QWebPage::FindBackward);
+    m_find->hide();
+    m_view->setFocus();
+}
+
 } // namespace scutum
 // Fri Nov 23 14:52:19 PST 2012
