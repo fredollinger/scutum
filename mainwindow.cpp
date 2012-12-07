@@ -44,6 +44,14 @@
 #include "mainwindow.h"
 #include "scutcommon.hpp"
 
+#ifdef QT5
+#include <QMenu>
+#include <QMenuBar>
+#include <QNetworkProxyFactory>
+#include <QNetworkReply>
+#include <QTextEdit>
+#endif
+
 //! [1]
 
 namespace scutum{

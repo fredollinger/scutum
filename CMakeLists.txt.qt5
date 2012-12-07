@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
 project(scutum)
 
 # Tell CMake to run moc when necessary:
@@ -14,8 +14,11 @@ find_package(Qt5Widgets REQUIRED)
 # dependencies QtCore and QtGui
 include_directories(${Qt5Widgets_INCLUDES} 
 /opt/qt5/include/Qt
+/opt/qt5/include/QtGui
 /opt/qt5/include/QtCore 
+/opt/qt5/include/QtNetwork
 /opt/qt5/include/QtWidgets 
+/opt/qt5/include/QtWebKit 
 )
 
 # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
@@ -23,13 +26,26 @@ add_definitions(${Qt5Widgets_DEFINITIONS})
 
 # Executables fail to build with Qt 5 in the default configuration
 # without -fPIE. We add that here.
-set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -I/opt/qt5/include -L/opt/qt5/lib" )
+set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -I/opt/qt5/include -L/opt/qt5/lib -DQT5" )
 
-#SET(scutum_HEADERS )
+SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
+
+SET(scutum_HEADERS 
+scutview.hpp
+mainwindow.h 
+webtab.hpp
+webtabwidget.hpp
+)
 
 set(scutum_SOURCES
-hello5.cpp
+scutview.cpp
+main.cpp
+mainwindow.cpp
+webfilter.cpp
+webtab.cpp
+webtabwidget.cpp
 )
+
 
 add_executable(scutum 
 ${scutum_SOURCES} 

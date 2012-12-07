@@ -39,6 +39,7 @@
 ****************************************************************************/
 
 #include <QtGui>
+#include <QLineEdit>
 #include <QMainWindow>
 #include "webtabwidget.hpp"
 
