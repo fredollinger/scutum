@@ -51,14 +51,14 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 void WebTabWidget::loadTabView(QUrl url){
     qDebug() << __PRETTY_FUNCTION__ << url.toString();
     newWebTab(tr("NEW"));
-    WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
-    view->load(url);
+    WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+    tab->view()->load(url);
 }
 
 void WebTabWidget::loadTabView(QUrl url, const QString &title){
     newWebTab(title);
-    WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
-    view->load(url);
+    WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+    tab->view()->load(url);
 }
 
 void WebTabWidget::loadTabView(const QString &qs, const QString &title){

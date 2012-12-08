@@ -32,5 +32,5 @@ desc "setup qt5"
 #task :qt5 => :clean do
 task :qt5 do
 	sh "export QMAKESPEC=/opt/qt5/mkspecs/linux-g++ && export QTDIR=/opt/qt5 && export PATH=/opt/qt5/bin:$PATH && cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
-  puts "SUCCESS: set up for qt5. Now type 'rake'"
+  puts "SUCCESS: built scutum for Qt5"
 end

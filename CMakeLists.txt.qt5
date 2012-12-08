@@ -10,6 +10,9 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Widgets finds its own dependencies (QtGui and QtCore).
 find_package(Qt5Widgets REQUIRED)
 
+SET(scutum_RCCS jquery.qrc)
+QT5_ADD_RESOURCES(scutum_RCC_SRCS ${scutum_RCCS})
+
 # The Qt5Widgets_INCLUDES also includes the include directories for
 # dependencies QtCore and QtGui
 include_directories(${Qt5Widgets_INCLUDES} 
@@ -50,6 +53,7 @@ webtabwidget.cpp
 add_executable(scutum 
 ${scutum_SOURCES} 
 ${scutum_HEADERS_MOC}
+${scutum_RCC_SRCS}
 )
 
 # The Qt5Widgets_LIBRARIES variable also includes QtGui and QtCore

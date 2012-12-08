@@ -45,6 +45,7 @@
 int main(int argc, char * argv[])
 {
     QApplication app(argc, argv);
+    Q_INIT_RESOURCE(jquery);
     QUrl url;
     if (argc > 1)
         url = QUrl(argv[1]);

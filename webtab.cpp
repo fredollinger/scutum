@@ -24,8 +24,10 @@
 #include "scutcommon.hpp"
 #include "webtab.hpp"
 #include <QAction>
-#include <QVBoxLayout>
 #include <QDebug>
+#include <QFile>
+#include <QVBoxLayout>
+#include <QWebFrame>
 namespace scutum{
 /**
  * Class constructor.
@@ -75,8 +77,8 @@ WebTab::WebTab(QWidget* pParent)
  */
 WebTab::~WebTab(){} 
 
-void WebTab::load(QUrl url){
-    m_view->load(url);
+void WebTab::setLocation(const QString &location) {
+  m_locationEdit->setText(location);
 }
 
 void WebTab::changeLocation() {
@@ -84,6 +86,14 @@ void WebTab::changeLocation() {
 
     if ("about:" == url.toString()){
 	    url = QUrl(SCUT_VERSION_PAGE);
+
+      QFile file;
+      file.setFileName(":/resources/html/about.html");
+      file.open(QIODevice::ReadOnly);
+      QString about = file.readAll();
+      file.close();
+
+      m_view->page()->currentFrame()->setHtml(about);
     }
 
     else if (!url.toString().contains("://")){

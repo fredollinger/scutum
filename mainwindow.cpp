@@ -43,6 +43,7 @@
 #include <QtWebKit>
 #include "mainwindow.h"
 #include "scutcommon.hpp"
+#include "webtab.hpp"
 
 #ifdef QT5
 #include <QMenu>
@@ -59,13 +60,15 @@ MainWindow::MainWindow(const QUrl& url)
 {
     progress = 0;
 
-    setWindowIcon ( QIcon(":/scutum.png"));
+    //setWindowIcon ( QIcon(":/scutum.png"));
+    setWindowIcon ( QIcon(" :/resources/images/scutum.png"));
 
     QFile file;
     file.setFileName(":/jquery.min.js");
     file.open(QIODevice::ReadOnly);
     jQuery = file.readAll();
     file.close();
+
 //! [1]
 
     QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -104,6 +107,7 @@ MainWindow::MainWindow(const QUrl& url)
     setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);
     showMaximized();
+
 }
 
 void MainWindow::slotSourceDownloaded()
@@ -210,10 +214,10 @@ void MainWindow::newTab(){
 }
 
 void MainWindow::aboutTab(){
-    //QResource r( ":/about.html" );
-    //QByteArray b( reinterpret_cast< const char* >( r.data() ), r.size() );
-    m_tabwidget->loadTabView(QUrl( SCUT_VERSION_PAGE), tr("about:") );
-    //m_tabwidget->loadTabView(QString(b), tr("About"));
+    WebTab *view = new WebTab(this);
+    m_tabwidget->addTab(view, "about:");
+    view->setLocation("about:");
+    view->changeLocation();
 }
 
 QString MainWindow::shortUrl(const QUrl& url){
@@ -224,10 +228,10 @@ QString MainWindow::shortUrl(const QUrl& url){
 }
 
 void MainWindow::loadTabView(QUrl url){
-//    QWebView *view = new QWebView(this);
     WebTabWidget *view = new WebTabWidget(this);
     m_tabwidget->addTab(view, "");
     m_tabwidget->setTabText(m_tabwidget->currentIndex(), shortUrl(url));
+
 //    view->load(url);
 /*
     connect(view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));

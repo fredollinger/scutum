@@ -49,6 +49,7 @@ public:
   void increaseFontSize(void);
   void load(QUrl url);
   void reload(void);
+  void setLocation(const QString&);
 	ScutView* view(void);
 public slots:
   void adjustLocation(void);
