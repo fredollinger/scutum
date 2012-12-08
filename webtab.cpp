@@ -84,23 +84,8 @@ void WebTab::setLocation(const QString &location) {
 void WebTab::changeLocation() {
     QUrl url = QUrl(m_locationEdit->text());
 
-    if ("about:" == url.toString()){
-	    url = QUrl(SCUT_VERSION_PAGE);
-
-      QFile file;
-      file.setFileName(":/resources/html/about.html");
-      file.open(QIODevice::ReadOnly);
-      QString about = file.readAll();
-      file.close();
-
-      m_view->page()->currentFrame()->setHtml(about);
-    }
-
-    else if (!url.toString().contains("://")){
-	    url = QUrl("http://" + url.toString());
-    } 
-
-    m_view->setUrl(url);
+   // m_view->setUrl(url);
+    m_view->loadUrl(url);
     m_view->setFocus();
 }
 

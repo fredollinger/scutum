@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QDebug>
+#include <QWebFrame>
 #include <QWebView>
 
 namespace scutum{
@@ -109,6 +110,31 @@ void ScutView::saveLink (){
   QString qs = "wget -E " + m_link + " -O " + fileName;
   system (qs.toStdString().c_str());
   return;
+}
+
+/* Custom version of setUrl() which will clear view, load the page, filter it,
+ * then display it.
+ */
+void ScutView::loadUrl(const QUrl &u){
+  // For now, fall back on just loading the url...
+  QUrl url = u; 
+    if ("about:" == url.toString()){
+//	    url = QUrl(SCUT_VERSION_PAGE);
+
+      QFile file;
+      file.setFileName(":/resources/html/about.html");
+      file.open(QIODevice::ReadOnly);
+      QString about = file.readAll();
+      file.close();
+
+      page()->currentFrame()->setHtml(about);
+      return;
+    }
+
+    else if (!url.toString().contains("://")){
+	    url = QUrl("http://" + url.toString());
+    } 
+  setUrl(url);
 }
 
 } // namespace scutum

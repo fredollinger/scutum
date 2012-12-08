@@ -24,12 +24,23 @@
 #ifndef __WEB_FILTER__
 #define __WEB_FILTER__
 
-namespace scutum{
-class WebFilter{
+#include <QNetworkAccessManager>
+#include <QWidget>
 
+namespace scutum{
+class WebFilter : QWidget{
 public:
-  WebFilter();
+
+  Q_OBJECT
+  WebFilter(QWidget* pParent = 0);
   ~WebFilter();
+  void load(const QUrl&);
+
+signals:
+  void finished(QString&);
+
+private:
+  QNetworkAccessManager *manager;
 };
 
 } // namespace scutum

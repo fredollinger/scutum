@@ -27,7 +27,7 @@
 
 namespace scutum{
 
-#define SCUT_VERSION_PAGE "http://fredollinger.com/scutum/about/pointohfour.html"
+#define SCUT_VERSION_PAGE "about:";
 
 }//namespace scutum
 #endif // __SCUT_COMMON__

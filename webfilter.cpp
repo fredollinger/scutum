@@ -24,9 +24,15 @@
 #include "webfilter.hpp"
 namespace scutum{
 
-WebFilter::WebFilter(){}
-
+WebFilter::WebFilter(QWidget* pParent) 
+  : QWidget(pParent)
+{
+}
 WebFilter::~WebFilter(){}
+
+void WebFilter::load(const QUrl &url)
+{
+}
 
 } // namespace scutum
 // Fri Dec  7 11:05:56 PST 2012

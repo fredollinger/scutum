@@ -35,6 +35,7 @@ public:
   ScutView(QWidget* pParent = 0);
   ~ScutView();
   void showLinkMenu(void);
+  void loadUrl(const QUrl&);
 protected:
   bool m_isLinkHovered;
 

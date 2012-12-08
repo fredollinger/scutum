@@ -37,6 +37,7 @@ SET(scutum_HEADERS
 scutview.hpp
 mainwindow.h 
 webtab.hpp
+webfilter.hpp
 webtabwidget.hpp
 )
 

@@ -18,6 +18,7 @@ SET(QT_USE_QTWEBKIT TRUE)
 SET(scutum_HEADERS 
 scutview.hpp
 mainwindow.h 
+webfilter.hpp
 webtab.hpp
 webtabwidget.hpp
 )
