@@ -8,5 +8,8 @@
     <qresource prefix="/" >
         <file>resources/html/about.html</file>
     </qresource>
+    <qresource prefix="/" >
+        <file>resources/html/scutum_bookmarks.html</file>
+    </qresource>
 </RCC>
 

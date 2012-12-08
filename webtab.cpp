@@ -83,8 +83,6 @@ void WebTab::setLocation(const QString &location) {
 
 void WebTab::changeLocation() {
     QUrl url = QUrl(m_locationEdit->text());
-
-   // m_view->setUrl(url);
     m_view->loadUrl(url);
     m_view->setFocus();
 }

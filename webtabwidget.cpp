@@ -141,6 +141,11 @@ void WebTabWidget::findPrevious(){
 }
 
 void WebTabWidget::viewBookmarks(){
+  newWebTab("bookmarks:");
+  WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+  //tab->view()->load("bookmarks:");
+  tab->setLocation("bookmarks:");
+  tab->changeLocation();
 }
 
 void WebTabWidget::newBookmark(){

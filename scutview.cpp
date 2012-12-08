@@ -118,11 +118,22 @@ void ScutView::saveLink (){
 void ScutView::loadUrl(const QUrl &u){
   // For now, fall back on just loading the url...
   QUrl url = u; 
-    if ("about:" == url.toString()){
-//	    url = QUrl(SCUT_VERSION_PAGE);
 
+    if ("about:" == url.toString()){
       QFile file;
       file.setFileName(":/resources/html/about.html");
+      file.open(QIODevice::ReadOnly);
+      QString about = file.readAll();
+      file.close();
+
+      page()->currentFrame()->setHtml(about);
+      return;
+    }
+
+    else if ("bookmarks:" == url.toString()){
+      qDebug() << "bookmarks:";
+      QFile file;
+      file.setFileName(":/resources/html/scutum_bookmarks.html");
       file.open(QIODevice::ReadOnly);
       QString about = file.readAll();
       file.close();

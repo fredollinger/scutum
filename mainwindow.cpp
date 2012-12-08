@@ -214,10 +214,10 @@ void MainWindow::newTab(){
 }
 
 void MainWindow::aboutTab(){
-    WebTab *view = new WebTab(this);
-    m_tabwidget->addTab(view, "about:");
-    view->setLocation("about:");
-    view->changeLocation();
+    WebTab *tab = new WebTab(this);
+    m_tabwidget->addTab(tab, "about:");
+    tab->setLocation("about:");
+    tab->changeLocation();
 }
 
 QString MainWindow::shortUrl(const QUrl& url){
