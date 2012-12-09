@@ -69,11 +69,8 @@ MainWindow::MainWindow(const QUrl& url)
     jQuery = file.readAll();
     file.close();
 
-//! [1]
-
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-//! [2]
     m_tabwidget = new WebTabWidget();
     m_tabwidget->setTabsClosable(true);
     m_tabwidget->loadTabView(url);
@@ -85,6 +82,14 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* viewNewTab = new QAction(tr("New Tab"), this);
     connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
     viewMenu->addAction(viewNewTab);
+
+    QAction* textBig = new QAction(tr("Text Bigger (+)"), this);
+    connect(textBig, SIGNAL(triggered()), m_tabwidget, SLOT(increaseFontSize()));
+    viewMenu->addAction(textBig);
+
+    QAction* textSmall = new QAction(tr("Text Smaller (-)"), this);
+    connect(textSmall, SIGNAL(triggered()), m_tabwidget, SLOT(decreaseFontSize()));
+    viewMenu->addAction(textSmall);
 
     QAction* aboutTab = new QAction(tr("About"), this);
     connect(aboutTab, SIGNAL(triggered()), SLOT(aboutTab()));

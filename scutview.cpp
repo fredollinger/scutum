@@ -21,6 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "scutcommon.hpp"
 #include "scutview.hpp"
 #include <QAction>
 #include <QApplication>
@@ -131,9 +132,10 @@ void ScutView::loadUrl(const QUrl &u){
     }
 
     else if ("bookmarks:" == url.toString()){
+      QString bm = QDir::homePath () + "/" + SCUT_BOOKMARKS_FILE;
       qDebug() << "bookmarks:";
       QFile file;
-      file.setFileName(":/resources/html/scutum_bookmarks.html");
+      file.setFileName(bm);
       file.open(QIODevice::ReadOnly);
       QString about = file.readAll();
       file.close();

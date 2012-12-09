@@ -21,9 +21,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+#include "scutcommon.hpp"
 #include "webtab.hpp"
 #include "webtabwidget.hpp"
 #include <QDebug>
+#include <QDir>
+#include <QFile>
 #include <QGroupBox>
 namespace scutum{
 /**
@@ -49,7 +53,6 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QUrl url){
-    qDebug() << __PRETTY_FUNCTION__ << url.toString();
     newWebTab(tr("NEW"));
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
     tab->view()->load(url);
@@ -62,7 +65,6 @@ void WebTabWidget::loadTabView(QUrl url, const QString &title){
 }
 
 void WebTabWidget::loadTabView(const QString &qs, const QString &title){
-    qDebug() << __PRETTY_FUNCTION__ << qs;
     newWebTab(tr("NEW"));
     //WebTab *view = qobject_cast<WebTab*>(widget(currentIndex()));
     //view->load(url);
@@ -79,7 +81,6 @@ void WebTabWidget::newWebTab(const QString &title){
     int index;
     WebTab *tab = new WebTab(this);
     index = addTab(tab, title);
-    qDebug() << "Setting index to: " << index;
     setCurrentIndex(index);
     connect(tab, SIGNAL(titleChanged(WebTab*)), SLOT(adjustTitle(WebTab*)));
     connect(tab->view(), SIGNAL(sigOpenInNewTab(QUrl)), SLOT(loadTabView(QUrl)));
@@ -123,7 +124,6 @@ void WebTabWidget::reload(){
 }
 
 void WebTabWidget::copyHighlightedText(){
-    qDebug() << __PRETTY_FUNCTION__; 
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
     tab->view()->copyHighlightedText();
 }
@@ -140,15 +140,49 @@ void WebTabWidget::findPrevious(){
   return;
 }
 
+bool WebTabWidget::ensureBookmarks(){
+  QString bm = QDir::homePath () + "/" + SCUT_BOOKMARKS_FILE;
+  QFile bmf; 
+  bmf.setFileName(bm);
+  if (bmf.exists()) return true;
+
+  QFile file;
+  file.setFileName(":/resources/html/scutum_bookmarks.html");
+  file.open(QIODevice::ReadOnly);
+  QString about = file.readAll();
+  file.close();
+
+  if (!bmf.open(QIODevice::WriteOnly)) return false;
+  bmf.write(about.toAscii());
+  bmf.close();
+  return true;
+}
+
 void WebTabWidget::viewBookmarks(){
+  if (!ensureBookmarks()) return;
   newWebTab("bookmarks:");
   WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
-  //tab->view()->load("bookmarks:");
   tab->setLocation("bookmarks:");
   tab->changeLocation();
 }
 
-void WebTabWidget::newBookmark(){
+WebTab* WebTabWidget::tab(){
+  return qobject_cast<WebTab*>(widget(currentIndex()));
+}
+
+bool WebTabWidget::newBookmark(){
+//<LI><a href="http://ubuntuforums.org/showthread.php?t=1031764">[ubuntu] Brightness adjustment not work - Samsung X360 - Ubuntu Forums</a>
+  if (!ensureBookmarks()) return false;
+  QString bm = QDir::homePath () + "/" + SCUT_BOOKMARKS_FILE;
+  QFile bmf; 
+  bmf.setFileName(bm);
+
+  QString mark = "<LI><a href=\"" + tab()->location() + "\">" + tab()->view()->title() + "</a>\n";
+
+  if (!bmf.open(QIODevice::Append)) return false;
+  bmf.write(mark.toAscii());
+  bmf.close();
+  return true;
 }
 
 } // namespace scutum

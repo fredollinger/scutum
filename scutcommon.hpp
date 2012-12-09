@@ -28,6 +28,7 @@
 namespace scutum{
 
 #define SCUT_VERSION_PAGE "about:";
+#define SCUT_BOOKMARKS_FILE "scutum_bookmarks.html";
 
 }//namespace scutum
 #endif // __SCUT_COMMON__

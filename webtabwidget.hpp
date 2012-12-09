@@ -38,21 +38,23 @@ public:
     ~WebTabWidget();
     void findNext(void);
     void findPrevious(void);
-    void increaseFontSize(void);
-    void decreaseFontSize(void);
     void reload(void);
+    bool ensureBookmarks(void);
 
     QString shortUrl(const QUrl& url);
+    WebTab* tab(void);
 // END WEBTAB PUBLIC
 
 public slots:
+    void decreaseFontSize(void);
     void adjustTitle(WebTab*);
     void copyHighlightedText(void);
     void closeTab(int);
+    void increaseFontSize(void);
     void loadTabView(QUrl url);
     void loadTabView(QUrl url, const QString &title);
     void loadTabView(const QString&, const QString&);
-    void newBookmark(void);
+    bool newBookmark(void);
     void newWebTab(const QString&);
     void showSearchBar(void);
     void viewBookmarks(void);
