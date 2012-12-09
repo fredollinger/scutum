@@ -1,5 +1,5 @@
 desc "build it"
-task :default => :scutum do
+task :default => 'build/scutum' do
 end
 
 desc "show errors"
@@ -13,7 +13,7 @@ task :test do
 end
 
 desc "build it"
-task :scutum do
+task 'build/scutum' do
 	sh "cd build && make 2>err; cat err"
 end
 
@@ -34,3 +34,10 @@ task :qt5 do
 	sh "export QMAKESPEC=/opt/qt5/mkspecs/linux-g++ && export QTDIR=/opt/qt5 && export PATH=/opt/qt5/bin:$PATH && cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
   puts "SUCCESS: built scutum for Qt5"
 end
+
+desc "Install app"
+task :install => 'build/scutum' do
+  sh "cp build/scutum /usr/local/bin"
+end
+
+

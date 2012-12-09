@@ -56,7 +56,6 @@ public slots:
     void loadTabView(const QString&, const QString&);
     bool newBookmark(void);
     void newWebTab(const QString&);
-    void showSearchBar(void);
     void viewBookmarks(void);
 };
 

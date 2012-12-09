@@ -113,10 +113,12 @@ void WebTabWidget::closeTab(int index){
 
 }
 
-void WebTabWidget::showSearchBar(){
+/*
+void WebTabWidget::showSearchBar(int type){
   WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
-  w->showSearchBar();
+  w->showSearchBar(type);
 }
+*/
 
 void WebTabWidget::reload(){
   WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
@@ -124,19 +126,19 @@ void WebTabWidget::reload(){
 }
 
 void WebTabWidget::copyHighlightedText(){
-    WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
-    tab->view()->copyHighlightedText();
+    //WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+    tab()->view()->copyHighlightedText();
 }
 
 void WebTabWidget::findNext(){
-  WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
-  tab->searchPage();
+  //WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+  tab()->searchPage();
   return;
 }
 
 void WebTabWidget::findPrevious(){
-  WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
-  tab->searchPageBackwards();
+  //WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+  tab()->searchPageBackwards();
   return;
 }
 

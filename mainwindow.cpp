@@ -266,7 +266,7 @@ bool MainWindow::event(QEvent *event){
     }
     else if (ke->key() == Qt::Key_F && ke->modifiers() == Qt::ControlModifier ||  
              ke->key() == Qt::Key_Slash) {
-      m_tabwidget->showSearchBar();
+      m_tabwidget->tab()->showSearchBar(SCUT_SEARCH_PAGE);
       return QWidget::event(event);
     }
     else if (ke->key() == Qt::Key_N || ke->key() == Qt::Key_Asterisk ) {
@@ -279,6 +279,10 @@ bool MainWindow::event(QEvent *event){
     }
     else if (ke->key() == Qt::Key_R && ke->modifiers() == Qt::ControlModifier ) {
       m_tabwidget->reload();
+      return QWidget::event(event);
+    }
+    else if (ke->key() == Qt::Key_S && ke->modifiers() == Qt::ControlModifier ){
+      m_tabwidget->tab()->showSearchBar(SCUT_SEARCH_ONLINE);
       return QWidget::event(event);
     }
     else if (ke->key() == Qt::Key_T && ke->modifiers() == Qt::ControlModifier ) {

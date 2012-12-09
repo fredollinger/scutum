@@ -35,6 +35,7 @@ namespace scutum{
  */
 WebTab::WebTab(QWidget* pParent) 
 	: QGroupBox(pParent)
+  , m_search_type(SCUT_SEARCH_PAGE)
 {
   m_tool = new QToolBar();
   m_view = new ScutView();
@@ -59,7 +60,7 @@ WebTab::WebTab(QWidget* pParent)
   QIcon closeIcon = QIcon::fromTheme("window-close");
   QAction *closeAct = new QAction(closeIcon, "", this);
   m_find->addAction(closeAct);
-  connect(m_findEdit, SIGNAL(returnPressed()), SLOT(searchPage()));
+  connect(m_findEdit, SIGNAL(returnPressed()), SLOT(startSearch()));
 
   connect(m_view, SIGNAL(loadFinished(bool)), SLOT(adjustLocation()));
   connect(closeAct, SIGNAL(triggered()), SLOT(hideSearchBar()));
@@ -111,6 +112,19 @@ void WebTab::adjustLocation() {
     m_locationEdit->setText(m_view->url().toString());
 }
 
+void WebTab::startSearch() {
+  if (SCUT_SEARCH_PAGE == m_search_type) searchPage(); 
+  else searchOnline();
+}
+
+void WebTab::searchOnline() {
+    QString search = "http://www.google.com/search?as_q=" + m_findEdit->text();
+    setLocation(search);
+    changeLocation();
+    m_find->hide();
+    m_view->setFocus();
+}
+
 void WebTab::searchPage() {
     m_view->page()->findText(m_findEdit->text(), QWebPage::HighlightAllOccurrences);
     m_view->page()->findText(m_findEdit->text(), QWebPage::FindWrapsAroundDocument);
@@ -118,7 +132,8 @@ void WebTab::searchPage() {
     m_view->setFocus();
 }
 
-void WebTab::showSearchBar() {
+void WebTab::showSearchBar(int type) {
+  m_search_type = type;
   m_find->show();
   m_findEdit->setFocus();
 }

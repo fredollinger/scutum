@@ -57,12 +57,15 @@ public slots:
   void adjustTitle(void);
   void changeLocation(void);
   void hideSearchBar(void);
+  void startSearch(void);
   void searchPage(void);
   void searchPageBackwards(void);
-  void showSearchBar(void);
+  void showSearchBar(int);
 signals:
   void titleChanged(WebTab*);
-
+private:
+  void searchOnline(void);
+  int m_search_type;
 };
 
 } // namespace scutum
