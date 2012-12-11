@@ -26,6 +26,7 @@
 
 #include <QNetworkAccessManager>
 #include <QWidget>
+#include <QUrl>
 
 namespace scutum{
 class WebFilter : QWidget{

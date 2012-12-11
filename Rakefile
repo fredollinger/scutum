@@ -24,7 +24,7 @@ end
 
 desc "Setup for a qt4 build"
 task :qt4 => :clean do
-	sh "cp CMakeLists.txt.qt4 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake scutum"
+	sh "cp CMakeLists.txt.qt4 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
 end
 
 desc "Setup for a qt5 build"
