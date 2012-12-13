@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Adding New Protocols to QtWebKit</title>
+<link href="qq-article-style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td align="left" valign="top">
+  <a href="http://trolltech.com/">
+  <img style="padding: 8px; border: 0" src="images/qt-logo.png" align="left" alt="Qt"/>
+  </a>
+</td>
+<td align="right" valign="top">
+  <a href="http://doc.trolltech.com/qq">
+  <img style="padding: 8px; border: 0" src="images/qq-title-article.png" alt="Qt Quarterly" />
+  </a>
+</td>
+</tr>
+<tr>
+<td align="center" colspan="2" style="padding-top: 0.5em">
+<a href="http://qt.nokia.com">Qt Development Frameworks</a>
+| <a href="http://qt.nokia.com/doc">Documentation</a>
+| <a href="qq32-index.html">Qt Quarterly 32</a>
+</td>
+</tr>
+</table>
+
+<br clear="both" />
+<h1 class="heading">Adding New Protocols to QtWebKit</h1>
+
+<p class="abstract">
+The QtWebKit module presents many ways to integrate the worlds of native
+desktop and mobile applications and the Web, making it possible for developers
+to extend and combine features found in Qt and WebKit to create new ones.
+In this article, we examine the use of Qt's network access API with WebKit and
+show how to turn QWebView into a simple FTP client.
+</p>
+
+<div class="figure">
+<img src="images/qq32-ftp-client.png" alt="An FTP client displaying the contents of the ftp.qt.nokia.com site." />
+</div>
+
+<p>
+In Qt Quarterly 26 article,
+<a href="http://qt.nokia.com/doc/qq/qq26-webplugin.html">Plugging into the
+Web</a>, we extended Qt's WebKit integration by showing how to add custom
+widgets to Web pages. In the article, we used
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html">QNetworkRequest</a>
+to ask for content for display in a widget, and we obtained the data returned
+by the server by reading from the corresponding
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>.
+</p>
+
+<p>
+Qt's network access API is a technology that aims to replace much, but not all,
+of the functionality provided by the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qhttp.html">QHttp</a> and
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html">QFtp</a> classes.
+We used <a class="api" href="http://qt.nokia.com/doc/4.6/qhttp.html">QHttp</a>
+in the Qt Quarterly 23 article,
+<a href="http://qt.nokia.com/doc/qq/qq23-web-service.html">Using a Simple Web Service with Qt</a>.
+Although the network access API is a Qt-specific technology, the
+<a href="http://qt.nokia.com/doc/4.6/qtwebkit.html">QtWebKit</a> module
+integrates this Qt technology with WebKit to enable customization of
+the browser engine by Qt application developers. It also means that we can
+control how the browser engine obtains and renders content.
+</p>
+
+<p>
+Since <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html">QNetworkRequest</a>
+and <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>
+are designed to provide a reusable abstraction for network operations, it seems
+obvious to use these classes to add FTP support to browsers written using
+QtWebKit. To do this, we first need to examine the network access classes
+before we see how the QtWebKit module uses them to manage network operations.
+</p>
+
+<h2 class="subheading">Network Access</h2>
+
+<p>
+The central class in Qt's network access API is
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html">QNetworkAccessManager</a>.
+This class performs the work of dispatching requests to remote servers and
+handling incoming replies. Applications typically construct an instance of this
+class and use it for all high level network communication.
+</p>
+
+<p>
+Applications create
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html">QNetworkRequest</a>
+objects, each of them specifying a URL where the request is to be sent and
+containing meta-data that will be understood by the server. Each request is
+dispatched by passing it to a function in the network manager&nbsp;&mdash;
+there are different functions corresponding to different kinds of operations,
+such as
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#get">get()</a>,
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#put">put()</a> and
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#post">post()</a>.
+Each of these functions returns a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>
+object which is used to obtain the content sent in the reply, as well as any
+meta-data that describes it.
+</p>
+
+<p>
+The QtWebKit module provides the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a> class which
+represents the content displayed in a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html">QWebView</a> widget. Behind
+the scenes, this class uses a default network access manager to handle network
+communication. This default manager works perfectly well for fetching content
+over HTTP from <tt>http://</tt> URLs, but only supports fetching of files over
+FTP when using <tt>ftp://</tt> URLs.
+</p>
+
+<p>
+Fortunately, QWebPage provides the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html#setNetworkAccessManager">setNetworkAccessManager()</a>
+function that allows the default manager to be replaced with one with more
+features. This lets us add improved support for FTP quite easily if we can
+write a new manager that supports <tt>ftp://</tt> URLs.
+</p>
+
+<p>
+The process of replacing the manager and using a new one with an existing
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a> object can be broken up into three steps:
+</p>
+
+<ol>
+<li>Creating a new <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html">QNetworkAccessManager</a> subclass.</li>
+<li>Creating a new <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a> subclass to deal with the FTP protocol.</li>
+<li>Setting the new manager on the <a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a>.</li>
+</ol>
+
+<!-- Create new network access manager that returns FTP replies. -->
+<!-- Create FTP reply objects. -->
+<!-- Set the new manager on the page. -->
+
+<p>
+Additionally, to provide a reasonable user experience, we should also handle
+content that the browser engine cannot display. To do this, we create a
+custom <span class="api">Downloader</span> object. We will briefly return to
+this topic later.
+</p>
+<!-- Attach the downloader. -->
+
+<h2 class="subheading">Creating a New Network Manager</h2>
+
+<p>
+Replacing an existing network manager for a <a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a> is conceptually simple: we
+subclass
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html">QNetworkAccessManager</a>
+and reimplement its
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#createRequest">createRequest()</a>
+function to check for URLs with the <tt>ftp</tt> scheme. However, we want to
+ensure that the manager uses any existing cache and proxy settings that may
+have been set up for the existing manager used by the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a>.
+</p>
+
+<p>
+To keep the existing proxy and cache, we give our network manager a constructor
+that accepts the old manager as an argument. In the constructor, we reuse the
+settings from the old manager.
+</p>
+
+<pre>
+NetworkAccessManager::NetworkAccessManager(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html">QNetworkAccessManager</a> *manager, <a class="api" href="http://qt.nokia.com/doc/4.6/qobject.html">QObject</a> *parent)
+    : <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html">QNetworkAccessManager</a>(parent)
+{
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#setCache">setCache</a>(manager-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#cache">cache</a>());
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#setCookieJar">setCookieJar</a>(manager-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#cookieJar">cookieJar</a>());
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#setProxy">setProxy</a>(manager-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#proxy">proxy</a>());
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#setProxyFactory">setProxyFactory</a>(manager-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#proxyFactory">proxyFactory</a>());
+}
+</pre>
+
+<p>
+The <span class="api">createRequest()</span> function is used to create and
+dispatch requests to remote servers for each of the different kinds of
+operation that the API presents to the developer. Since we are only interested
+in performing simple fetches of resources using the <tt>ftp</tt> scheme, we
+filter out other schemes and other kinds of operation, delegating the task of
+handling these to the default implementation.
+</p>
+
+<pre>
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a> *NetworkAccessManager::createRequest(
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#Operation-enum">QNetworkAccessManager::Operation</a> operation, const <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html">QNetworkRequest</a> &amp;request,
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html">QIODevice</a> *device)
+{
+    <span class="keyword">if</span> (request.<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html#url">url</a>().<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#scheme">scheme</a>() != <span class="string">"ftp"</span>)
+        <span class="keyword">return</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#createRequest">QNetworkAccessManager::createRequest</a>(operation, request, device);
+
+    <span class="keyword">if</span> (operation == <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#Operation-enum">GetOperation</a>)
+        <span class="keyword">return</span> <span class="keyword">new</span> FtpReply(request.<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html#url">url</a>());
+    <span class="keyword">else</span>
+        <span class="keyword">return</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html#createRequest">QNetworkAccessManager::createRequest</a>(operation, request, device);
+}
+</pre>
+
+<p>
+Here, we construct and return an instance of the <span class="api">FtpReply</span>
+class. This class performs most of the work of handling the FTP protocol.
+</p>
+
+<h2 class="subheading">Creating a Custom Reply</h2>
+
+<p>
+The network access API is designed to be simple to use: we set up a request,
+dispatch it using the network manager, and obtain a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>
+object. If we are not interested in the reply's meta-data, we can simply read
+the data using its
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#readAll">readAll()</a>
+function because <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>
+is a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html">QIODevice</a>
+subclass.
+</p>
+
+<p>
+In order to keep the API so simple, however, we need to perform some work
+behind the scenes. In this case, that means that we must perform a series of
+communications with the FTP server. Fortunately, we can use the existing
+implementation provided by
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html">QFtp</a> to perform
+the low level work.
+</p>
+
+<p>
+In the <span class="api">FtpReply</span> class, we need to reimplement
+four functions in the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html">QIODevice</a>
+API to ensure that it will work correctly. These functions&nbsp;&ndash;
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#abort">abort()</a>,
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#bytesAvailable">bytesAvailable()</a>,
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#isSequential">isSequential()</a>,
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#readData">readData()</a>&nbsp;&ndash;
+rely on the rest of the implementation to fill a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a>
+with data and use an integer offset to track how much has been read from the
+device by the browser.
+</p>
+
+<pre>
+class FtpReply : public <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>
+{
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qobject.html#Q_OBJECT">Q_OBJECT</a>
+
+public:
+    FtpReply(const <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> &amp;url);
+    void abort();
+    qint64 bytesAvailable() const;
+    bool isSequential() const;
+
+protected:
+    qint64 readData(char *data, qint64 maxSize);
+
+private slots:
+    void processCommand(int command, bool error);
+    void processListInfo(const <a class="api" href="http://qt.nokia.com/doc/4.6/">QUrlInfo</a> &amp;urlInfo);
+    void processData();
+
+private:
+    void setContent();
+    void setListContent();
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html">QFtp</a> *ftp;
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qlist.html">QList</a>&lt;<a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html">QUrlInfo</a>&gt; items;
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a> content;
+    qint64 offset;
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qstringlist.html">QStringList</a> units;
+};    
+</pre>
+
+<p>
+The <span class="api">processCommand()</span>, <span class="api">processListInfo</span>
+and <span class="api">processData()</span> slots handle interaction with the
+FTP server. The private <span class="api">setContent()</span> and
+<span class="api">setListContent()</span> functions are used to add meta-data
+to the reply and compose HTML for the browser to display.
+</p>
+
+<p>
+Two of the private variables hold information about the data obtained from the
+FTP server: <tt class="api">items</tt> is updated to contain information about
+each file found at a given URL, and <tt class="api">content</tt> contains the
+raw data obtained from the server. The <tt class="api">offset</tt> variable is
+used to track how much data has been read by the browser from the reply.
+</p>
+
+<p>
+In the constructor, we construct a <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html">QFtp</a>
+object and connect the signals and slots that form the basis of the interaction
+with the FTP server. The high level communication is reported by the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#commandFinished">commandFinished()</a>
+signal. New data from the server is reported by the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#readyRead">readyRead()</a>
+signal.
+Individual items in an FTP directory listing are reported by the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#listInfo">listInfo()</a>
+signal.
+</p>
+
+<pre>
+FtpReply::FtpReply(const <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> &amp;url)
+    : <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>()
+{
+    ftp = <span class="keyword">new</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html">QFtp</a>(this);
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qobject.html#connect">connect</a>(ftp, SIGNAL(<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#listInfo">listInfo</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html">QUrlInfo</a>)), this, SLOT(processListInfo(<a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html">QUrlInfo</a>)));
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qobject.html#connect">connect</a>(ftp, SIGNAL(<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#readyRead">readyRead</a>()), this, SLOT(processData()));
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qobject.html#connect">connect</a>(ftp, SIGNAL(<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#commandFinished">commandFinished</a>(int, bool)), this, SLOT(processCommand(int, bool)));
+
+    offset = 0;
+    units = <a class="api" href="http://qt.nokia.com/doc/4.6/qstringlist.html">QStringList</a>() &lt;&lt; <span class="string">"bytes"</span> &lt;&lt; <span class="string">"K"</span> &lt;&lt; <span class="string">"M"</span> &lt;&lt; <span class="string">"G"</span> &lt;&lt; <span class="string">"Ti"</span> &lt;&lt; <span class="string">"Pi"</span>
+                          &lt;&lt; <span class="string">"Ei"</span> &lt;&lt; <span class="string">"Zi"</span> &lt;&lt; <span class="string">"Yi"</span>;
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#setUrl">setUrl</a>(url);
+    ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#connectToHost">connectToHost</a>(url.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#host">host</a>());
+}
+</pre>
+
+<p>
+We also initialize the <tt class="api">offset</tt> into the data
+that represents the number of bytes that the browser has read from the
+reply. Additionally, we define a list of units for use with the
+<span class="api">setListContent()</span> function.
+The last two tasks performed in the constructor are to set the URL of the reply
+so that the browser can tell where it came from, and to connect to the FTP
+server.
+</p>
+
+<h3 class="subsubheading">Fetching Data from the Server</h3>
+
+<p>
+All communication with the server is handled by the
+<span class="api">processCommand()</span> slot, which acts on responses from
+the server and tells us when a command we have issued has completed.
+This slot performs the task of logging in to the server when connection has
+occurred (the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">ConnectToHost</a>
+command has completed), asking for a list of files when logged in
+(<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">Login</a> has completed),
+preparing a page with a listing when all file information has been received
+(<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">List</a> has completed),
+and setting the current content for the reply when data has been fetched from
+the server
+(<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">Get</a> has completed).
+</p>
+
+<pre>
+void FtpReply::processCommand(int, bool err)
+{
+    <span class="keyword">if</span> (err) {
+        <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#setError.html">setError</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#NetworkError-enum">ContentNotFoundError</a>, <span class="string">"Unknown command"</span>);
+        emit <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#error">error</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#NetworkError-enum">ContentNotFoundError</a>);
+        <span class="keyword">return</span>;
+    }
+
+    <span class="keyword">switch</span> (ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#currentCommand">currentCommand</a>()) {
+    <span class="keyword">case</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">QFtp::ConnectToHost</a>:
+        ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#login">login</a>();
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">QFtp::Login</a>:
+        ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#list">list</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#url">url</a>().<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#path">path</a>());
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">QFtp::List</a>:
+        <span class="keyword">if</span> (items.<a class="api" href="http://qt.nokia.com/doc/4.6/qlist.html#size">size</a>() == 1)
+            ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#get">get</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#url">url</a>().<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#path">path</a>());
+        <span class="keyword">else</span>
+            setListContent();
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">QFtp::Get</a>:
+        setContent();
+
+    <span class="keyword">default</span>:
+        ;
+    }
+}
+</pre>
+
+<p>
+The result of the <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">List</a>
+command is handled by looking at the number of items obtained from the server.
+The items themselves are recorded by the <span class="api">processListInfo()</span>
+slot. When a <a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">List</a>
+command is complete, we can count the number of items received and determine
+whether or not we should create a file listing, or try to fetch the file
+instead by invoking a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">Get</a>
+command.
+</p>
+
+<pre>
+void FtpReply::processListInfo(const <a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html">QUrlInfo</a> &amp;urlInfo)
+{
+    items.<a class="api" href="http://qt.nokia.com/doc/4.6/qlist.html#append">append</a>(urlInfo);
+}
+</pre>
+
+<p>
+Since the reply will only be used once, we can simply append items to a list
+and never bother to clear it.
+</p>
+
+<p>
+The <span class="api">processData()</span> slot simply appends data obtained
+from the FTP server to the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a>
+containing the content to be supplied to the browser.
+</p>
+
+<pre>
+void FtpReply::processData()
+{
+    content += ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#readAll">readAll</a>();
+}
+</pre>
+
+<p>
+Data is appended to the <tt class="api">content</tt> array until the connection
+to the FTP server is closed, either by the reply or by the server itself. One
+of the ways in which this happens is when a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#Command-enum">Get</a>
+command completes. At this point, the <span class="api">setContent()</span>
+function is called from within the <span class="api">processCommand()</span>
+function.
+</p>
+
+<pre>
+void FtpReply::setContent()
+{
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#open">open</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#OpenModeFlag-enum">ReadOnly</a> | <a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#OpenModeFlag-enum">Unbuffered</a>);
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#setHeader">setHeader</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html#KnownHeaders-enum">QNetworkRequest::ContentLengthHeader</a>, <a class="api" href="http://qt.nokia.com/doc/4.6/qvariant.html">QVariant</a>(content.<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html#size">size</a>()));
+    emit <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#readyRead">readyRead</a>();
+    emit <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#finished">finished</a>();
+    ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#close">close</a>();
+}
+</pre>
+
+<p>
+Here, we prepare the reply for use by the browser by opening it for
+unbuffered reading and setting the header that reports the amount of data held
+by the reply. We emit signals that indicate that the network operation has
+finished and that it has data to be read. Since we are no longer interested in
+the FTP server, we close the connection to it.
+</p>
+
+<h3 class="subsubheading">Preparing Content for the Reader</h3>
+
+<p>
+Another way in which the reply closes the connection to the server is when the
+<span class="api">setListContent()</span> function is called from the
+<span class="api">processCommand()</span> function. Most of the implementation
+of this function involves transforming the information about the items held in
+the reply's private <tt class="api">items</tt> variable to HTML.
+</p>
+
+<pre>
+void FtpReply::setListContent()
+{
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> u = <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#url">url</a>();
+    <span class="keyword">if</span> (!u.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#path">path</a>().<a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html#endsWith">endsWith</a>(<span class="string">"/"</span>))
+        u.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#setPath">setPath</a>(u.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#path">path</a>() + <span class="string">"/"</span>);
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> base_url = <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#url">url</a>().<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#toString">toString</a>();
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> base_path = u.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#path">path</a>();
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#open">open</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#OpenModeFlag-enum">ReadOnly</a> | <a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#OpenModeFlag-enum">Unbuffered</a>);
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a> content(
+        <span class="string">"&lt;html&gt;\n"</span>
+        <span class="string">"&lt;head&gt;\n"</span>
+        <span class="string">"  &lt;title&gt;"</span> + <a class="api" href="http://qt.nokia.com/doc/4.6/qt.html#escape">Qt::escape</a>(base_url) + <span class="string">"&lt;/title&gt;\n"</span>
+        <span class="string">"  &lt;style type=\"text/css\"&gt;\n"</span>
+        <span class="string">"  th { background-color: #aaaaaa; color: black }\n"</span>
+        <span class="string">"  table { border: solid 1px #aaaaaa }\n"</span>
+        <span class="string">"  tr.odd { background-color: #dddddd; color: black\n }\n"</span>
+        <span class="string">"  tr.even { background-color: white; color: black\n }\n"</span>
+        <span class="string">"  &lt;/style&gt;\n"</span>
+        <span class="string">"&lt;/head&gt;\n\n"</span>
+        <span class="string">"&lt;body&gt;\n"</span>
+        <span class="string">"&lt;h1&gt;Listing for "</span> + base_path + <span class="string">"&lt;/h1&gt;\n\n"</span>
+        <span class="string">"&lt;table align=\"center\" cellspacing=\"0\" width=\"90%\"&gt;\n"</span>
+        <span class="string">"&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Size&lt;/th&gt;&lt;/tr&gt;\n"</span>);
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> parent = u.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#resolved">resolved</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a>(<span class="string">".."</span>));
+
+    <span class="keyword">if</span> (parent.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#isParentOf">isParentOf</a>(u))
+
+        content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;tr&gt;&lt;td&gt;&lt;strong&gt;&lt;a href=\""</span> + parent.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#toString">toString</a>() + <span class="string">"\"&gt;"</span>
+            <span class="string">"Parent directory&lt;/a&gt;&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n"</span>);
+
+    int i = 0;
+    foreach (const <a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html">QUrlInfo</a> &amp;item, items) {
+
+        <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> child = u.<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html#resolved">resolved</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a>(item.name()));
+
+        <span class="keyword">if</span> (i == 0)
+            content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;tr class=\"odd\"&gt;"</span>);
+        <span class="keyword">else</span>
+            content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;tr class=\"even\"&gt;"</span>);
+
+        content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;td&gt;&lt;a href=\""</span> + child.toString() + <span class="string">"\"&gt;"</span>
+                           + <a class="api" href="http://qt.nokia.com/doc/4.6/qt.html#escape">Qt::escape</a>(item.<a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html#name">name</a>()) + <span class="string">"&lt;/a&gt;&lt;/td&gt;"</span>);
+
+        qint64 size = item.<a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html#size">size</a>();
+        int unit = 0;
+        <span class="keyword">while</span> (size) {
+            qint64 new_size = size/1024;
+            <span class="keyword">if</span> (new_size &amp;&amp; unit &lt; units.<a class="api" href="http://qt.nokia.com/doc/4.6/qlist.html#size">size</a>()) {
+                size = new_size;
+                unit += 1;
+            } <span class="keyword">else</span>
+                <span class="keyword">break</span>;
+        }
+
+        <span class="keyword">if</span> (item.<a class="api" href="http://qt.nokia.com/doc/4.6/qurlinfo.html#isFile">isFile</a>())
+            content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;td&gt;"</span> + <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html#number">QString::number</a>(size) + " "
+                               + units[unit] + <span class="string">"&lt;/td&gt;&lt;/tr&gt;\n"</span>);
+        <span class="keyword">else</span>
+            content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;\n"</span>);
+
+        i = 1 - i;
+    }
+
+    content += <a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>(<span class="string">"&lt;/table&gt;\n"</span>
+                       <span class="string">"&lt;/body&gt;\n"</span>
+                       <span class="string">"&lt;/html&gt;\n"</span>);
+
+    this-&gt;content = content.<a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html#toUtf8">toUtf8</a>();
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#setHeader">setHeader</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html#KnownHeaders-enum">QNetworkRequest::ContentTypeHeader</a>, <a class="api" href="http://qt.nokia.com/doc/4.6/qvariant.html">QVariant</a>(<span class="string">"text/html; charset=UTF-8"</span>));
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#setHeader">setHeader</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html#KnownHeaders-enum">QNetworkRequest::ContentLengthHeader</a>, <a class="api" href="http://qt.nokia.com/doc/4.6/qvariant.html">QVariant</a>(this-&gt;content.<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html#size">size</a>()));
+    emit <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#readyRead">readyRead</a>();
+    emit <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#finished">finished</a>();
+    ftp-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qftp.html#close">close</a>();
+}
+</pre>
+
+<p>
+Once the HTML description of the files has been composed in a
+<a class="api" href="http://qt.nokia.com/doc/4.6/qstring.html">QString</a>, we
+convert it to a UTF-8 encoded set of bytes which we store in the reply's
+private <tt class="api">content</tt> variable. In this case, the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html">QByteArray</a>
+holds HTML instead of file data. We set the reply's headers to indicate that it
+contains UTF-8 encoded HTML with a certain length, and we emit the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#readyRead">readyRead()</a>
+and <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#finished">finished()</a>
+signals to let the browser know that it can start reading the content.
+</p>
+
+<h3 class="subsubheading">Supplying Data to the Browser</h3>
+
+<p>
+We reimplement four <a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html">QIODevice</a>
+functions to provide basic read-only behavior, simply supplying the data held
+in the <tt class="api">content</tt> array.
+</p>
+
+<p>
+We do not support aborting of the
+reply, so our <span class="api">abort()</span> implementation is empty.
+</p>
+
+<pre>
+void FtpReply::abort()
+{
+}
+
+bool FtpReply::isSequential() const
+{
+    <span class="keyword">return</span> true;
+}
+</pre>
+
+<p>
+Similarly, we do not support random access reading, so <span class="api">isSequential()</span>
+is reimplemented to always return true.
+</p>
+
+<p>
+The <span class="api">bytesAvailable()</span> function returns the total number
+of bytes held by the reply minus the value of <tt class="api">offset</tt>,
+which is the number of bytes we have already supplied to the reader.
+</p>
+
+<pre>
+qint64 FtpReply::bytesAvailable() const
+{
+    <span class="keyword">return</span> content.<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html#size">size</a>() - offset;
+}
+
+qint64 FtpReply::readData(char *data, qint64 maxSize)
+{
+    <span class="keyword">if</span> (offset &lt; content.<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html#size">size</a>()) {
+        qint64 number = <a class="api" href="http://qt.nokia.com/doc/4.6/qtglobal.html#qMin">qMin</a>(maxSize, content.<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html#size">size</a>() - offset);
+        memcpy(data, content.<a class="api" href="http://qt.nokia.com/doc/4.6/qbytearray.html#constData">constData</a>() + offset, number);
+        offset += number;
+        <span class="keyword">return</span> number;
+    } <span class="keyword">else</span>
+        <span class="keyword">return</span> -1;
+}
+</pre>
+
+<p>
+The <span class="api">readData()</span> reimplementation tries to return as
+much data to the reader as it will allow, copying bytes directly to the
+appropriate location in memory. The <tt class="api">offset</tt> variable is
+updated to keep track of how many bytes have been read.
+</p>
+
+<h2 class="subheading">Enabling the Protocol</h2>
+
+<p>
+Now that we have an FTP-enabled network manager and a reply that can handle
+communication with FTP servers, we can now enable the manager for a given
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a>.
+For the example included with this article, we derive the
+<span class="api">FtpView</span> class from
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html">QWebView</a>
+and configure its behavior in its constructor.
+</p>
+
+<p>
+As we mentioned earlier, we pass the original network manager to the
+newly-created manager and pass the new manager to the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html">QWebPage</a>
+belonging to the browser. This enables our network manager for the content it
+displays.
+</p>
+
+<pre>
+FtpView::FtpView()
+{
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkaccessmanager.html">QNetworkAccessManager</a> *oldManager = <a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#page">page</a>()-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html#networkAccessManager">networkAccessManager</a>();
+    NetworkAccessManager *newManager = new NetworkAccessManager(oldManager, this);
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#page">page</a>()-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html#setNetworkAccessManager">setNetworkAccessManager</a>(newManager);
+
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#page">page</a>()-&gt;<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html#setForwardUnsupportedContent">setForwardUnsupportedContent</a>(true);
+    downloader = new Downloader(this, newManager);
+
+    connect(<a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#page">page</a>(), SIGNAL(<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html#unsupportedContent">unsupportedContent</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a> *)),
+            downloader, SLOT(saveFile(<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a> *)));
+    connect(<a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#page">page</a>(), SIGNAL(<a class="api" href="http://qt.nokia.com/doc/4.6/qwebpage.html#downloadRequested">downloadRequested</a>(const <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html">QNetworkRequest</a> &amp;)),
+            downloader, SLOT(startDownload(const <a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html">QNetworkRequest</a> &amp;)));
+
+    connect(this, SIGNAL(<a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#urlChanged">urlChanged</a>(const <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> &amp;)),
+            this, SLOT(updateWindowTitle(const <a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a> &amp;)));
+}
+</pre>
+
+<p>
+We also go to some effort to handle content that WebKit does not natively
+support, using a <span class="api">Downloader</span> helper class to manage
+this and files that the user downloads via the browser's
+<strong>Save Link...</strong> context menu entry.
+</p>
+
+<p>
+In the example's <span class="api">main()</span> function, we perform the
+usual steps to initialize our Qt application. We choose an appropriate starting
+URL for the <span class="api">FtpView</span> widget to open before running the
+application's event loop.
+</p>
+
+<pre>
+int main(int argc, char *argv[])
+{
+    <a class="api" href="http://qt.nokia.com/doc/4.6/qapplication.html">QApplication</a> app(argc, argv);
+
+    FtpView view;
+    view.<a class="api" href="http://qt.nokia.com/doc/4.6/qwebview.html#setUrl">setUrl</a>(<a class="api" href="http://qt.nokia.com/doc/4.6/qurl.html">QUrl</a>(<span class="string">"ftp://ftp.qt.nokia.com"</span>));
+    view.<a class="api" href="http://qt.nokia.com/doc/4.6/qwidget.html#show">show</a>();
+
+    return app.<a class="api" href="http://qt.nokia.com/doc/4.6/qapplication.html#exec">exec</a>();
+}
+</pre>
+
+<h2 class="subheading">Summary</h2>
+
+<p>
+As we have seen, enabling support for another protocol and URL scheme in
+QtWebKit is a fairly simple process involving the creation of a network
+manager and custom reply object. The implementation challenges
+are mostly related to how the protocol is handled by the custom
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html">QNetworkReply</a>
+subclass where, in our case, we need to issue the appropriate commands in the
+correct order to obtain data from the FTP server.
+</p>
+
+<p>
+We also need to ensure that that the reply emits the appropriate signals to
+inform the browser that it has content to be read. Our implementation is
+intentionally simple, only notifying the browser with the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#readyRead">readyRead()</a>
+signal when <em>all</em> the content is ready to read and emitting the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkreply.html#finished">finished()</a>
+signal to indicate that communication is complete&nbsp;&mdash; a more sophisticated approach would interleave the commands
+sent to the server with the emission of signals, allowing the browser to read
+content as data is obtained from the FTP server.
+</p>
+
+<p>
+The reply also needs to be open for reading. Forgetting to call the
+<a class="api" href="http://qt.nokia.com/doc/4.6/qiodevice.html#open">open()</a>
+function is a common error to make when dealing with devices, but in this case
+it is the reply's responsibility to open itself.
+It must indicate how much content it has for the browser to read. As we have
+seen, this is done by setting the reply's
+<a class="api" href="http://qt.nokia.com/doc/4.6/qnetworkrequest.html#KnownHeaders-enum">ContentLengthHeader</a>
+header with the appropriate value.
+With this information available, the browser can read from the reply when the
+content becomes available, displaying a directory listing or downloading
+content depending on the type of data supplied.
+</p>
+
+<p>
+We can use the approach described in this article to enable support for other
+protocols by writing or extending a network manager to handle URL schemes such
+as <tt>mailto</tt>, <tt>sip</tt>, <tt>news</tt>, <tt>file</tt> and <tt>ldap</tt>.
+Applications that integrate Web content with information from other sources
+can also provide custom URL schemes as long as care is taken not to use an
+existing public scheme.
+</p>
+
+<p>
+The source code for the example discussed in this article is available for
+download:
+<strong><a href="examples/qq32-webkit-protocols.zip">qq32-webkit-protocols.zip</a></strong>
+</p>
+
+<p class="bio">
+<span class="name">David Boddie</span> is a technical writer working in 
+Nokia Qt Development Frameworks in Oslo, Norway.
+</p>
+
+<div id="portal-footer">
+<hr />
+<div class="license">
+  <a href="http://creativecommons.org/licenses/by-sa/2.5/legalcode"><img src="../images/share.png" />
+  <img src="../images/remix.png" />
+  <img src="../images/by.png" />
+  <img src="../images/sa.png" /></a>
+  <span>This document is licensed under the
+  <a href="http://creativecommons.org/licenses/by-sa/2.5/">Creative Commons Attribution-Share Alike
+  2.5</a> license.</span>
+</div>
+<hr />
+<span id="copyright-wrapper">
+&copy; 2009 Nokia Corporation and/or its subsidiaries.
+Nokia, Qt and their respective logos are trademarks of Nokia
+Corporation in Finland and/or other countries worldwide.
+All other trademarks are property of their respective owners.
+<a href="http://qt.nokia.com/about/privacy-policy">Privacy Policy</a>
+</span>
+</div>
+</body>
+</html>

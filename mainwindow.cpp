@@ -260,6 +260,10 @@ bool MainWindow::event(QEvent *event){
       m_tabwidget->decreaseFontSize();
       return QWidget::event(event);
     }
+    else if (ke->key() == Qt::Key_B && ke->modifiers() == Qt::ControlModifier ) {
+      m_tabwidget->viewBookmarks();
+      return QWidget::event(event);
+    }
     else if (ke->key() == Qt::Key_C && ke->modifiers() == Qt::ControlModifier ) {
       m_tabwidget->copyHighlightedText();
       return QWidget::event(event);

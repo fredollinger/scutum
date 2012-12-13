@@ -36,6 +36,7 @@ SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 SET(scutum_HEADERS 
 scutview.hpp
 mainwindow.h 
+networkaccessmanager.hpp
 webtab.hpp
 webfilter.hpp
 webtabwidget.hpp
@@ -45,6 +46,7 @@ set(scutum_SOURCES
 scutview.cpp
 main.cpp
 mainwindow.cpp
+networkaccessmanager.cpp
 webfilter.cpp
 webtab.cpp
 webtabwidget.cpp

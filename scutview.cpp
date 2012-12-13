@@ -23,6 +23,7 @@
 
 #include "scutcommon.hpp"
 #include "scutview.hpp"
+#include "networkaccessmanager.hpp"
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
@@ -38,6 +39,14 @@ ScutView::ScutView(QWidget* pParent)
   , m_isLinkHovered(false)
   , m_lastPath(QDir::homePath ())
 {
+  /* BEGIN REPLACE NETWORK ACCESS MANAGER */
+  QNetworkAccessManager *oldManager = page()->networkAccessManager();
+  NetworkAccessManager *newManager = new NetworkAccessManager(oldManager, this);
+  page()->setNetworkAccessManager(newManager);
+  page()->setForwardUnsupportedContent(true);
+  //downloader = new Downloader(this, newManager);
+  /* END REPLACE NETWORK ACCESS MANAGER */
+
   connect(page() 
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
   , SLOT(linkHovered ( const QString&, const QString&, const QString &)) );
