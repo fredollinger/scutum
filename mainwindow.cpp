@@ -40,6 +40,7 @@
 
 
 #include <QtGui>
+#include <QSplitter>
 #include <QtWebKit>
 #include "mainwindow.h"
 #include "scutcommon.hpp"
@@ -94,6 +95,10 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* aboutTab = new QAction(tr("About"), this);
     connect(aboutTab, SIGNAL(triggered()), SLOT(aboutTab()));
     viewMenu->addAction(aboutTab);
+
+    QAction* quitTab = new QAction(tr("&Quit"), this);
+    connect(quitTab, SIGNAL(triggered()), SLOT(quit()));
+    viewMenu->addAction(quitTab);
     // END VIEW MENU
 
     // BEGIN BOOKMARKS MENU
@@ -108,8 +113,10 @@ MainWindow::MainWindow(const QUrl& url)
     bookmarksMenu->addAction(viewBookmarks);
 
     // END BOOKMARKS MENU
-
-    setCentralWidget(m_tabwidget);
+    QSplitter *splitter = new QSplitter(this);
+    splitter->addWidget(m_tabwidget);
+    setCentralWidget(splitter);
+   // setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);
     showMaximized();
 
@@ -246,6 +253,10 @@ void MainWindow::loadTabView(QUrl url){
 */
 }
 
+void MainWindow::quit(){
+  qApp->quit(); 
+}
+
 bool MainWindow::event(QEvent *event){
   if (event->type() == QEvent::KeyPress) {
     QKeyEvent *ke = static_cast<QKeyEvent *>(event);
@@ -279,6 +290,10 @@ bool MainWindow::event(QEvent *event){
     }
     else if (ke->key() == Qt::Key_P ||  ke->key() == Qt::Key_NumberSign) {
       m_tabwidget->findPrevious();
+      return QWidget::event(event);
+    }
+    else if (ke->key() == Qt::Key_Q && ke->modifiers() == Qt::ControlModifier ) {
+      quit();
       return QWidget::event(event);
     }
     else if (ke->key() == Qt::Key_R && ke->modifiers() == Qt::ControlModifier ) {
