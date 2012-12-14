@@ -44,6 +44,7 @@
 #include <QtWebKit>
 #include "mainwindow.h"
 #include "scutcommon.hpp"
+#include "sidepane.hpp"
 #include "webtab.hpp"
 
 #ifdef QT5
@@ -71,6 +72,7 @@ MainWindow::MainWindow(const QUrl& url)
     file.close();
 
     QNetworkProxyFactory::setUseSystemConfiguration(true);
+
 
     m_tabwidget = new WebTabWidget();
     m_tabwidget->setTabsClosable(true);
@@ -111,9 +113,12 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* viewBookmarks = new QAction(tr("View Bookmark"), this);
     connect(viewBookmarks, SIGNAL(triggered()), m_tabwidget, SLOT(viewBookmarks()));
     bookmarksMenu->addAction(viewBookmarks);
-
     // END BOOKMARKS MENU
+
+    m_sidepane = new SidePane(this);
+
     QSplitter *splitter = new QSplitter(this);
+    splitter->addWidget(m_sidepane);
     splitter->addWidget(m_tabwidget);
     setCentralWidget(splitter);
    // setCentralWidget(m_tabwidget);

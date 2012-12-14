@@ -115,9 +115,10 @@ void ScutView::copyHighlightedText (){
 }
 
 void ScutView::saveLink (){
-  QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Save File"), m_lastPath, tr("Any Files (*)"));
-  QString qs = "wget -E " + m_link + " -O " + fileName;
+  //QString fileName = QFileDialog::getOpenFileName(this,
+        //tr("Save File"), m_lastPath, tr("Any Files (*)"));
+  //QString qs = "fatrat " + m_link + " -O " + fileName;
+  QString qs = "fatrat " + m_link;
   system (qs.toStdString().c_str());
   return;
 }

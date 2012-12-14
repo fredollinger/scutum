@@ -53,6 +53,7 @@ QT_END_NAMESPACE
 
 //! [1]
 namespace scutum{
+class SidePane;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -83,15 +84,13 @@ protected slots:
     void removeEmbeddedElements();
 
 private:
+    bool event(QEvent *event);
+    SidePane *m_sidepane;
     QString jQuery;
-    //QWebView *view;
     QLineEdit *locationEdit;
     QAction *rotateAction;
     int progress;
     WebTabWidget *m_tabwidget;
-    bool event(QEvent *event);
-
-//! [1]
-};
+}; // class mainwindow
 } // namespace scutum
 #endif //__MAIN_WINDOW_H__
