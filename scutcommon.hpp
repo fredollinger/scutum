@@ -29,6 +29,7 @@ namespace scutum{
 
 #define SCUT_VERSION_PAGE "about:";
 #define SCUT_BOOKMARKS_FILE "scutum_bookmarks.html";
+#define SCUT_CACHE "/.local/share/scutum/cache";
 
 enum SCUT_SEARCH_TYPE{
 SCUT_SEARCH_PAGE,

@@ -57,7 +57,9 @@ public slots:
     bool newBookmark(void);
     void newWebTab(const QString&);
     void viewBookmarks(void);
-};
+protected:
+  bool setCache(void);
+}; // END class WebTabWidget
 
 } // namespace scutum
 #endif // __WEB_TAB_WIDGET__
