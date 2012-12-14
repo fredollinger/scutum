@@ -20,9 +20,11 @@ SET(QT_USE_QTWEBKIT TRUE)
 SET(scutum_HEADERS 
 scutview.hpp
 mainwindow.h 
-webfilter.hpp
+networkaccessmanager.hpp
+sidepane.hpp
 webtab.hpp
 webtabwidget.hpp
+webfilter.hpp
 )
 
 QT4_WRAP_CPP(scutum_HEADERS_MOC ${scutum_HEADERS})
@@ -31,6 +33,8 @@ set(scutum_SOURCES
 scutview.cpp
 main.cpp
 mainwindow.cpp
+networkaccessmanager.cpp
+sidepane.cpp
 webfilter.cpp
 webtab.cpp
 webtabwidget.cpp
