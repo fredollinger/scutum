@@ -63,14 +63,15 @@ public:
     QString shortUrl(const QUrl& url);
 
 protected slots:
+    void aboutTab(void);
     void adjustTitle();
     void changeLocation();
     void finishLoading(bool);
-    /* Given a URL, load it in a new tab */
+    /* loadTabView(): Given a URL, load it in a new tab */
     void loadTabView(QUrl url);
-    void aboutTab(void);
     void newTab(void);
     void setProgress(int p);
+    void toggleSidePane(void);
     void quit(void);
 
     //void viewSource();

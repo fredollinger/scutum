@@ -124,7 +124,7 @@ MainWindow::MainWindow(const QUrl& url)
    // setCentralWidget(m_tabwidget);
     setUnifiedTitleAndToolBarOnMac(true);
     showMaximized();
-
+    m_sidepane->hide();
 }
 
 void MainWindow::slotSourceDownloaded()
@@ -262,6 +262,11 @@ void MainWindow::quit(){
   qApp->quit(); 
 }
 
+void MainWindow::toggleSidePane(){
+  if (m_sidepane->isVisible()) m_sidepane->hide();
+  else m_sidepane->show();
+}
+
 bool MainWindow::event(QEvent *event){
   if (event->type() == QEvent::KeyPress) {
     QKeyEvent *ke = static_cast<QKeyEvent *>(event);
@@ -311,6 +316,10 @@ bool MainWindow::event(QEvent *event){
     }
     else if (ke->key() == Qt::Key_T && ke->modifiers() == Qt::ControlModifier ) {
       m_tabwidget->newWebTab(tr("NEW"));
+      return QWidget::event(event);
+    }
+    else if (ke->key() == Qt::Key_Z && ke->modifiers() == Qt::AltModifier ) {
+      toggleSidePane();
       return QWidget::event(event);
     }
   }
