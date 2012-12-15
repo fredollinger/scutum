@@ -41,6 +41,7 @@
 
 #include <QtGui>
 #include <QSplitter>
+#include <QStatusBar>
 #include <QtWebKit>
 #include "mainwindow.h"
 #include "scutcommon.hpp"
@@ -73,11 +74,12 @@ MainWindow::MainWindow(const QUrl& url)
 
     QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-
-    m_tabwidget = new WebTabWidget();
+    m_tabwidget = new WebTabWidget(this);
     m_tabwidget->setTabsClosable(true);
     m_tabwidget->loadTabView(url);
-
+    connect(m_tabwidget, 
+    SIGNAL(sigLinkHovered( const QString&, const QString&, const QString& )),
+    SLOT(linkHovered( const QString&, const QString&, const QString& )));
 
     // BEGIN VIEW MENU
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
@@ -324,6 +326,10 @@ bool MainWindow::event(QEvent *event){
     }
   }
   return QWidget::event(event);
+}
+
+void MainWindow::linkHovered ( const QString &one, const QString &two, const QString &three ){
+  statusBar()->showMessage(one); 
 }
 
 } // namespace scutum

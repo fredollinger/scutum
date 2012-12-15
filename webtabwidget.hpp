@@ -45,12 +45,16 @@ public:
     WebTab* tab(void);
 // END WEBTAB PUBLIC
 
+signals:
+  void sigLinkHovered(const QString &, const QString &, const QString &);
+
 public slots:
     void decreaseFontSize(void);
     void adjustTitle(WebTab*);
     void copyHighlightedText(void);
     void closeTab(int);
     void increaseFontSize(void);
+    void linkHovered ( const QString&, const QString&, const QString& );
     void loadTabView(QUrl url);
     void loadTabView(QUrl url, const QString &title);
     void loadTabView(const QString&, const QString&);
@@ -59,6 +63,7 @@ public slots:
     void viewBookmarks(void);
 protected:
   bool setCache(void);
+  QWidget *m_parent;
 }; // END class WebTabWidget
 
 } // namespace scutum

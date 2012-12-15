@@ -36,6 +36,7 @@ namespace scutum{
  */
 WebTabWidget::WebTabWidget(QWidget* pParent) 
 	: QTabWidget(pParent)
+  , m_parent(pParent)
 {
     connect(this, SIGNAL(tabCloseRequested(int)), SLOT(closeTab(int)));
     setCache();
@@ -57,6 +58,10 @@ void WebTabWidget::loadTabView(QUrl url){
     newWebTab(tr("NEW"));
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
     tab->view()->load(url);
+
+    connect(tab->view()->page() 
+  , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
+  , SLOT(linkHovered ( const QString&, const QString&, const QString &)) );
 }
 
 void WebTabWidget::loadTabView(QUrl url, const QString &title){
@@ -198,6 +203,11 @@ bool WebTabWidget::newBookmark(){
   bmf.write(mark.toAscii());
   bmf.close();
   return true;
+}
+
+void WebTabWidget::linkHovered ( const QString &one, const QString &two, const QString &three ){
+  qDebug() << __PRETTY_FUNCTION__;
+  emit sigLinkHovered(one, two, three);
 }
 
 } // namespace scutum
