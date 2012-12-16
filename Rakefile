@@ -17,13 +17,13 @@ task :test do
 end
 
 desc "Delicious Login Menu"
-task 'ui_delicious.h' do
+file 'ui_delicious.h' do
   puts "using qt5 uic"
 	sh "#{UIC} ui/delicious.ui > ui_delicious.h"
 end
 
 desc "build it"
-task 'build/scutum' => 'ui_delicious.h' do
+file 'build/scutum' => 'ui_delicious.h' do
 	sh "cd build && make 2>err; cat err"
 end
 

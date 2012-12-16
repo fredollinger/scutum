@@ -37,6 +37,7 @@ qt5_wrap_ui(ui_delicious.h ui/delicious.ui)
 
 SET(scutum_HEADERS 
 delicious.hpp
+deliciousreply.hpp
 mainwindow.h 
 networkaccessmanager.hpp
 scutview.hpp
@@ -48,6 +49,7 @@ webtabwidget.hpp
 
 set(scutum_SOURCES
 delicious.cpp
+deliciousreply.cpp
 scutview.cpp
 main.cpp
 mainwindow.cpp

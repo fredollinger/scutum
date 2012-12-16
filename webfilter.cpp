@@ -24,14 +24,17 @@
 #include "webfilter.hpp"
 namespace scutum{
 
-WebFilter::WebFilter(QWidget* pParent) 
-  : QWidget(pParent)
+WebFilter::WebFilter() 
+  : QWidget()
 {
 }
 WebFilter::~WebFilter(){}
 
 void WebFilter::load(const QUrl &url)
 {
+}
+ 
+void WebFilter::deliciousBookmarks(){
 }
 
 } // namespace scutum

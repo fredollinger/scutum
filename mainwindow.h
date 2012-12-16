@@ -51,9 +51,9 @@ QT_BEGIN_NAMESPACE
 class QLineEdit;
 QT_END_NAMESPACE
 
-//! [1]
 namespace scutum{
 class SidePane;
+class NetworkAccessManager;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -67,6 +67,7 @@ protected slots:
     void adjustTitle(void);
     //void changeDeliciousPassword(void);
     void changeLocation(void);
+    void deliciousBookmarks(void);
     void deliciousPassword(void);
     void finishLoading(bool);
     void linkHovered ( const QString&, const QString&, const QString& );
@@ -89,6 +90,7 @@ protected slots:
 
 private:
     bool event(QEvent *event);
+    NetworkAccessManager *m_net;
     SidePane *m_sidepane;
     QString jQuery;
     QLineEdit *locationEdit;

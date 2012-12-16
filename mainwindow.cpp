@@ -48,6 +48,7 @@
 #include "mainwindow.h"
 #include "scutcommon.hpp"
 #include "sidepane.hpp"
+#include "networkaccessmanager.hpp"
 #include "webtab.hpp"
 
 #ifdef QT5
@@ -120,6 +121,10 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* deliciousPassword = new QAction(tr("Delicious Password"), this);
     connect(deliciousPassword, SIGNAL(triggered()), SLOT(deliciousPassword()));
     bookmarksMenu->addAction(deliciousPassword);
+
+    QAction* deliciousBookmarks = new QAction(tr("Delicious Bookmarks"), this);
+    connect(deliciousBookmarks, SIGNAL(triggered()), SLOT(deliciousBookmarks()));
+    bookmarksMenu->addAction(deliciousBookmarks);
     // END BOOKMARKS MENU
 
     m_sidepane = new SidePane(this);
@@ -337,14 +342,6 @@ void MainWindow::linkHovered ( const QString &one, const QString &two, const QSt
   statusBar()->showMessage(one); 
 }
 
-/*
-void MainWindow::changeDeliciousPassword(){
-  QSettings settings;
-  settings.setValue("Delicious:User", );
-  settings.setValue("Delicious:User", );
-}
-*/
-
 void MainWindow::deliciousPassword (){
   QSettings settings;
   Delicious *delicious = new Delicious();
@@ -357,4 +354,9 @@ void MainWindow::deliciousPassword (){
   }
   delicious->deleteLater();
 }
+
+void MainWindow::deliciousBookmarks (){
+
+}
+
 } // namespace scutum

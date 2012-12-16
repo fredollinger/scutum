@@ -31,11 +31,14 @@
 namespace scutum{
 class WebFilter : QWidget{
 public:
-
   Q_OBJECT
-  WebFilter(QWidget* pParent = 0);
+
+  WebFilter();
   ~WebFilter();
   void load(const QUrl&);
+
+public slots:
+  void deliciousBookmarks(void);
 
 signals:
   void finished(QString&);
