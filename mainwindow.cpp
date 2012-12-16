@@ -38,11 +38,12 @@
 **
 ****************************************************************************/
 
-
 #include <QtGui>
+#include <QSettings>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QtWebKit>
+
 #include "delicious.hpp"
 #include "mainwindow.h"
 #include "scutcommon.hpp"
@@ -57,12 +58,11 @@
 #include <QTextEdit>
 #endif
 
-//! [1]
-
 namespace scutum{
 MainWindow::MainWindow(const QUrl& url)
 {
     progress = 0;
+
 
     //setWindowIcon ( QIcon(":/scutum.png"));
     setWindowIcon ( QIcon(" :/resources/images/scutum.png"));
@@ -337,9 +337,24 @@ void MainWindow::linkHovered ( const QString &one, const QString &two, const QSt
   statusBar()->showMessage(one); 
 }
 
-void MainWindow::deliciousPassword (){
-  Delicious *delicious = new Delicious();
-  delicious->exec();
+/*
+void MainWindow::changeDeliciousPassword(){
+  QSettings settings;
+  settings.setValue("Delicious:User", );
+  settings.setValue("Delicious:User", );
 }
+*/
 
+void MainWindow::deliciousPassword (){
+  QSettings settings;
+  Delicious *delicious = new Delicious();
+  delicious->username->setText( settings.value("Delicious:User").toString()  );
+  delicious->password->setText( settings.value("Delicious:Password").toString() );
+
+  if (QDialog::Accepted == delicious->exec()){
+    settings.setValue("Delicious:User", delicious->username->text() );
+    settings.setValue("Delicious:Password", delicious->password->text() );
+  }
+  delicious->deleteLater();
+}
 } // namespace scutum

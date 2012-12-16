@@ -65,6 +65,7 @@ public:
 protected slots:
     void aboutTab(void);
     void adjustTitle(void);
+    //void changeDeliciousPassword(void);
     void changeLocation(void);
     void deliciousPassword(void);
     void finishLoading(bool);

@@ -46,6 +46,10 @@ int main(int argc, char * argv[])
 {
     QApplication app(argc, argv);
     Q_INIT_RESOURCE(jquery);
+
+    QCoreApplication::setOrganizationName("hri");
+    QCoreApplication::setApplicationName("scutum");
+
     QUrl url;
     if (argc > 1)
         url = QUrl(argv[1]);
