@@ -43,6 +43,7 @@
 #include <QSplitter>
 #include <QStatusBar>
 #include <QtWebKit>
+#include "delicious.hpp"
 #include "mainwindow.h"
 #include "scutcommon.hpp"
 #include "sidepane.hpp"
@@ -115,6 +116,10 @@ MainWindow::MainWindow(const QUrl& url)
     QAction* viewBookmarks = new QAction(tr("View Bookmark"), this);
     connect(viewBookmarks, SIGNAL(triggered()), m_tabwidget, SLOT(viewBookmarks()));
     bookmarksMenu->addAction(viewBookmarks);
+
+    QAction* deliciousPassword = new QAction(tr("Delicious Password"), this);
+    connect(deliciousPassword, SIGNAL(triggered()), SLOT(deliciousPassword()));
+    bookmarksMenu->addAction(deliciousPassword);
     // END BOOKMARKS MENU
 
     m_sidepane = new SidePane(this);
@@ -330,6 +335,11 @@ bool MainWindow::event(QEvent *event){
 
 void MainWindow::linkHovered ( const QString &one, const QString &two, const QString &three ){
   statusBar()->showMessage(one); 
+}
+
+void MainWindow::deliciousPassword (){
+  Delicious *delicious = new Delicious();
+  delicious->exec();
 }
 
 } // namespace scutum

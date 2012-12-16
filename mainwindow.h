@@ -64,8 +64,9 @@ public:
 
 protected slots:
     void aboutTab(void);
-    void adjustTitle();
-    void changeLocation();
+    void adjustTitle(void);
+    void changeLocation(void);
+    void deliciousPassword(void);
     void finishLoading(bool);
     void linkHovered ( const QString&, const QString&, const QString& );
     /* loadTabView(): Given a URL, load it in a new tab */

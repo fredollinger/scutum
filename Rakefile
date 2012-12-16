@@ -1,3 +1,7 @@
+UIC="/opt/qt5/bin/uic"
+UI_FILES="ui/delicious.ui"
+TMP_FILES="ui_delicious.h"
+
 desc "build it"
 task :default => 'build/scutum' do
 end
@@ -12,14 +16,20 @@ task :test do
 	sh "cd build && ./scutum"
 end
 
+desc "Delicious Login Menu"
+task 'ui_delicious.h' do
+  puts "using qt5 uic"
+	sh "#{UIC} ui/delicious.ui > ui_delicious.h"
+end
+
 desc "build it"
-task 'build/scutum' do
+task 'build/scutum' => 'ui_delicious.h' do
 	sh "cd build && make 2>err; cat err"
 end
 
 desc "clean"
 task :clean do
-	sh "rm -rf scutum Makefile build CMakeLists.txt"
+	sh "rm -rf scutum Makefile build CMakeLists.txt #{TMP_FILES}"
 end
 
 desc "Setup for a qt4 build"
