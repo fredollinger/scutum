@@ -40,10 +40,12 @@ ScutView::ScutView(QWidget* pParent)
   , m_lastPath(QDir::homePath ())
 {
   /* BEGIN REPLACE NETWORK ACCESS MANAGER */
+  /*
   QNetworkAccessManager *oldManager = page()->networkAccessManager();
   NetworkAccessManager *newManager = new NetworkAccessManager(oldManager, this);
   page()->setNetworkAccessManager(newManager);
   page()->setForwardUnsupportedContent(true);
+  */
   //downloader = new Downloader(this, newManager);
   /* END REPLACE NETWORK ACCESS MANAGER */
 

@@ -86,10 +86,6 @@ MainWindow::MainWindow(const QUrl& url)
     // BEGIN VIEW MENU
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
-    QAction* viewNewTab = new QAction(tr("New Tab"), this);
-    connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
-    viewMenu->addAction(viewNewTab);
-
     QAction* textBig = new QAction(tr("Text Bigger (+)"), this);
     connect(textBig, SIGNAL(triggered()), m_tabwidget, SLOT(increaseFontSize()));
     viewMenu->addAction(textBig);
@@ -106,6 +102,18 @@ MainWindow::MainWindow(const QUrl& url)
     connect(quitTab, SIGNAL(triggered()), SLOT(quit()));
     viewMenu->addAction(quitTab);
     // END VIEW MENU
+
+    // BEGIN TAB MENU
+    QMenu *tabMenu = menuBar()->addMenu(tr("&Tabs"));
+
+    QAction* viewNewTab = new QAction(tr("New Tab"), this);
+    connect(viewNewTab, SIGNAL(triggered()), SLOT(newTab()));
+    tabMenu->addAction(viewNewTab);
+
+    QAction* closeTabs = new QAction(tr("Close All Tabs"), this);
+    connect(closeTabs, SIGNAL(triggered()), m_tabwidget, SLOT(closeTabs()));
+    tabMenu->addAction(closeTabs);
+    // END TAB MENU
 
     // BEGIN BOOKMARKS MENU
     QMenu *bookmarksMenu = menuBar()->addMenu(tr("&Bookmarks"));
@@ -356,7 +364,6 @@ void MainWindow::deliciousPassword (){
 }
 
 void MainWindow::deliciousBookmarks (){
-
 }
 
 } // namespace scutum

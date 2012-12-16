@@ -1,9 +1,15 @@
 UIC="/opt/qt5/bin/uic"
 UI_FILES="ui/delicious.ui"
-TMP_FILES="ui_delicious.h"
+TMP_FILES="ui_delicious.h ui_sidepane.h"
 
 desc "build it"
-task :default => 'build/scutum' do
+task :default => 'build' do
+end
+
+desc "build it"
+task :build => 'build/scutum' do
+  sh "rm -f build/scutum"
+  sh "rake build/scutum"
 end
 
 desc "show errors"
@@ -16,14 +22,18 @@ task :test do
 	sh "cd build && ./scutum"
 end
 
-desc "Delicious Login Menu"
+desc "Make Delicious Login Menu"
 file 'ui_delicious.h' do
-  puts "using qt5 uic"
 	sh "#{UIC} ui/delicious.ui > ui_delicious.h"
 end
 
-desc "build it"
-file 'build/scutum' => 'ui_delicious.h' do
+desc "Make Delicious/RSS Reader Side Pane"
+file 'ui_sidepane.h' do
+	sh "#{UIC} ui/sidepane.ui > ui_sidepane.h"
+end
+
+desc "Build it if it has not yet been build."
+file 'build/scutum' => ['ui_delicious.h', 'ui_sidepane.h'] do
 	sh "cd build && make 2>err; cat err"
 end
 

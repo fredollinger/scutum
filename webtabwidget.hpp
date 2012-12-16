@@ -49,10 +49,11 @@ signals:
   void sigLinkHovered(const QString &, const QString &, const QString &);
 
 public slots:
-    void decreaseFontSize(void);
     void adjustTitle(WebTab*);
+    void closeTabs(void);
     void copyHighlightedText(void);
     void closeTab(int);
+    void decreaseFontSize(void);
     void increaseFontSize(void);
     void linkHovered ( const QString&, const QString&, const QString& );
     void loadTabView(QUrl url);

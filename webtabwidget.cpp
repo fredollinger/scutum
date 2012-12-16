@@ -109,7 +109,9 @@ void WebTabWidget::decreaseFontSize(){
 }
 
 void WebTabWidget::closeTab(int index){
+  qDebug() << "Remove tab: " << index;
   if (count() < 2){
+    qDebug()<< "Making a new tab";
     newWebTab(tr("NEW"));
   }
 
@@ -210,5 +212,13 @@ void WebTabWidget::linkHovered ( const QString &one, const QString &two, const Q
   emit sigLinkHovered(one, two, three);
 }
 
+void WebTabWidget::closeTabs (){
+  int c = count(); 
+  closeTab(0);
+  for(int i=c;  i > 0; i--){
+      closeTab(i);
+  }
+}
+
 } // namespace scutum
-// Fri Nov 23 14:52:19 PST 2012
+// Sun Dec 16 12:44:23 PST 2012
