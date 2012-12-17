@@ -27,9 +27,10 @@
 #define __SIDE_PANE__
 
 #include <QWidget>
+#include "ui_sidepane.h"
 
 namespace scutum{
-class SidePane : public QWidget
+class SidePane : public QWidget, public Ui::SidePane
 {
     Q_OBJECT
 

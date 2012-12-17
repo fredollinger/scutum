@@ -151,12 +151,14 @@ void WebTabWidget::findPrevious(){
 }
 
 bool WebTabWidget::setCache(){
+
   QString cache = QDir::homePath () + SCUT_CACHE;
   QDir cacheDir = QDir(cache);
   if (!cacheDir.mkpath(cache)){
        qDebug() << __PRETTY_FUNCTION__ << "WARN: Failed to set cache: "<<cache;
        return false;
   }
+
   QWebSettings::setOfflineStoragePath(cache);
   // FIXME: We should test if this is actually set...
   return true;

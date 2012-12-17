@@ -64,7 +64,6 @@ MainWindow::MainWindow(const QUrl& url)
 {
     progress = 0;
 
-
     //setWindowIcon ( QIcon(":/scutum.png"));
     setWindowIcon ( QIcon(" :/resources/images/scutum.png"));
 

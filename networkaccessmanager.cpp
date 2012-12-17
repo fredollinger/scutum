@@ -42,7 +42,7 @@
 
 #include <QtNetwork>
 #include "networkaccessmanager.hpp"
-//#include "ftpreply.h"
+#include "scutcommon.hpp"
 
 NetworkAccessManager::NetworkAccessManager(QNetworkAccessManager *manager, QObject *parent)
     : QNetworkAccessManager(parent)
@@ -51,13 +51,35 @@ NetworkAccessManager::NetworkAccessManager(QNetworkAccessManager *manager, QObje
     setCookieJar(manager->cookieJar());
     setProxy(manager->proxy());
     setProxyFactory(manager->proxyFactory());
+
+// BEGIN SET CACHE 
+#if 0
+  QString cache = QDir::homePath () + SCUT_CACHE;
+  QDir cacheDir = QDir(cache);
+  if (!cacheDir.mkpath(cache)){
+       qDebug() << __PRETTY_FUNCTION__ << "WARN: Failed to set cache: "<<cache;
+       return;
+  }
+
+  //QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+  QNetworkDiskCache *diskCache = new QNetworkDiskCache(this);
+  diskCache->setCacheDirectory(cache);
+  setCache(diskCache);
+#endif 
+// END SET CACHE 
 }
 
 QNetworkReply *NetworkAccessManager::createRequest(
     QNetworkAccessManager::Operation operation, const QNetworkRequest &request,
     QIODevice *device)
 {
-    return QNetworkAccessManager::createRequest(operation, request, device);
+        return QNetworkAccessManager::createRequest(operation, request, device);
+  // do a request preferred from cache
+  //QNetworkRequest request2(QUrl(QString("http://qt.nokia.com")));
+  //request2.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
+  //manager->get(request2);
+
+//    return QNetworkAccessManager::createRequest(operation, request, device);
 #if 0
     if (request.url().scheme() != "ftp")
         return QNetworkAccessManager::createRequest(operation, request, device);

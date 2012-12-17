@@ -27,6 +27,7 @@ namespace scutum{
 SidePane::SidePane(QWidget *pParent)
     : QWidget(pParent)
 {
+	setupUi(this);
 }
 
 } // namespace scutum
