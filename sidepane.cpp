@@ -21,6 +21,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QDebug>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QSettings>
+#include <QUrl>
+
 #include "sidepane.hpp"
 
 namespace scutum{
@@ -28,6 +35,23 @@ SidePane::SidePane(QWidget *pParent)
     : QWidget(pParent)
 {
 	setupUi(this);
+  m_net = new QNetworkAccessManager(this);
+  getBookmarks();
+}
+
+void SidePane::replyFinished(QNetworkReply *reply){
+  QString data = QString(reply->readAll());
+  qDebug() << __PRETTY_FUNCTION__ << data;
+}
+
+void SidePane::getBookmarks(){
+  QSettings settings;
+  QString user = settings.value("Delicious:User").toString();
+  // TODO: Check to see if we have a value and if not, get it.
+  QString url = "http://api.del.icio.us/v2/json/" + user; 
+  connect(m_net, SIGNAL(finished(QNetworkReply*)),
+                   this, SLOT(replyFinished(QNetworkReply*)));
+  m_net->get(QNetworkRequest(QUrl(url)));
 }
 
 } // namespace scutum

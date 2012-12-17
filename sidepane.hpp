@@ -29,20 +29,24 @@
 #include <QWidget>
 #include "ui_sidepane.h"
 
+class QNetworkReply;
+class QNetworkAccessManager;
+
 namespace scutum{
 class SidePane : public QWidget, public Ui::SidePane
 {
     Q_OBJECT
 
 public:
-    SidePane(QWidget *pParent);
+ SidePane(QWidget *pParent);
+  void getBookmarks();
 
-/*
-  static NetworkAccessManager & instance() {
-    static NetworkAccessManager *s_instance = new NetworkAccessManager();
-      return *s_instance;
-  }
-  */
+private:
+  QNetworkAccessManager *m_net;
+
+public slots:
+  void replyFinished(QNetworkReply*);
+
 };
 } // namespace scutum
 #endif

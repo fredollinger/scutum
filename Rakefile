@@ -60,4 +60,8 @@ task :install => 'build/scutum' do
   sh "cp build/scutum /usr/local/bin"
 end
 
+rule "" do |t|
+  target=t.name 
+  sh "cd build && make #{target}.o"
+end
 
