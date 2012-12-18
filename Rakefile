@@ -1,14 +1,17 @@
-#UIC="/opt/qt5/bin/uic"
-UIC="uic-qt4"
+# Where your uic lives:
+UIC="/opt/qt5/bin/uic"
+#UIC="uic-qt4"
+
+BUILD_DIR="build"
 UI_FILES="ui/delicious.ui"
-TMP_FILES="ui_delicious.h ui_sidepane.h"
+TMP_FILES="#{UI_FILES} #{BUILD_DIR} CMakeLists.txt"
 
 desc "build it"
 task :default => 'build' do
 end
 
 desc "build it"
-task :build => 'build/scutum' do
+task :build  do
   sh "rm -f build/scutum"
   sh "rake build/scutum"
 end
@@ -40,7 +43,7 @@ end
 
 desc "clean"
 task :clean do
-	sh "rm -rf scutum Makefile build CMakeLists.txt #{TMP_FILES}"
+	sh "rm -rf #{TMP_FILES}"
 end
 
 desc "Setup for a qt4 build"
