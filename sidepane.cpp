@@ -44,7 +44,7 @@ void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   qDebug() << __PRETTY_FUNCTION__ << data;
   m_latest = new JsonDelicious(data);
-	linkList->addItems ( m_latest->recent() );
+	linkList->addItems ( m_latest->titles() );
 }
 
 void SidePane::getBookmarks(){

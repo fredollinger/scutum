@@ -44,7 +44,7 @@ public:
   /* Given a QString, break into a QString List */
   QStringList list(const QString&);
 
-	const QStringList recent(void);
+	const QStringList titles(void);
 private:
   struct Json{
     QString title;

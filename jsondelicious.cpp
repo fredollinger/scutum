@@ -65,7 +65,7 @@ void JsonDelicious::parse(const QString &text) {
   }
 }
 
-const QStringList JsonDelicious::recent(){
+const QStringList JsonDelicious::titles(){
 	QStringList qsl;
   foreach (Json json, m_jsonlist){
 		qsl.append(json.title);
