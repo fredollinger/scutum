@@ -1,4 +1,5 @@
-UIC="/opt/qt5/bin/uic"
+#UIC="/opt/qt5/bin/uic"
+UIC="uic-qt4"
 UI_FILES="ui/delicious.ui"
 TMP_FILES="ui_delicious.h ui_sidepane.h"
 
