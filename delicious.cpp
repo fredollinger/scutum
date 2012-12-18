@@ -8,7 +8,7 @@
 namespace scutum{
 Delicious::Delicious(QWidget* pParent, const char* szName) 
 {
-	setupUi(this);
+//	setupUi(this);
 }
 
 Delicious::~Delicious()
