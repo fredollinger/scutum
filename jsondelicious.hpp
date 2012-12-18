@@ -24,13 +24,34 @@
 #ifndef __JSON_DELICIOUS__
 #define __JSON_DELICIOUS__
 
+#include <QDateTime>
+#include <QList>
 #include <QString>
+#include <QUrl>
 
 namespace scutum{
 class JsonDelicious {
 public:
   JsonDelicious(const QString&);
   ~JsonDelicious();
+
+  /* From a line, get an element */
+  QString element(const QString &element, const QString &line);
+
+  /* Given a QString, put this into a JsonList Struct */
+  void parse(const QString&);
+
+  /* Given a QString, break into a QString List */
+  QStringList list(const QString&);
+private:
+  struct Json{
+    QString title;
+    QString tag;
+    QUrl url;
+    QDateTime dt;
+  };
+  typedef QList<Json> JsonList;
+  JsonList m_jsonlist;
 };
 
 } // namespace scutum

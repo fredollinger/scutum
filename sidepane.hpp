@@ -33,6 +33,7 @@ class QNetworkReply;
 class QNetworkAccessManager;
 
 namespace scutum{
+class JsonDelicious;
 class SidePane : public QWidget, public Ui::SidePane
 {
     Q_OBJECT
@@ -43,6 +44,7 @@ public:
 
 private:
   QNetworkAccessManager *m_net;
+  JsonDelicious *m_latest;
 
 public slots:
   void replyFinished(QNetworkReply*);

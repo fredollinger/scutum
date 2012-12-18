@@ -22,12 +22,47 @@
  */
 
 #include "jsondelicious.hpp"
+#include <QDebug>
+
 namespace scutum{
 
 JsonDelicious::JsonDelicious(const QString &json) {
+  parse(json);
 }
 
 JsonDelicious::~JsonDelicious() {}
+
+QStringList JsonDelicious::list(const QString &json) {
+  QStringList qlist = json.split("}");
+  return qlist;
+}
+
+QString JsonDelicious::element(const QString &element, const QString &line) {
+  QString res;
+  QString f = "\""+element+"\": \"";
+  QStringList qsl = line.split(f);
+
+  if (qsl.size() < 2) return res;
+
+  qsl = qsl[1].split("\"");
+
+  res = qsl[0];
+  qDebug() << res;
+
+  // TODO: Get out the element here
+
+  return res;
+}
+
+void JsonDelicious::parse(const QString &text) {
+  QStringList qlist = list(text);
+  foreach (QString line, qlist){
+          Json json;
+          json.title = element("d", line);
+          json.url = QUrl(element("u", line));
+          m_jsonlist.append(json);
+  }
+}
 
 } // namespace scutum
 // Mon Dec 17 18:12:30 PST 2012

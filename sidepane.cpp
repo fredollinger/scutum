@@ -29,6 +29,7 @@
 #include <QUrl>
 
 #include "sidepane.hpp"
+#include "jsondelicious.hpp"
 
 namespace scutum{
 SidePane::SidePane(QWidget *pParent)
@@ -42,6 +43,7 @@ SidePane::SidePane(QWidget *pParent)
 void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   qDebug() << __PRETTY_FUNCTION__ << data;
+  m_latest = new JsonDelicious(data);
 }
 
 void SidePane::getBookmarks(){
