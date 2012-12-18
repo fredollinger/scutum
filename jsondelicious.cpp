@@ -65,5 +65,13 @@ void JsonDelicious::parse(const QString &text) {
   }
 }
 
+const QStringList JsonDelicious::recent(){
+	QStringList qsl;
+  foreach (Json json, m_jsonlist){
+		qsl.append(json.title);
+	}
+	return qsl;
+}
+
 } // namespace scutum
 // Mon Dec 17 18:12:30 PST 2012

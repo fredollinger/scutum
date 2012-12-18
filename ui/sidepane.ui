@@ -64,7 +64,7 @@
      <widget class="QLineEdit" name="search"/>
     </item>
     <item>
-     <widget class="QListView" name="linkList"/>
+     <widget class="QListWidget" name="linkList"/>
     </item>
    </layout>
   </widget>

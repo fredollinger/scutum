@@ -26,6 +26,10 @@
 #ifndef __SIDE_PANE__
 #define __SIDE_PANE__
 
+#ifndef QT5
+#include <QtWidgets/QAction>
+#endif //QT5
+
 #include <QWidget>
 #include "ui_sidepane.h"
 

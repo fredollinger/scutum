@@ -1,6 +1,6 @@
 # Where your uic lives:
-UIC="/opt/qt5/bin/uic"
-#UIC="uic-qt4"
+#UIC="/opt/qt5/bin/uic"
+UIC="uic-qt4"
 
 BUILD_DIR="build"
 UI_FILES="ui/delicious.ui"
