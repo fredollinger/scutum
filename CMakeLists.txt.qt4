@@ -32,6 +32,7 @@ QT4_WRAP_CPP(scutum_HEADERS_MOC ${scutum_HEADERS})
 
 set(scutum_SOURCES
 delicious.cpp
+jsondelicious.cpp
 main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp

@@ -23,6 +23,7 @@
 
 #include "jsondelicious.hpp"
 #include <QDebug>
+#include <QStringList>
 
 namespace scutum{
 
