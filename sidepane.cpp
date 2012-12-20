@@ -58,7 +58,11 @@ void SidePane::getBookmarks(){
 }
 
 void SidePane::addItems(JsonDelicious *jsond){
-	linkList->addItems ( jsond->titles() );
+	//linkList->addItems ( jsond->titles() );
+  foreach (QString line, jsond){
+		QListWidgetItem *item = new QListWidgetItem(line);
+		linkList->insertItem(item);
+	}
 	return;
 }
 

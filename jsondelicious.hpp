@@ -47,6 +47,8 @@ public:
   const QUrl url(const QString &title);
 
 	const QStringList titles(void);
+
+	const QMap<QString, QUrl> titlelinks(void);
 private:
   struct Json{
     QString title;
