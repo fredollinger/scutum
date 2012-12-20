@@ -73,5 +73,14 @@ const QStringList JsonDelicious::titles(){
 	return qsl;
 }
 
+/* Given a title, return a Url */
+const QUrl JsonDelicious::url(const QString &title){
+  QUrl url;
+  foreach (Json json, m_jsonlist){
+    if ( json.title == title ) return json.url;
+  }
+  return url; 
+}
+
 } // namespace scutum
-// Mon Dec 17 18:12:30 PST 2012
+// Wed Dec 19 19:08:34 PST 2012

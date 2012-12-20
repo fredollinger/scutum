@@ -54,6 +54,9 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 	return qs;
 }
 
+void WebTabWidget::loadTabView(QListWidgetItem *wid){
+}
+
 void WebTabWidget::loadTabView(QUrl url){
     newWebTab(tr("NEW"));
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));

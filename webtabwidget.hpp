@@ -25,6 +25,7 @@
 #ifndef __WEB_TAB_WIDGET__
 #define __WEB_TAB_WIDGET__
 
+#include <QListWidgetItem>
 #include <QTabWidget>
 #include <QWebView>
 
@@ -56,6 +57,7 @@ public slots:
     void decreaseFontSize(void);
     void increaseFontSize(void);
     void linkHovered ( const QString&, const QString&, const QString& );
+    void loadTabView(QListWidgetItem*);
     void loadTabView(QUrl url);
     void loadTabView(QUrl url, const QString &title);
     void loadTabView(const QString&, const QString&);

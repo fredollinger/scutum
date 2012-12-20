@@ -144,6 +144,8 @@ MainWindow::MainWindow(const QUrl& url)
     setUnifiedTitleAndToolBarOnMac(true);
     showMaximized();
     m_sidepane->hide();
+
+    connect(m_sidepane->linkList, SIGNAL(clicked(QListWidgetItem*)), m_tabwidget, SLOT(loadTabView(QListWidgetItem*)));
 }
 
 void MainWindow::slotSourceDownloaded()
