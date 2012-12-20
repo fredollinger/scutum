@@ -44,7 +44,7 @@ void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   qDebug() << __PRETTY_FUNCTION__ << data;
   m_latest = new JsonDelicious(data);
-	linkList->addItems ( m_latest->titles() );
+	addItems ( m_latest );
 }
 
 void SidePane::getBookmarks(){
@@ -55,6 +55,11 @@ void SidePane::getBookmarks(){
   connect(m_net, SIGNAL(finished(QNetworkReply*)),
                    this, SLOT(replyFinished(QNetworkReply*)));
   m_net->get(QNetworkRequest(QUrl(url)));
+}
+
+void SidePane::addItems(JsonDelicious *jsond){
+	linkList->addItems ( jsond->titles() );
+	return;
 }
 
 } // namespace scutum

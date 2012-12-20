@@ -39,8 +39,9 @@ class SidePane : public QWidget, public Ui::SidePane
     Q_OBJECT
 
 public:
- SidePane(QWidget *pParent);
+  SidePane(QWidget *pParent);
   void getBookmarks();
+  void addItems(JsonDelicious*);
 
 private:
   QNetworkAccessManager *m_net;
