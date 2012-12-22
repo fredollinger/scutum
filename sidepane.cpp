@@ -59,12 +59,14 @@ void SidePane::getBookmarks(){
 
 void SidePane::addItems(JsonDelicious *jsond){
 	//linkList->addItems ( jsond->titles() );
-	QMap <QString, QUrl> map;
+	QMap <QString, QUrl> map = jsond->titlelinks();
+  /*
   foreach (QString line, map){
-		QListWidgetItem *item = new QListWidgetItem(line->first);
+		QListWidgetItem *item = new QListWidgetItem(line->second);
 		// TODO: Need to insert html url here, too
 		linkList->insertItem(item);
 	}
+  */
 	return;
 }
 

@@ -83,10 +83,12 @@ const QUrl JsonDelicious::url(const QString &title){
 }
 
 const QMap<QString, QUrl> JsonDelicious::titlelinks(){
-	QMap map<QString, QUrl>;
+	QMap<QString, QUrl> map;
 	foreach (Json json, m_jsonlist){
-		map.append(json->title, json->url);
+		//map.append(json->title, json->url);
+    map[json.title] = json.url;
   }
+  return map;
 }
 
 } // namespace scutum
