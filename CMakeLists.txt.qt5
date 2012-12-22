@@ -36,6 +36,7 @@ SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 qt5_wrap_ui(ui_deliciouspassword.h ui/deliciouspassword.ui)
 
 SET(scutum_HEADERS 
+deliciousbookmark.hpp
 deliciouspassword.hpp
 deliciousreply.hpp
 jsondelicious.hpp
@@ -49,6 +50,7 @@ webtabwidget.hpp
 )
 
 set(scutum_SOURCES
+deliciousbookmark.cpp
 deliciouspassword.cpp
 deliciousreply.cpp
 jsondelicious.cpp
