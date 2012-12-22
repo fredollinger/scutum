@@ -3,15 +3,16 @@ UIC="/opt/qt5/bin/uic"
 #UIC="uic-qt4"
 
 BUILD_DIR="build"
-UI_FILES="ui/deliciouspassword.ui"
-TMP_FILES="#{UI_FILES} #{BUILD_DIR} CMakeLists.txt"
+UI_FILES = FileList.new('ui/*.ui')
+TMP_FILES = FileList.new('ui_*.h', BUILD_DIR, "CMakeLists.txt")
+#TMP_FILES="#{BUILD_DIR} CMakeLists.txt"
 
 desc "build it"
-task :default => 'build' do
+task :default => :build do
 end
 
 desc "build it"
-task :build  do
+task :build => :ui  do
   sh "rm -f build/scutum"
   sh "rake build/scutum"
 end
@@ -69,3 +70,18 @@ rule "" do |t|
   sh "cd build && make #{target}.o"
 end
 
+desc "UI"
+desc "Generate UI Files"
+task :ui do
+  UI_FILES.each do |fn|
+    newui = "ui_"  + File::basename(fn).ext('.h')
+    if not File.exist?(newui)
+      sh "#{UIC} #{fn} > #{newui}"
+    end
+  end
+end
+
+desc "Clean temporary UI Files"
+task :ui_clean do
+  sh "rm -f ui_*.h"
+end
