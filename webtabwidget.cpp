@@ -55,6 +55,8 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QListWidgetItem *wid){
+  //qDebug << __PRETTY_FUNCTION__ << wid->data(Qt::UserRole).toString();
+  qDebug() << wid->data(Qt::UserRole).toString();
 }
 
 void WebTabWidget::loadTabView(QUrl url){

@@ -64,7 +64,9 @@ void SidePane::addItems(JsonDelicious *jsond){
    QMapIterator<QString, QUrl> i(map);
     while (i.hasNext()) {
       i.next();
+      QVariant var(i.value());
 		  QListWidgetItem *item = new QListWidgetItem(i.key());
+      item->setData(Qt::UserRole, var);
 		  linkList->addItem(item);
 //      cout << i.key() << ": " << i.value() << endl;
     }
