@@ -38,6 +38,8 @@ SidePane::SidePane(QWidget *pParent)
 	setupUi(this);
   m_net = new QNetworkAccessManager(this);
   getBookmarks();
+  QIcon close = QIcon::fromTheme("window-close");
+  closeButton->setIcon(close);
 }
 
 void SidePane::replyFinished(QNetworkReply *reply){
