@@ -44,7 +44,7 @@
 #include <QStatusBar>
 #include <QtWebKit>
 
-#include "delicious.hpp"
+#include "deliciouspassword.hpp"
 #include "mainwindow.h"
 #include "scutcommon.hpp"
 #include "sidepane.hpp"
@@ -353,7 +353,7 @@ void MainWindow::linkHovered ( const QString &one, const QString &two, const QSt
 
 void MainWindow::deliciousPassword (){
   QSettings settings;
-  Delicious *delicious = new Delicious();
+  DeliciousPassword *delicious = new DeliciousPassword();
   delicious->username->setText( settings.value("Delicious:User").toString()  );
   delicious->password->setText( settings.value("Delicious:Password").toString() );
 

@@ -1,9 +1,9 @@
 # Where your uic lives:
-#UIC="/opt/qt5/bin/uic"
-UIC="uic-qt4"
+UIC="/opt/qt5/bin/uic"
+#UIC="uic-qt4"
 
 BUILD_DIR="build"
-UI_FILES="ui/delicious.ui"
+UI_FILES="ui/deliciouspassword.ui"
 TMP_FILES="#{UI_FILES} #{BUILD_DIR} CMakeLists.txt"
 
 desc "build it"
@@ -27,8 +27,8 @@ task :test do
 end
 
 desc "Make Delicious Login Menu"
-file 'ui_delicious.h' do
-	sh "#{UIC} ui/delicious.ui > ui_delicious.h"
+file 'ui_deliciouspassword.h' do
+	sh "#{UIC} ui/deliciouspassword.ui > ui_deliciouspassword.h"
 end
 
 desc "Make Delicious/RSS Reader Side Pane"
@@ -37,7 +37,7 @@ file 'ui_sidepane.h' do
 end
 
 desc "Build it if it has not yet been build."
-file 'build/scutum' => ['ui_delicious.h', 'ui_sidepane.h'] do
+file 'build/scutum' => ['ui_deliciouspassword.h', 'ui_sidepane.h'] do
 	sh "cd build && make 2>err; cat err"
 end
 
