@@ -143,7 +143,6 @@ void ScutView::loadUrl(const QUrl &u){
 
     else if ("bookmarks:" == url.toString()){
       QString bm = QDir::homePath () + "/" + SCUT_BOOKMARKS_FILE;
-      qDebug() << "bookmarks:";
       QFile file;
       file.setFileName(bm);
       file.open(QIODevice::ReadOnly);

@@ -42,7 +42,6 @@ SidePane::SidePane(QWidget *pParent)
 
 void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
-  qDebug() << __PRETTY_FUNCTION__ << data;
   m_latest = new JsonDelicious(data);
 	addItems ( m_latest );
 }
@@ -64,11 +63,12 @@ void SidePane::addItems(JsonDelicious *jsond){
    QMapIterator<QString, QUrl> i(map);
     while (i.hasNext()) {
       i.next();
+      // do not include empty strings
+      if (i.key().size() < 1 || i.value().toString().size() < 1) continue;
       QVariant var(i.value());
 		  QListWidgetItem *item = new QListWidgetItem(i.key());
       item->setData(Qt::UserRole, var);
 		  linkList->addItem(item);
-//      cout << i.key() << ": " << i.value() << endl;
     }
 
 	return;

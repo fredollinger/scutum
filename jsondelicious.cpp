@@ -48,7 +48,6 @@ QString JsonDelicious::element(const QString &element, const QString &line) {
   qsl = qsl[1].split("\"");
 
   res = qsl[0];
-  qDebug() << res;
 
   // TODO: Get out the element here
 

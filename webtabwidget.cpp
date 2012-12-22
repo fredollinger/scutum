@@ -55,8 +55,8 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QListWidgetItem *wid){
-  //qDebug << __PRETTY_FUNCTION__ << wid->data(Qt::UserRole).toString();
-  qDebug() << wid->data(Qt::UserRole).toString();
+  qDebug() << __PRETTY_FUNCTION__;
+  loadTabView(wid->data(Qt::UserRole).toUrl());
 }
 
 void WebTabWidget::loadTabView(QUrl url){
@@ -114,9 +114,7 @@ void WebTabWidget::decreaseFontSize(){
 }
 
 void WebTabWidget::closeTab(int index){
-  qDebug() << "Remove tab: " << index;
   if (count() < 2){
-    qDebug()<< "Making a new tab";
     newWebTab(tr("NEW"));
   }
 
@@ -215,7 +213,6 @@ bool WebTabWidget::newBookmark(){
 }
 
 void WebTabWidget::linkHovered ( const QString &one, const QString &two, const QString &three ){
-  qDebug() << __PRETTY_FUNCTION__;
   emit sigLinkHovered(one, two, three);
 }
 
