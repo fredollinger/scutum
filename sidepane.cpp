@@ -34,12 +34,14 @@
 namespace scutum{
 SidePane::SidePane(QWidget *pParent)
     : QWidget(pParent)
+    , m_query_mode(SCUTUM_DELICIOUS_MODE_RECENT)
 {
 	setupUi(this);
   m_net = new QNetworkAccessManager(this);
 
-  m_latest = new JsonDelicious();
-  m_rss = new JsonDelicious();
+  //m_latest = new JsonDelicious();
+  //m_rss = new JsonDelicious();
+  m_links = new JsonDelicious();
 
   connect(recentButton, 
     SIGNAL(clicked()),
@@ -49,54 +51,77 @@ SidePane::SidePane(QWidget *pParent)
     SIGNAL(clicked()),
     SLOT(getRSS()));
 
+  connect(m_net, SIGNAL(finished(QNetworkReply*)),
+                   this, SLOT(replyFinished(QNetworkReply*)));
+
   //getBookmarks();
   //QIcon close = QIcon::fromTheme("window-close");
   //closeButton->setIcon(close);
 }
 
 void SidePane::replyFinished(QNetworkReply *reply){
-  QString data = QString(reply->readAll());
-  m_latest->setData(data);
-  linkList->clear();
-	addItems ( m_latest );
-}
+  qDebug() << __PRETTY_FUNCTION__;
 
-void SidePane::rssReplyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
-  m_rss->setData(data);
-  linkList->clear();
-	addItems ( m_rss );
+  m_links->setData(data);
+
+/*
+  if (m_links->size() < 1){
+    return;
+  }
+  */
+	addItems ( m_links );
 }
 
 void SidePane::getBookmarks(){
+  qDebug() << __PRETTY_FUNCTION__;
+  m_query_mode = SCUTUM_DELICIOUS_MODE_RECENT;
+  /*
+  if (m_latest->size() > 0){
+    qDebug() << __PRETTY_FUNCTION__ << m_latest->size();
+    linkList->clear();
+	  addItems ( m_latest );
+    return;
+  }
+  */
 
-  if (m_latest->size() > 0) return;
-
+  qDebug() << __PRETTY_FUNCTION__ << " Getting bookmarks ";
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
   // TODO: Check to see if we have a value and if not, get it.
   QString url = "http://api.del.icio.us/v2/json/" + user; 
-  connect(m_net, SIGNAL(finished(QNetworkReply*)),
-                   this, SLOT(replyFinished(QNetworkReply*)));
   m_net->get(QNetworkRequest(QUrl(url)));
 }
 
+
 void SidePane::getRSS(){
+  qDebug() << __PRETTY_FUNCTION__;
+  m_query_mode = SCUTUM_DELICIOUS_MODE_RSS;
+
         // http://feeds.delicious.com/v2/json/follinge/strange
 
-  if (m_rss->size() > 0) return;
+/*
+  if (m_rss->size() > 0){
+    qDebug() << __PRETTY_FUNCTION__ << m_rss->size();
+    linkList->clear();
+	  addItems ( m_rss );
+    return;
+  }
+  */
 
+  qDebug() << __PRETTY_FUNCTION__ << " Getting rss feeds ";
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
   QString url = "http://feeds.delicious.com/v2/json/" + user +"/atom"; 
   qDebug() << __PRETTY_FUNCTION__ << url;
-  connect(m_net, SIGNAL(finished(QNetworkReply*)),
-                   this, SLOT(rssReplyFinished(QNetworkReply*)));
   m_net->get(QNetworkRequest(QUrl(url)));
 }
 
 void SidePane::addItems(JsonDelicious *jsond){
 	QMap <QString, QUrl> map = jsond->titlelinks();
+
+//  if (map.size() < 1) return;
+  linkList->clear();
 
    QMapIterator<QString, QUrl> i(map);
     while (i.hasNext()) {

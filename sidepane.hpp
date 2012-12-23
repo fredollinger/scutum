@@ -33,10 +33,17 @@ class QNetworkReply;
 class QNetworkAccessManager;
 
 namespace scutum{
+
 class JsonDelicious;
+
 class SidePane : public QWidget, public Ui::SidePane
 {
     Q_OBJECT
+
+enum SCUTUM_DELICIOUS_MODE{
+SCUTUM_DELICIOUS_MODE_RECENT,
+SCUTUM_DELICIOUS_MODE_RSS,
+};
 
 public:
   SidePane(QWidget *pParent);
@@ -44,15 +51,15 @@ public:
 
 private:
   QNetworkAccessManager *m_net;
-  JsonDelicious *m_latest;
-  JsonDelicious *m_rss;
+  JsonDelicious *m_links; 
+  //JsonDelicious *m_latest;
+  //JsonDelicious *m_rss;
+  int m_query_mode;
 
 public slots:
   void getBookmarks(void);
   void getRSS(void);
   void replyFinished(QNetworkReply*);
-  void rssReplyFinished(QNetworkReply*);
-
 };
 } // namespace scutum
 #endif
