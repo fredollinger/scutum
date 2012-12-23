@@ -38,9 +38,16 @@ SidePane::SidePane(QWidget *pParent)
 	setupUi(this);
   m_net = new QNetworkAccessManager(this);
 
+  m_latest = new JsonDelicious();
+  m_rss = new JsonDelicious();
+
   connect(recentButton, 
     SIGNAL(clicked()),
     SLOT(getBookmarks()));
+
+  connect(rssButton, 
+    SIGNAL(clicked()),
+    SLOT(getRSS()));
 
   //getBookmarks();
   //QIcon close = QIcon::fromTheme("window-close");
@@ -49,8 +56,14 @@ SidePane::SidePane(QWidget *pParent)
 
 void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
-  m_latest = new JsonDelicious(data);
+  m_latest->setData(data);
 	addItems ( m_latest );
+}
+
+void SidePane::rssReplyFinished(QNetworkReply *reply){
+  QString data = QString(reply->readAll());
+  m_rss->setData(data);
+	addItems ( m_rss );
 }
 
 void SidePane::getBookmarks(){
@@ -63,6 +76,20 @@ void SidePane::getBookmarks(){
   QString url = "http://api.del.icio.us/v2/json/" + user; 
   connect(m_net, SIGNAL(finished(QNetworkReply*)),
                    this, SLOT(replyFinished(QNetworkReply*)));
+  m_net->get(QNetworkRequest(QUrl(url)));
+}
+
+void SidePane::getRSS(){
+
+        // http://feeds.delicious.com/v2/json/follinge/strange
+
+  if (m_rss->size() > 0) return;
+
+  QSettings settings;
+  QString user = settings.value("Delicious:User").toString();
+  QString url = "http://feeds.delicious.com/v2/json/" + user +"/atom"; 
+  connect(m_net, SIGNAL(finished(QNetworkReply*)),
+                   this, SLOT(rssReplyFinished(QNetworkReply*)));
   m_net->get(QNetworkRequest(QUrl(url)));
 }
 

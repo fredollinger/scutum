@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>240</width>
-    <height>320</height>
+    <width>531</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,9 +16,9 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>270</y>
-     <width>221</width>
+     <x>380</x>
+     <y>260</y>
+     <width>111</width>
      <height>41</height>
     </rect>
    </property>
@@ -32,20 +32,20 @@
   <widget class="QLineEdit" name="title">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>80</y>
-     <width>171</width>
-     <height>27</height>
+     <x>31</x>
+     <y>44</y>
+     <width>461</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
   <widget class="QLineEdit" name="tags">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>150</y>
-     <width>171</width>
-     <height>27</height>
+     <x>31</x>
+     <y>152</y>
+     <width>461</width>
+     <height>25</height>
     </rect>
    </property>
    <property name="echoMode">
@@ -55,9 +55,9 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>40</y>
-     <width>91</width>
+     <x>31</x>
+     <y>21</y>
+     <width>29</width>
      <height>17</height>
     </rect>
    </property>
@@ -68,14 +68,37 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>120</y>
-     <width>81</width>
+     <x>31</x>
+     <y>129</y>
+     <width>29</width>
      <height>17</height>
     </rect>
    </property>
    <property name="text">
     <string>Tags</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="url">
+   <property name="geometry">
+    <rect>
+     <x>31</x>
+     <y>98</y>
+     <width>461</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>31</x>
+     <y>75</y>
+     <width>27</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>URL</string>
    </property>
   </widget>
  </widget>

@@ -73,12 +73,24 @@
         <property name="text">
          <string>RSS</string>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="recentButton">
         <property name="text">
          <string>Recent</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

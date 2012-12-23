@@ -31,6 +31,9 @@ JsonDelicious::JsonDelicious(const QString &json) {
   parse(json);
 }
 
+JsonDelicious::JsonDelicious() {
+}
+
 JsonDelicious::~JsonDelicious() {}
 
 QStringList JsonDelicious::list(const QString &json) {
@@ -94,5 +97,10 @@ int JsonDelicious::size(){
   m_jsonlist.size();
 }
 
+void JsonDelicious::setData(const QString &json) {
+  m_jsonlist.clear();
+  parse(json);
+}
+
 } // namespace scutum
-// Wed Dec 19 19:08:34 PST 2012
+// Sat Dec 22 16:12:57 PST 2012

@@ -45,10 +45,13 @@ public:
 private:
   QNetworkAccessManager *m_net;
   JsonDelicious *m_latest;
+  JsonDelicious *m_rss;
 
 public slots:
+  void getBookmarks(void);
+  void getRSS(void);
   void replyFinished(QNetworkReply*);
-  void getBookmarks();
+  void rssReplyFinished(QNetworkReply*);
 
 };
 } // namespace scutum

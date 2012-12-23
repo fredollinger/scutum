@@ -54,8 +54,8 @@ int main(int argc, char * argv[])
     if (argc > 1)
         url = QUrl(argv[1]);
     else
-        //url = QUrl("http://www.google.com/ncr");
-        url = QUrl("https://secure.delicious.com/login");
+        url = QUrl("http://www.google.com/ncr");
+        //url = QUrl("https://secure.delicious.com/login");
     scutum::MainWindow *browser = new scutum::MainWindow(url);
     browser->show();
     return app.exec();

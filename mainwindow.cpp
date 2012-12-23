@@ -44,6 +44,7 @@
 #include <QStatusBar>
 #include <QtWebKit>
 
+#include "deliciousbookmark.hpp"
 #include "deliciouspassword.hpp"
 #include "mainwindow.h"
 #include "scutcommon.hpp"
@@ -352,6 +353,7 @@ void MainWindow::linkHovered ( const QString &one, const QString &two, const QSt
 }
 
 void MainWindow::deliciousPassword (){
+
   QSettings settings;
   DeliciousPassword *delicious = new DeliciousPassword();
   delicious->username->setText( settings.value("Delicious:User").toString()  );
@@ -362,9 +364,20 @@ void MainWindow::deliciousPassword (){
     settings.setValue("Delicious:Password", delicious->password->text() );
   }
   delicious->deleteLater();
+
 }
 
 void MainWindow::deliciousBookmarks (){
+  //QSettings settings;
+  DeliciousBookmark *delicious = new DeliciousBookmark();
+  delicious->title->setText( m_tabwidget->tab()->view()->title() );
+  delicious->url->setText( m_tabwidget->tab()->view()->url().toString() );
+
+  if (QDialog::Accepted == delicious->exec()){
+//    settings.setValue("Delicious:User", delicious->username->text() );
+ //   settings.setValue("Delicious:Password", delicious->password->text() );
+  }
+  delicious->deleteLater();
 }
 
 } // namespace scutum

@@ -28,9 +28,10 @@
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
+#include <QDebug>
 #include <QDir>
 #include <QFileDialog>
-#include <QDebug>
+#include <QProcess>
 #include <QWebFrame>
 #include <QWebView>
 
@@ -119,8 +120,10 @@ void ScutView::saveLink (){
   //QString fileName = QFileDialog::getOpenFileName(this,
         //tr("Save File"), m_lastPath, tr("Any Files (*)"));
   //QString qs = "fatrat " + m_link + " -O " + fileName;
+  QProcess proc;
   QString qs = "fatrat " + m_link;
-  system (qs.toStdString().c_str());
+  proc.start(qs);
+  //system (qs.toStdString().c_str());
   return;
 }
 

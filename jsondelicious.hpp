@@ -32,6 +32,7 @@
 namespace scutum{
 class JsonDelicious {
 public:
+  JsonDelicious(void);
   JsonDelicious(const QString&);
   ~JsonDelicious();
 
@@ -40,6 +41,8 @@ public:
 
   /* Given a QString, put this into a JsonList Struct */
   void parse(const QString&);
+
+  void setData(const QString&);
 
   int size(void); // how many items do we hold?
 
