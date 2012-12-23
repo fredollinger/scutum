@@ -37,9 +37,14 @@ SidePane::SidePane(QWidget *pParent)
 {
 	setupUi(this);
   m_net = new QNetworkAccessManager(this);
-  getBookmarks();
-  QIcon close = QIcon::fromTheme("window-close");
-  closeButton->setIcon(close);
+
+  connect(recentButton, 
+    SIGNAL(clicked()),
+    SLOT(getBookmarks()));
+
+  //getBookmarks();
+  //QIcon close = QIcon::fromTheme("window-close");
+  //closeButton->setIcon(close);
 }
 
 void SidePane::replyFinished(QNetworkReply *reply){
@@ -49,6 +54,9 @@ void SidePane::replyFinished(QNetworkReply *reply){
 }
 
 void SidePane::getBookmarks(){
+
+  if (m_latest->size() > 0) return;
+
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
   // TODO: Check to see if we have a value and if not, get it.
@@ -59,7 +67,6 @@ void SidePane::getBookmarks(){
 }
 
 void SidePane::addItems(JsonDelicious *jsond){
-	//linkList->addItems ( jsond->titles() );
 	QMap <QString, QUrl> map = jsond->titlelinks();
 
    QMapIterator<QString, QUrl> i(map);

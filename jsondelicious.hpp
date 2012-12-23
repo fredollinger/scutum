@@ -41,6 +41,8 @@ public:
   /* Given a QString, put this into a JsonList Struct */
   void parse(const QString&);
 
+  int size(void); // how many items do we hold?
+
   /* Given a QString, break into a QString List */
   QStringList list(const QString&);
 

@@ -40,7 +40,6 @@ class SidePane : public QWidget, public Ui::SidePane
 
 public:
   SidePane(QWidget *pParent);
-  void getBookmarks();
   void addItems(JsonDelicious*);
 
 private:
@@ -49,6 +48,7 @@ private:
 
 public slots:
   void replyFinished(QNetworkReply*);
+  void getBookmarks();
 
 };
 } // namespace scutum

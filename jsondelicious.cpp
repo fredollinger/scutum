@@ -90,5 +90,9 @@ const QMap<QString, QUrl> JsonDelicious::titlelinks(){
   return map;
 }
 
+int JsonDelicious::size(){
+  m_jsonlist.size();
+}
+
 } // namespace scutum
 // Wed Dec 19 19:08:34 PST 2012
