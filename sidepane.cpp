@@ -57,12 +57,14 @@ SidePane::SidePane(QWidget *pParent)
 void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   m_latest->setData(data);
+  linkList->clear();
 	addItems ( m_latest );
 }
 
 void SidePane::rssReplyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   m_rss->setData(data);
+  linkList->clear();
 	addItems ( m_rss );
 }
 
@@ -80,7 +82,6 @@ void SidePane::getBookmarks(){
 }
 
 void SidePane::getRSS(){
-
         // http://feeds.delicious.com/v2/json/follinge/strange
 
   if (m_rss->size() > 0) return;
@@ -88,6 +89,7 @@ void SidePane::getRSS(){
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
   QString url = "http://feeds.delicious.com/v2/json/" + user +"/atom"; 
+  qDebug() << __PRETTY_FUNCTION__ << url;
   connect(m_net, SIGNAL(finished(QNetworkReply*)),
                    this, SLOT(rssReplyFinished(QNetworkReply*)));
   m_net->get(QNetworkRequest(QUrl(url)));

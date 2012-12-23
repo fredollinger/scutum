@@ -55,11 +55,11 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QListWidgetItem *wid){
-  qDebug() << __PRETTY_FUNCTION__;
   loadTabView(wid->data(Qt::UserRole).toUrl());
 }
 
 void WebTabWidget::loadTabView(QUrl url){
+    qDebug() << __PRETTY_FUNCTION__<< url.toString();
     newWebTab(tr("NEW"));
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
     tab->view()->load(url);
