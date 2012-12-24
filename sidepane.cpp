@@ -35,6 +35,7 @@ namespace scutum{
 SidePane::SidePane(QWidget *pParent)
     : QWidget(pParent)
     , m_query_mode(SCUTUM_DELICIOUS_MODE_RECENT)
+    , m_refresh(true)
 {
 	setupUi(this);
   m_net = new QNetworkAccessManager(this);
@@ -56,6 +57,9 @@ SidePane::SidePane(QWidget *pParent)
 
   connect(closeButton, SIGNAL(clicked()),
                    this, SLOT(hide()));
+
+  connect(refreshButton, SIGNAL(clicked()),
+                   this, SLOT(refresh()));
 
   rssButton->setChecked(true);
   getRSS();
@@ -80,7 +84,7 @@ void SidePane::getBookmarks(){
   qDebug() << __PRETTY_FUNCTION__;
   m_query_mode = SCUTUM_DELICIOUS_MODE_RECENT;
 
-  if (m_latest->size() > 0){
+  if (m_latest->size() > 0 && false == m_refresh){
     qDebug() << __PRETTY_FUNCTION__ << m_latest->size();
     linkList->clear();
 	  addItems ( m_latest );
@@ -94,13 +98,18 @@ void SidePane::getBookmarks(){
 
 }
 
+void SidePane::refresh(){
+  m_refresh=true;
+  if (true == rssButton->isChecked()) getRSS();
+  else if (true == recentButton->isChecked()) getBookmarks();
+}
 
 void SidePane::getRSS(){
   m_query_mode = SCUTUM_DELICIOUS_MODE_RSS;
 
         // http://feeds.delicious.com/v2/json/follinge/strange
 
-  if (m_rss->size() > 0){
+  if (m_rss->size() > 0 && false == m_refresh){
     qDebug() << __PRETTY_FUNCTION__ << m_rss->size();
     linkList->clear();
 	  addItems ( m_rss );
@@ -131,6 +140,7 @@ void SidePane::addItems(JsonDelicious *jsond){
 		  linkList->addItem(item);
     }
 
+  m_refresh = false;
 	return;
 }
 

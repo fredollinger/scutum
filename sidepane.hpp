@@ -55,10 +55,12 @@ private:
   JsonDelicious *m_latest;
   JsonDelicious *m_rss;
   int m_query_mode;
+  bool m_refresh;
 
 public slots:
   void getBookmarks(void);
   void getRSS(void);
+  void refresh(void);
   void replyFinished(QNetworkReply*);
 };
 } // namespace scutum
