@@ -1,15 +1,16 @@
 <RCC>
-    <qresource prefix="/" >
-        <file>jquery.min.js</file>
-    </qresource>
-    <qresource prefix="/" >
-        <file>resources/images/scutum.png</file>
-    </qresource>
-    <qresource prefix="/" >
-        <file>resources/html/about.html</file>
-    </qresource>
-    <qresource prefix="/" >
-        <file>resources/html/scutum_bookmarks.html</file>
-    </qresource>
+  <qresource prefix="/">
+    <file>resources/images/Button-Refresh-icon.png</file>
+    <file>jquery.min.js</file>
+  </qresource>
+  <qresource prefix="/">
+    <file>resources/images/window-close.png</file>
+    <file>resources/images/scutum.png</file>
+  </qresource>
+  <qresource prefix="/">
+    <file>resources/html/about.html</file>
+  </qresource>
+  <qresource prefix="/">
+    <file>resources/html/scutum_bookmarks.html</file>
+  </qresource>
 </RCC>
-

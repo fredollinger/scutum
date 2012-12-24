@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>377</width>
+    <width>321</width>
     <height>450</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>-10</x>
      <y>20</y>
-     <width>361</width>
+     <width>311</width>
      <height>431</height>
     </rect>
    </property>
@@ -34,7 +34,11 @@
       <item>
        <widget class="QPushButton" name="refreshButton">
         <property name="text">
-         <string>Refresh</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../jquery.qrc">
+          <normaloff>:/resources/images/Button-Refresh-icon.png</normaloff>:/resources/images/Button-Refresh-icon.png</iconset>
         </property>
        </widget>
       </item>
@@ -54,7 +58,11 @@
       <item>
        <widget class="QPushButton" name="closeButton">
         <property name="text">
-         <string>X</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../jquery.qrc">
+          <normaloff>:/resources/images/window-close.png</normaloff>:/resources/images/window-close.png</iconset>
         </property>
        </widget>
       </item>
@@ -62,6 +70,13 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+    </item>
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Search</string>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QLineEdit" name="search"/>
@@ -114,20 +129,9 @@
     </item>
    </layout>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>50</y>
-     <width>340</width>
-     <height>15</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Search</string>
-   </property>
-  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../jquery.qrc"/>
+ </resources>
  <connections/>
 </ui>

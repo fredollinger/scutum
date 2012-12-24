@@ -52,8 +52,8 @@ public:
 private:
   QNetworkAccessManager *m_net;
   JsonDelicious *m_links; 
-  //JsonDelicious *m_latest;
-  //JsonDelicious *m_rss;
+  JsonDelicious *m_latest;
+  JsonDelicious *m_rss;
   int m_query_mode;
 
 public slots:

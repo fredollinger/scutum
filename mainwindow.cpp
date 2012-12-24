@@ -66,7 +66,7 @@ MainWindow::MainWindow(const QUrl& url)
     progress = 0;
 
     //setWindowIcon ( QIcon(":/scutum.png"));
-    setWindowIcon ( QIcon(" :/resources/images/scutum.png"));
+    setWindowIcon ( QIcon(":/resources/images/scutum.png"));
 
     QFile file;
     file.setFileName(":/jquery.min.js");
@@ -374,8 +374,7 @@ void MainWindow::deliciousBookmarks (){
   delicious->url->setText( m_tabwidget->tab()->view()->url().toString() );
 
   if (QDialog::Accepted == delicious->exec()){
-//    settings.setValue("Delicious:User", delicious->username->text() );
- //   settings.setValue("Delicious:Password", delicious->password->text() );
+      emit sigNewBookmark(delicious->url->text(), delicious->tags->text(), delicious->title->text() );
   }
   delicious->deleteLater();
 }

@@ -39,8 +39,8 @@ SidePane::SidePane(QWidget *pParent)
 	setupUi(this);
   m_net = new QNetworkAccessManager(this);
 
-  //m_latest = new JsonDelicious();
-  //m_rss = new JsonDelicious();
+  m_latest = new JsonDelicious();
+  m_rss = new JsonDelicious();
   m_links = new JsonDelicious();
 
   connect(recentButton, 
@@ -54,9 +54,12 @@ SidePane::SidePane(QWidget *pParent)
   connect(m_net, SIGNAL(finished(QNetworkReply*)),
                    this, SLOT(replyFinished(QNetworkReply*)));
 
-  //getBookmarks();
-  //QIcon close = QIcon::fromTheme("window-close");
-  //closeButton->setIcon(close);
+  connect(closeButton, SIGNAL(clicked()),
+                   this, SLOT(hide()));
+
+  rssButton->setChecked(true);
+  getRSS();
+  //closeButton->setIcon(QIcon(":/resources/images/window-close.png"));
 }
 
 void SidePane::replyFinished(QNetworkReply *reply){
@@ -65,55 +68,49 @@ void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   m_links->setData(data);
 
-/*
-  if (m_links->size() < 1){
-    return;
-  }
-  */
+  if ( SCUTUM_DELICIOUS_MODE_RSS == m_query_mode )
+    m_rss->setData(data);
+  else if ( SCUTUM_DELICIOUS_MODE_RECENT == m_query_mode )
+    m_latest->setData(data);
+
 	addItems ( m_links );
 }
 
 void SidePane::getBookmarks(){
   qDebug() << __PRETTY_FUNCTION__;
   m_query_mode = SCUTUM_DELICIOUS_MODE_RECENT;
-  /*
+
   if (m_latest->size() > 0){
     qDebug() << __PRETTY_FUNCTION__ << m_latest->size();
     linkList->clear();
 	  addItems ( m_latest );
     return;
   }
-  */
 
-  qDebug() << __PRETTY_FUNCTION__ << " Getting bookmarks ";
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
-  // TODO: Check to see if we have a value and if not, get it.
   QString url = "http://api.del.icio.us/v2/json/" + user; 
   m_net->get(QNetworkRequest(QUrl(url)));
+
 }
 
 
 void SidePane::getRSS(){
-  qDebug() << __PRETTY_FUNCTION__;
   m_query_mode = SCUTUM_DELICIOUS_MODE_RSS;
 
         // http://feeds.delicious.com/v2/json/follinge/strange
 
-/*
   if (m_rss->size() > 0){
     qDebug() << __PRETTY_FUNCTION__ << m_rss->size();
     linkList->clear();
 	  addItems ( m_rss );
     return;
   }
-  */
 
   qDebug() << __PRETTY_FUNCTION__ << " Getting rss feeds ";
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
   QString url = "http://feeds.delicious.com/v2/json/" + user +"/atom"; 
-  qDebug() << __PRETTY_FUNCTION__ << url;
   m_net->get(QNetworkRequest(QUrl(url)));
 }
 

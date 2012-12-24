@@ -88,6 +88,9 @@ protected slots:
     void removeObjectElements();
     void removeEmbeddedElements();
 
+signals:
+      void sigNewBookmark(const QString&, const QString&, const QString&);
+
 private:
     bool event(QEvent *event);
     NetworkAccessManager *m_net;
