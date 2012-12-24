@@ -137,6 +137,13 @@ MainWindow::MainWindow(const QUrl& url)
 
     m_sidepane = new SidePane(this);
 
+    connect(this
+      , SIGNAL( sigNewBookmark(const QString&, const QString&, const QString&) )
+      , m_sidepane
+      , SLOT(newBookmark(const QString&, const QString&, const QString&)));
+
+      //emit sigNewBookmark(delicious->url->text(), delicious->tags->text(), delicious->title->text() );
+
     QSplitter *splitter = new QSplitter(this);
     splitter->addWidget(m_sidepane);
     splitter->addWidget(m_tabwidget);

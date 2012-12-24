@@ -43,6 +43,7 @@ class SidePane : public QWidget, public Ui::SidePane
 enum SCUTUM_DELICIOUS_MODE{
 SCUTUM_DELICIOUS_MODE_RECENT,
 SCUTUM_DELICIOUS_MODE_RSS,
+SCUTUM_DELICIOUS_MODE_NEW_BOOKMARK,
 };
 
 public:
@@ -62,6 +63,7 @@ public slots:
   void getRSS(void);
   void refresh(void);
   void replyFinished(QNetworkReply*);
+  void newBookmark(const QString&, const QString&, const QString&);
 };
 } // namespace scutum
 #endif

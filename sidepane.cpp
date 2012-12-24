@@ -67,12 +67,14 @@ SidePane::SidePane(QWidget *pParent)
 }
 
 void SidePane::replyFinished(QNetworkReply *reply){
-  qDebug() << __PRETTY_FUNCTION__;
 
   QString data = QString(reply->readAll());
   m_links->setData(data);
-
-  if ( SCUTUM_DELICIOUS_MODE_RSS == m_query_mode )
+  if ( SCUTUM_DELICIOUS_MODE_NEW_BOOKMARK == m_query_mode){
+    qDebug() << __PRETTY_FUNCTION__ << data;
+    return;
+  }
+  else if ( SCUTUM_DELICIOUS_MODE_RSS == m_query_mode )
     m_rss->setData(data);
   else if ( SCUTUM_DELICIOUS_MODE_RECENT == m_query_mode )
     m_latest->setData(data);
@@ -144,4 +146,22 @@ void SidePane::addItems(JsonDelicious *jsond){
 	return;
 }
 
+void SidePane::newBookmark(const QString &url, const QString &tags, const QString &title){
+  QSettings settings;
+  m_query_mode = SCUTUM_DELICIOUS_MODE_NEW_BOOKMARK;
+
+  QString newtags="";
+
+  if (! tags.isEmpty())
+    newtags = "&tags='" + tags + "'";
+
+  QString user = settings.value("Delicious:User").toString();
+  QString password = settings.value("Delicious:Password").toString();
+  //QString url = "http://api.del.icio.us/v2/json/" + user; 
+// QString newurl = "https://" + user + ":" + password + "@api.del.icio.us/v1/post/add" + "?&url='" + url + "'" + newtags + "&description='" + title + "'";
+ QString newurl = "https://" + user + ":" + password + "@api.del.icio.us/v1/posts/add" + "?&url=" + url + newtags + "&description=" + title;
+  qDebug() << newurl;
+        //https://seconduser:thepassword@api.del.icio.us/v1/posts/add?url=http://seet.dk&tags=description&description=test
+  m_net->get(QNetworkRequest(QUrl(newurl)));
+};
 } // namespace scutum
