@@ -48,6 +48,7 @@ end
 
 desc "Setup for a qt4 build"
 task :qt4 => :clean do
+  sh "mkdir -p build && ln -s /usr/bin/uic-qt4 build/uic"
 	sh "cp CMakeLists.txt.qt4 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
 end
 
