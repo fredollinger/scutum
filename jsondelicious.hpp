@@ -30,6 +30,7 @@
 #include <QUrl>
 
 namespace scutum{
+typedef QMap<QString, QString> JsonTitleLink;
 class JsonDelicious {
 public:
   JsonDelicious(void);
@@ -53,12 +54,13 @@ public:
 
 	const QStringList titles(void);
 
-	const QMap<QString, QUrl> titlelinks(void);
+	const JsonTitleLink titlelinks(void);
+
 private:
   struct Json{
     QString title;
     QString tag;
-    QUrl url;
+    QString url;
     QDateTime dt;
   };
   typedef QList<Json> JsonList;

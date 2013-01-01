@@ -134,8 +134,11 @@ void ScutView::saveLink (){
 
 void ScutView::loadUrl(const QString &url){
     if ( url.startsWith( "javascript://") ){
-      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD JS SUPPORT"<< url;
       runJS(url);
+      return;
+    }
+    else if ( url.startsWith( "chrome://") ){
+      parseChrome(url);
       return;
     }
     else (loadUrl(QUrl(url)));
@@ -181,10 +184,13 @@ void ScutView::loadUrl(const QUrl &u){
 void ScutView::runJS(const QString &url){
       QString js = url;
       js.remove(0, 13 );
-      //QString js = url.toString();
-      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD JS SUPPORT"<< js;
       page()->mainFrame()->evaluateJavaScript(js);
       return;
+}
+
+/* Given a chrome url, parse it */
+void ScutView::parseChrome(const QString &url){
+      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD CHROME SUPPORT"<< url;
 }
 
 } // namespace scutum

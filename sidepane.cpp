@@ -126,16 +126,15 @@ void SidePane::getRSS(){
 }
 
 void SidePane::addItems(JsonDelicious *jsond){
-	QMap <QString, QUrl> map = jsond->titlelinks();
+	JsonTitleLink map = jsond->titlelinks();
 
-//  if (map.size() < 1) return;
   linkList->clear();
 
-   QMapIterator<QString, QUrl> i(map);
+   QMapIterator<QString, QString> i(map);
     while (i.hasNext()) {
       i.next();
       // do not include empty strings
-      if (i.key().size() < 1 || i.value().toString().size() < 1) continue;
+      if (i.key().size() < 1 || i.value().size() < 1) continue;
       QVariant var(i.value());
 		  QListWidgetItem *item = new QListWidgetItem(i.key());
       item->setData(Qt::UserRole, var);

@@ -56,7 +56,9 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QListWidgetItem *wid){
-  loadTabView(wid->data(Qt::UserRole).toUrl());
+    newWebTab(wid->text());
+    WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
+    tab->view()->loadUrl(wid->data(Qt::UserRole).toString());
 }
 
 void WebTabWidget::loadTabView(QUrl url){
@@ -167,6 +169,7 @@ void WebTabWidget::loadSettings(){
     qDebug() << " font size: " << settings->fontSize( QWebSettings::DefaultFontSize  );  
 
     settings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+    settings->setAttribute (QWebSettings::PluginsEnabled, true);
 
 }
 

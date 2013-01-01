@@ -62,7 +62,8 @@ void JsonDelicious::parse(const QString &text) {
   foreach (QString line, qlist){
           Json json;
           json.title = element("d", line);
-          json.url = QUrl(element("u", line));
+          json.url = element("u", line);
+          //qDebug() << __PRETTY_FUNCTION__ << json.url << " : " << json.title;
           m_jsonlist.append(json);
   }
 }
@@ -84,10 +85,9 @@ const QUrl JsonDelicious::url(const QString &title){
   return url; 
 }
 
-const QMap<QString, QUrl> JsonDelicious::titlelinks(){
-	QMap<QString, QUrl> map;
+const JsonTitleLink JsonDelicious::titlelinks(){
+	JsonTitleLink map;
 	foreach (Json json, m_jsonlist){
-		//map.append(json->title, json->url);
     map[json.title] = json.url;
   }
   return map;
