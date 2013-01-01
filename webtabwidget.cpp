@@ -40,6 +40,7 @@ WebTabWidget::WebTabWidget(QWidget* pParent)
 {
     connect(this, SIGNAL(tabCloseRequested(int)), SLOT(closeTab(int)));
     setCache();
+    loadSettings();
 }
 
 /**
@@ -106,6 +107,14 @@ void WebTabWidget::adjustTitle(WebTab *tab){
 void WebTabWidget::increaseFontSize(){
   WebTab *w = qobject_cast<WebTab*>(widget(currentIndex()));
   w->increaseFontSize();
+
+  /*
+  QWebSettings *settings = QWebSettings::globalSettings ();
+  int sz = settings->fontSize( QWebSettings::DefaultFontSize );
+  sz++;
+  settings->setFontSize( QWebSettings::DefaultFontSize, sz );
+  //qDebug() << " font size: " << settings->fontSize( QWebSettings::DefaultFontSize  );  
+  */
 }
 
 void WebTabWidget::decreaseFontSize(){
@@ -153,6 +162,14 @@ void WebTabWidget::findPrevious(){
   return;
 }
 
+void WebTabWidget::loadSettings(){
+    QWebSettings *settings = QWebSettings::globalSettings ();
+    qDebug() << " font size: " << settings->fontSize( QWebSettings::DefaultFontSize  );  
+
+    settings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
+
+}
+
 bool WebTabWidget::setCache(){
 
   QString cache = QDir::homePath () + SCUT_CACHE;
@@ -163,6 +180,8 @@ bool WebTabWidget::setCache(){
   }
 
   QWebSettings::setOfflineStoragePath(cache);
+
+
   // FIXME: We should test if this is actually set...
   return true;
 }

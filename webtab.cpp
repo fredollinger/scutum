@@ -42,6 +42,7 @@ WebTab::WebTab(QWidget* pParent)
   connect(m_view, SIGNAL(titleChanged(QString)), SLOT(adjustTitle()));
   QVBoxLayout *layout = new QVBoxLayout();
 
+  // TODO: CREATE SCUT EDIT SO WE CAN FWD CTRL-F and so on to the mainwindow...
   m_locationEdit = new QLineEdit(this);
   m_locationEdit->setSizePolicy(QSizePolicy::Expanding, m_locationEdit->sizePolicy().verticalPolicy());
   connect(m_locationEdit, SIGNAL(returnPressed()), SLOT(changeLocation()));
@@ -87,8 +88,9 @@ QString WebTab::location() {
 }
 
 void WebTab::changeLocation() {
-    QUrl url = QUrl(m_locationEdit->text());
-    m_view->loadUrl(url);
+    //QUrl url = QUrl(m_locationEdit->text());
+    //qDebug() << __PRETTY_FUNCTION__<< m_locationEdit->text();
+    m_view->loadUrl(m_locationEdit->text());
     m_view->setFocus();
 }
 

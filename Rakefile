@@ -1,6 +1,5 @@
 # Where your uic lives:
-UIC="/opt/qt5/bin/uic"
-#UIC="uic-qt4"
+UIC="build/uic"
 
 BUILD_DIR="build"
 UI_FILES = FileList.new('ui/*.ui')
@@ -54,8 +53,8 @@ end
 
 desc "Setup for a qt5 build"
 desc "setup qt5"
-#task :qt5 => :clean do
 task :qt5 do
+  sh "mkdir -p build && ln -s /opt/qt5/bin/uic build/uic"
 	sh "export QMAKESPEC=/opt/qt5/mkspecs/linux-g++ && export QTDIR=/opt/qt5 && export PATH=/opt/qt5/bin:$PATH && cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
   puts "SUCCESS: built scutum for Qt5"
 end

@@ -64,7 +64,9 @@ public slots:
     bool newBookmark(void);
     void newWebTab(const QString&);
     void viewBookmarks(void);
+
 protected:
+  void loadSettings(void);
   bool setCache(void);
   QWidget *m_parent;
 }; // END class WebTabWidget

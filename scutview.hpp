@@ -36,6 +36,8 @@ public:
   ~ScutView();
   void showLinkMenu(void);
   void loadUrl(const QUrl&);
+  void loadUrl(const QString&);
+  void runJS(const QString&);
 protected:
   bool m_isLinkHovered;
 

@@ -50,6 +50,11 @@ ScutView::ScutView(QWidget* pParent)
   /* END REPLACE NETWORK ACCESS MANAGER */
 
   connect(page() 
+  , SIGNAL(unsupportedContent ( QNetworkReply* )) 
+  , newManager
+  , SLOT(customContent ( QNetworkReply* )) );
+
+  connect(page() 
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
   , SLOT(linkHovered ( const QString&, const QString&, const QString &)) );
 
@@ -127,6 +132,16 @@ void ScutView::saveLink (){
   return;
 }
 
+void ScutView::loadUrl(const QString &url){
+    if ( url.startsWith( "javascript://") ){
+      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD JS SUPPORT"<< url;
+      runJS(url);
+      return;
+    }
+    else (loadUrl(QUrl(url)));
+    return;
+}
+
 /* Custom version of setUrl() which will clear view, load the page, filter it,
  * then display it.
  */
@@ -163,5 +178,14 @@ void ScutView::loadUrl(const QUrl &u){
   setUrl(url);
 }
 
+void ScutView::runJS(const QString &url){
+      QString js = url;
+      js.remove(0, 13 );
+      //QString js = url.toString();
+      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD JS SUPPORT"<< js;
+      page()->mainFrame()->evaluateJavaScript(js);
+      return;
+}
+
 } // namespace scutum
-// Sat Dec  1 11:46:27 PST 2012
+// Tue Jan  1 12:23:27 PST 2013

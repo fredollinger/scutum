@@ -91,3 +91,7 @@ QNetworkReply *NetworkAccessManager::createRequest(
         return QNetworkAccessManager::createRequest(operation, request, device);
 #endif
 }
+
+void NetworkAccessManager::customContent( QNetworkReply *reply ){
+          qDebug() << __PRETTY_FUNCTION__;
+}

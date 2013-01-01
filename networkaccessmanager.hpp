@@ -57,6 +57,8 @@ public:
       return *s_instance;
   }
   */
+public slots:
+  void customContent( QNetworkReply* );
 
 protected:    
     QNetworkReply *createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device);
