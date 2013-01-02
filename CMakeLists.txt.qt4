@@ -24,6 +24,7 @@ deliciousreply.hpp
 mainwindow.h 
 networkaccessmanager.hpp
 sidepane.hpp
+scututil.hpp
 scutview.hpp
 webtab.hpp
 webtabwidget.hpp
@@ -40,6 +41,7 @@ jsondelicious.cpp
 main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp
+scututil.cpp
 scutview.cpp
 sidepane.cpp
 webfilter.cpp

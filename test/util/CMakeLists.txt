@@ -33,14 +33,13 @@ SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 qt5_wrap_ui(ui_delicious.h ui/delicious.ui)
 
 SET(scutum_HEADERS 
-../jsondelicious.hpp
+../../scututil.hpp
 )
 
 set(scutum_SOURCES
-../jsondelicious.cpp
+../../scututil.cpp
 main.cpp
 )
-
 
 add_executable(scutum 
 ${scutum_SOURCES} 
