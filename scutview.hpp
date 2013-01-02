@@ -37,7 +37,7 @@ public:
   void showLinkMenu(void);
   void loadUrl(const QUrl&);
   void loadUrl(const QString&);
-  void parseChrome(const QString&);
+  void parseRSS(const QString&);
   void runJS(const QString&);
 protected:
   bool m_isLinkHovered;
@@ -56,6 +56,7 @@ public slots:
   void copyLink(void);
   void linkHovered ( const QString & link, const QString & title, const QString & textContent );
   void openInNewTab(void);
+  void replyFinished(QNetworkReply*);
   void saveLink(void);
 
 signals:

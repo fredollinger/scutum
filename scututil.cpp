@@ -47,4 +47,17 @@ QString authority(const QString &qs){
         return qsl[1];
 }
 
+/*  uri2string(): 
+ * get rid of the junk like slashes from the uri
+ */
+QString uri2string(const QString &uri){
+  QString st = uri;
+  st = st.replace("%2F", "/");
+  st = st.replace("%2f", "/");
+  st = st.replace("%3A", ":");
+  st = st.replace("%3a", ":");
+
+  return st; 
+}
+
 }//namespace scutum

@@ -24,6 +24,7 @@
 
 #include "scutcommon.hpp"
 #include "scutview.hpp"
+#include "scututil.hpp"
 #include "networkaccessmanager.hpp"
 #include <QAction>
 #include <QApplication>
@@ -53,6 +54,9 @@ ScutView::ScutView(QWidget* pParent)
   , SIGNAL(unsupportedContent ( QNetworkReply* )) 
   , newManager
   , SLOT(customContent ( QNetworkReply* )) );
+
+  connect(newManager, SIGNAL(finished(QNetworkReply*)),
+                   this, SLOT(replyFinished(QNetworkReply*)));
 
   connect(page() 
   , SIGNAL(linkHovered ( const QString&, const QString&, const QString&)) 
@@ -137,8 +141,8 @@ void ScutView::loadUrl(const QString &url){
       runJS(url);
       return;
     }
-    else if ( url.startsWith( "chrome://") ){
-      parseChrome(url);
+    else if ( url.startsWith( SCUT_RSS_FEED) ){
+      parseRSS(url);
       return;
     }
     else (loadUrl(QUrl(url)));
@@ -189,9 +193,17 @@ void ScutView::runJS(const QString &url){
 }
 
 /* Given a chrome url, parse it */
-void ScutView::parseChrome(const QString &url){
+void ScutView::parseRSS(const QString &uri){
+      QString url = uri;
+      url = url.remove(0, QString(SCUT_RSS_FEED).size());
+      url = uri2string(url);
       qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD CHROME SUPPORT"<< url;
 }
 
+/* FIXME: Need to parse rss here... */
+void ScutView::replyFinished(QNetworkReply *reply){
+//      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD RSS SUPPORT";
+}
+
 } // namespace scutum
-// Tue Jan  1 12:23:27 PST 2013
+// Tue Jan  1 17:59:18 PST 2013

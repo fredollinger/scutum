@@ -29,6 +29,7 @@
 namespace scutum{
 
 QString authority(const QString&);
+QString uri2string(const QString&);
 
 }//namespace scutum
 #endif // __SCUT_UTIL__
