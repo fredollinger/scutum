@@ -1,11 +1,11 @@
 /*
  * Scutum
  *
- * JsonDelicous:
+ * ScutRSS:
  * 
- * Parses JSON Data For Delicious
+ * Parses RSS Data 
  *
- * Copyright (C) 2012 Fred Ollinger
+ * Copyright (C) 2013 Fred Ollinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,86 +21,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jsondelicious.hpp"
+#include "scutrss.hpp"
 #include <QDebug>
 #include <QStringList>
 
 namespace scutum{
 
-JsonDelicious::JsonDelicious(const QString &json) {
-  parse(json);
+ScutRSS::ScutRSS() {
 }
 
-JsonDelicious::JsonDelicious() {
+ScutRSS::~ScutRSS() {
 }
 
-JsonDelicious::~JsonDelicious() {}
-
-QStringList JsonDelicious::list(const QString &json) {
-  QStringList qlist = json.split("}");
-  return qlist;
-}
-
-QString JsonDelicious::element(const QString &element, const QString &line) {
-  QString res;
-  QString f = "\""+element+"\": \"";
-  QStringList qsl = line.split(f);
-
-  if (qsl.size() < 2) return res;
-
-  qsl = qsl[1].split("\"");
-
-  res = qsl[0];
-
-  // TODO: Get out the element here
-
-  return res;
-}
-
-void JsonDelicious::parse(const QString &text) {
-  QStringList qlist = list(text);
-  foreach (QString line, qlist){
-          Json json;
-          json.title = element("d", line);
-          json.url = element("u", line);
-          //qDebug() << __PRETTY_FUNCTION__ << json.url << " : " << json.title;
-          m_jsonlist.append(json);
-  }
-}
-
-const QStringList JsonDelicious::titles(){
-	QStringList qsl;
-  foreach (Json json, m_jsonlist){
-		qsl.append(json.title);
-	}
-	return qsl;
-}
-
-/* Given a title, return a Url */
-const QUrl JsonDelicious::url(const QString &title){
-  QUrl url;
-  foreach (Json json, m_jsonlist){
-    if ( json.title == title ) return json.url;
-  }
-  return url; 
-}
-
-const JsonTitleLink JsonDelicious::titlelinks(){
-	JsonTitleLink map;
-	foreach (Json json, m_jsonlist){
-    map[json.title] = json.url;
-  }
-  return map;
-}
-
-int JsonDelicious::size(){
-  m_jsonlist.size();
-}
-
-void JsonDelicious::setData(const QString &json) {
-  m_jsonlist.clear();
-  parse(json);
+static bool ScutRSS::isRSS(const QString &text) {
+  return true;
 }
 
 } // namespace scutum
-// Sat Dec 22 16:12:57 PST 2012
+// Sat Jan 12 16:46:40 PST 2013

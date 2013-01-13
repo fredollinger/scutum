@@ -25,6 +25,7 @@ mainwindow.h
 networkaccessmanager.hpp
 sidepane.hpp
 scututil.hpp
+scutrss.hpp
 scutview.hpp
 webtab.hpp
 webtabwidget.hpp
@@ -42,6 +43,7 @@ main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp
 scututil.cpp
+scutrss.cpp
 scutview.cpp
 sidepane.cpp
 webfilter.cpp

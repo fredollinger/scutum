@@ -43,6 +43,7 @@ jsondelicious.hpp
 mainwindow.h 
 networkaccessmanager.hpp
 scutview.hpp
+scututil.hpp
 sidepane.hpp
 webtab.hpp
 webfilter.hpp
@@ -54,10 +55,11 @@ deliciousbookmark.cpp
 deliciouspassword.cpp
 deliciousreply.cpp
 jsondelicious.cpp
-scutview.cpp
 main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp
+scutview.cpp
+scututil.cpp
 sidepane.cpp
 webfilter.cpp
 webtab.cpp

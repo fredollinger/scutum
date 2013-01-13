@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.3)
 project(scutum)
 
 # Tell CMake to run moc when necessary:
@@ -33,11 +33,11 @@ SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 qt5_wrap_ui(ui_delicious.h ui/delicious.ui)
 
 SET(scutum_HEADERS 
-../jsondelicious.hpp
+../../scutrss.hpp
 )
 
 set(scutum_SOURCES
-../jsondelicious.cpp
+../scutrss.cpp
 main.cpp
 )
 

@@ -1,11 +1,11 @@
 /*
  * Scutum
  *
- * JsonDelicious:
+ * ScutRSS:
  * 
- * Parses delicious json files
+ * Parses RSS Data
  *
- * Copyright (C) 2012 Fred Ollinger
+ * Copyright (C) 2013 Fred Ollinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __JSON_DELICIOUS__
-#define __JSON_DELICIOUS__
+#ifndef __SCUT_RSS__
+#define __SCUT_RSS__
 
 #include <QDateTime>
 #include <QList>
@@ -30,43 +30,13 @@
 #include <QUrl>
 
 namespace scutum{
-typedef QMap<QString, QString> JsonTitleLink;
-class JsonDelicious {
+class ScutRSS {
 public:
-  JsonDelicious(void);
-  JsonDelicious(const QString&);
-  ~JsonDelicious();
+  ScutRSS(void);
+  ~ScutRSS(void);
+  static bool isRSS(const QString&);
 
-  /* From a line, get an element */
-  QString element(const QString &element, const QString &line);
-
-  /* Given a QString, put this into a JsonList Struct */
-  void parse(const QString&);
-
-  void setData(const QString&);
-
-  int size(void); // how many items do we hold?
-
-  /* Given a QString, break into a QString List */
-  QStringList list(const QString&);
-
-  const QUrl url(const QString &title);
-
-	const QStringList titles(void);
-
-	const JsonTitleLink titlelinks(void);
-
-private:
-  struct Json{
-    QString title;
-    QString tag;
-    QString url;
-    QDateTime dt;
-  };
-  typedef QList<Json> JsonList;
-  JsonList m_jsonlist;
 };
-
 } // namespace scutum
-#endif // __JSON_DELICIOUS__
-// Mon Dec 17 18:13:13 PST 2012
+#endif // __SCUT_RSS__
+// Sun Jan 13 13:55:25 PST 2013
