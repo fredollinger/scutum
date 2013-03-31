@@ -42,6 +42,7 @@ deliciousreply.hpp
 jsondelicious.hpp
 mainwindow.h 
 networkaccessmanager.hpp
+scutnetworkreply.hpp
 scutview.hpp
 scututil.hpp
 sidepane.hpp
@@ -58,6 +59,7 @@ jsondelicious.cpp
 main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp
+scutnetworkreply.cpp
 scutview.cpp
 scututil.cpp
 sidepane.cpp

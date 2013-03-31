@@ -23,8 +23,10 @@ deliciouspassword.hpp
 deliciousreply.hpp
 mainwindow.h 
 networkaccessmanager.hpp
+scutnetworkreply.hpp
 sidepane.hpp
 scututil.hpp
+scutrss.hpp
 scutview.hpp
 webtab.hpp
 webtabwidget.hpp
@@ -41,7 +43,9 @@ jsondelicious.cpp
 main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp
+scutnetworkreply.cpp
 scututil.cpp
+scutrss.cpp
 scutview.cpp
 sidepane.cpp
 webfilter.cpp

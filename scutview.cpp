@@ -202,7 +202,7 @@ void ScutView::parseRSS(const QString &uri){
 
 /* FIXME: Need to parse rss here... */
 void ScutView::replyFinished(QNetworkReply *reply){
-//      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD RSS SUPPORT";
+      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD RSS SUPPORT";
 }
 
 } // namespace scutum

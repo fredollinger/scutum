@@ -40,6 +40,7 @@
 **
 ****************************************************************************/
 
+#include <QDebug>
 #include <QtNetwork>
 #include "networkaccessmanager.hpp"
 #include "scutcommon.hpp"
@@ -72,6 +73,7 @@ QNetworkReply *NetworkAccessManager::createRequest(
     QNetworkAccessManager::Operation operation, const QNetworkRequest &request,
     QIODevice *device)
 {
+        qDebug() << __PRETTY_FUNCTION__;
         return QNetworkAccessManager::createRequest(operation, request, device);
   // do a request preferred from cache
   //QNetworkRequest request2(QUrl(QString("http://qt.nokia.com")));
