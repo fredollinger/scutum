@@ -33,9 +33,9 @@ ScutRSS::ScutRSS() {
 ScutRSS::~ScutRSS() {
 }
 
-static bool ScutRSS::isRSS(const QString &text) {
-  return true;
+bool ScutRSS::isRSS(const QString &text) {
+  return text.contains("type=\"application/rss+xml\"");
 }
 
 } // namespace scutum
-// Sat Jan 12 16:46:40 PST 2013
+// Sun Mar 31 14:00:21 PDT 2013

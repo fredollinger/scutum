@@ -4,17 +4,23 @@
 
 using namespace scutum;
 
-int main(){
-  QFile file("feed.rss");
-  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return -1;
-  
+void testIsRss(const QString &fn){
+  QFile file(fn);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return;
   QString text = QString(file.readAll());
-
   if ( ScutRSS::isRSS(text) ) {
-    qDebug() << " feed.rss is rss ";
+    qDebug() << fn << " is rss ";
   }
   else
-    qDebug() << " feed.rss is NOT rss ";
+    qDebug() << fn << " is NOT rss ";
+
+  return;
+}
+
+int main(){
+  
+  testIsRss("feed.rss");
+  testIsRss("Makefile");
 
   return 0;
 }
