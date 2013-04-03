@@ -37,5 +37,57 @@ bool ScutRSS::isRSS(const QString &text) {
   return text.contains("type=\"application/rss+xml\"");
 }
 
+void ScutRSS::parseXml()
+ {
+
+     while (!xml.atEnd()) {
+         xml.readNext();
+         if (xml.isStartElement()) {
+
+             if (xml.name() == "item"){
+
+                 if (titleString!=""){
+                    feed = new QTreeWidgetItem;
+                    feed->setText(0, titleString);
+                    feed->setText(2, linkString);
+                    ui->treeWidget->addTopLevelItem(feed);
+
+                 }
+
+                 linkString.clear();
+                 titleString.clear();
+                 dateString.clear();
+             }
+
+             currentTag = xml.name().toString();
+         } else if (xml.isEndElement()) {
+              if (xml.name() == "item") {
+
+                 QTreeWidgetItem *item = new QTreeWidgetItem(feed);
+                 item->setText(0, titleString);
+                 item->setText(1, dateString);
+                 item->setText(2, linkString);
+                 ui->treeWidget->addTopLevelItem(item);
+
+                 titleString.clear();
+                 linkString.clear();
+                 dateString.clear();
+             }
+
+         } else if (xml.isCharacters() && !xml.isWhitespace()) {
+             if (currentTag == "title")
+                 titleString += xml.text().toString();
+             else if (currentTag == "link")
+                 linkString += xml.text().toString();
+             else if (currentTag == "pubDate")
+                 dateString += xml.text().toString();
+         }
+     }
+     if (xml.error() && xml.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
+         qWarning() << "XML ERROR:" << xml.lineNumber() << ": " << xml.errorString();
+         http.abort();
+     }
+ }
+
 } // namespace scutum
 // Sun Mar 31 14:00:21 PDT 2013

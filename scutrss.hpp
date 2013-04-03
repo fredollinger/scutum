@@ -35,8 +35,13 @@ public:
   ScutRSS(void);
   ~ScutRSS(void);
   static bool isRSS(const QString&);
+  void parseXml(void);
+
+protected:
+    QXmlStreamReader xml;
+    QString titleString;
 
 };
 } // namespace scutum
 #endif // __SCUT_RSS__
-// Sun Jan 13 13:55:25 PST 2013
+// Tue Apr  2 19:03:07 PDT 2013
