@@ -50,7 +50,7 @@ void ScutRSS::parseXml()
                     feed = new QTreeWidgetItem;
                     feed->setText(0, titleString);
                     feed->setText(2, linkString);
-                    ui->treeWidget->addTopLevelItem(feed);
+                    //ui->treeWidget->addTopLevelItem(feed);
 
                  }
 
@@ -67,7 +67,7 @@ void ScutRSS::parseXml()
                  item->setText(0, titleString);
                  item->setText(1, dateString);
                  item->setText(2, linkString);
-                 ui->treeWidget->addTopLevelItem(item);
+                 //ui->treeWidget->addTopLevelItem(item);
 
                  titleString.clear();
                  linkString.clear();

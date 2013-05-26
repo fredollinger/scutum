@@ -25,9 +25,12 @@
 #define __SCUT_RSS__
 
 #include <QDateTime>
+#include <QHttp>
 #include <QList>
 #include <QString>
 #include <QUrl>
+#include <QXmlStreamReader>
+#include <QTreeWidgetItem>
 
 namespace scutum{
 class ScutRSS {
@@ -38,9 +41,14 @@ public:
   void parseXml(void);
 
 protected:
-    QXmlStreamReader xml;
+    QHttp http;
+    QString currentTag;
+    QString dateString;
     QString titleString;
-
+    QString linkString;
+    QString linkString2;
+    QTreeWidgetItem *feed;
+    QXmlStreamReader xml;
 };
 } // namespace scutum
 #endif // __SCUT_RSS__
