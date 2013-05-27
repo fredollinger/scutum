@@ -62,7 +62,6 @@ void WebTabWidget::loadTabView(QListWidgetItem *wid){
 }
 
 void WebTabWidget::loadTabView(QUrl url){
-    qDebug() << __PRETTY_FUNCTION__<< url.toString();
     newWebTab(tr("NEW"));
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
     tab->view()->load(url);
@@ -115,7 +114,6 @@ void WebTabWidget::increaseFontSize(){
   int sz = settings->fontSize( QWebSettings::DefaultFontSize );
   sz++;
   settings->setFontSize( QWebSettings::DefaultFontSize, sz );
-  //qDebug() << " font size: " << settings->fontSize( QWebSettings::DefaultFontSize  );  
   */
 }
 
@@ -166,7 +164,6 @@ void WebTabWidget::findPrevious(){
 
 void WebTabWidget::loadSettings(){
     QWebSettings *settings = QWebSettings::globalSettings ();
-    qDebug() << " font size: " << settings->fontSize( QWebSettings::DefaultFontSize  );  
 
     settings->setAttribute(QWebSettings::DnsPrefetchEnabled, true);
     settings->setAttribute (QWebSettings::PluginsEnabled, true);
@@ -178,7 +175,6 @@ bool WebTabWidget::setCache(){
   QString cache = QDir::homePath () + SCUT_CACHE;
   QDir cacheDir = QDir(cache);
   if (!cacheDir.mkpath(cache)){
-       qDebug() << __PRETTY_FUNCTION__ << "WARN: Failed to set cache: "<<cache;
        return false;
   }
 

@@ -89,7 +89,6 @@ QString WebTab::location() {
 
 void WebTab::changeLocation() {
     //QUrl url = QUrl(m_locationEdit->text());
-    //qDebug() << __PRETTY_FUNCTION__<< m_locationEdit->text();
     m_view->loadUrl(m_locationEdit->text());
     m_view->setFocus();
 }

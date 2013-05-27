@@ -71,7 +71,6 @@ void SidePane::replyFinished(QNetworkReply *reply){
   QString data = QString(reply->readAll());
   m_links->setData(data);
   if ( SCUTUM_DELICIOUS_MODE_NEW_BOOKMARK == m_query_mode){
-    qDebug() << __PRETTY_FUNCTION__ << data;
     return;
   }
   else if ( SCUTUM_DELICIOUS_MODE_RSS == m_query_mode )
@@ -83,11 +82,9 @@ void SidePane::replyFinished(QNetworkReply *reply){
 }
 
 void SidePane::getBookmarks(){
-  qDebug() << __PRETTY_FUNCTION__;
   m_query_mode = SCUTUM_DELICIOUS_MODE_RECENT;
 
   if (m_latest->size() > 0 && false == m_refresh){
-    qDebug() << __PRETTY_FUNCTION__ << m_latest->size();
     linkList->clear();
 	  addItems ( m_latest );
     return;
@@ -112,13 +109,11 @@ void SidePane::getRSS(){
         // http://feeds.delicious.com/v2/json/follinge/strange
 
   if (m_rss->size() > 0 && false == m_refresh){
-    qDebug() << __PRETTY_FUNCTION__ << m_rss->size();
     linkList->clear();
 	  addItems ( m_rss );
     return;
   }
 
-  qDebug() << __PRETTY_FUNCTION__ << " Getting rss feeds ";
   QSettings settings;
   QString user = settings.value("Delicious:User").toString();
   QString url = "http://feeds.delicious.com/v2/json/" + user +"/atom"; 
@@ -159,7 +154,6 @@ void SidePane::newBookmark(const QString &url, const QString &tags, const QStrin
   //QString url = "http://api.del.icio.us/v2/json/" + user; 
 // QString newurl = "https://" + user + ":" + password + "@api.del.icio.us/v1/post/add" + "?&url='" + url + "'" + newtags + "&description='" + title + "'";
  QString newurl = "https://" + user + ":" + password + "@api.del.icio.us/v1/posts/add" + "?&url=" + url + newtags + "&description=" + title;
-  qDebug() << newurl;
         //https://seconduser:thepassword@api.del.icio.us/v1/posts/add?url=http://seet.dk&tags=description&description=test
   m_net->get(QNetworkRequest(QUrl(newurl)));
 };

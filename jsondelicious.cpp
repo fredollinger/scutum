@@ -63,7 +63,6 @@ void JsonDelicious::parse(const QString &text) {
           Json json;
           json.title = element("d", line);
           json.url = element("u", line);
-          //qDebug() << __PRETTY_FUNCTION__ << json.url << " : " << json.title;
           m_jsonlist.append(json);
   }
 }

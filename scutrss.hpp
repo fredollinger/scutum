@@ -38,18 +38,11 @@ public:
   ScutRSS(void);
   ~ScutRSS(void);
   static bool isRSS(const QString&);
-  void parseXml(void);
+  static void parseXml(const QString&);
 
 protected:
-    QHttp http;
-    QString currentTag;
-    QString dateString;
-    QString titleString;
-    QString linkString;
-    QString linkString2;
-    QTreeWidgetItem *feed;
-    QXmlStreamReader xml;
+    //QHttp http;
 };
 } // namespace scutum
 #endif // __SCUT_RSS__
-// Tue Apr  2 19:03:07 PDT 2013
+// Sun May 26 18:42:02 PDT 2013

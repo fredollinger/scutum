@@ -37,8 +37,17 @@ bool ScutRSS::isRSS(const QString &text) {
   return text.contains("type=\"application/rss+xml\"");
 }
 
-void ScutRSS::parseXml()
- {
+void ScutRSS::parseXml(const QString &data){
+     QString titleString;
+     QString currentTag;
+     QString dateString;
+     QString linkString;
+     QString linkString2;
+     QString html = "<html>";
+     //QTreeWidgetItem *feed;
+
+     QXmlStreamReader xml;
+     xml.addData(data);
 
      while (!xml.atEnd()) {
          xml.readNext();
@@ -47,12 +56,14 @@ void ScutRSS::parseXml()
              if (xml.name() == "item"){
 
                  if (titleString!=""){
-                    feed = new QTreeWidgetItem;
-                    feed->setText(0, titleString);
-                    feed->setText(2, linkString);
+                    //feed = new QTreeWidgetItem;
+                    //feed->setText(0, titleString);
+                    //feed->setText(2, linkString);
                     //ui->treeWidget->addTopLevelItem(feed);
 
+                    qDebug() << __PRETTY_FUNCTION__<< " title: " << titleString << " linkString: " << linkString;
                  }
+
 
                  linkString.clear();
                  titleString.clear();
@@ -60,13 +71,16 @@ void ScutRSS::parseXml()
              }
 
              currentTag = xml.name().toString();
+             qDebug() << __PRETTY_FUNCTION__<< " current tag: " << currentTag;
          } else if (xml.isEndElement()) {
               if (xml.name() == "item") {
 
-                 QTreeWidgetItem *item = new QTreeWidgetItem(feed);
-                 item->setText(0, titleString);
-                 item->setText(1, dateString);
-                 item->setText(2, linkString);
+               qDebug() << __PRETTY_FUNCTION__<< " title: " << titleString << " linkString: " << linkString;
+
+                 //QTreeWidgetItem *item = new QTreeWidgetItem(feed);
+                 //item->setText(0, titleString);
+                 //item->setText(1, dateString);
+                 //item->setText(2, linkString);
                  //ui->treeWidget->addTopLevelItem(item);
 
                  titleString.clear();
@@ -75,17 +89,27 @@ void ScutRSS::parseXml()
              }
 
          } else if (xml.isCharacters() && !xml.isWhitespace()) {
-             if (currentTag == "title")
+            if (currentTag == "channel"){
+                 qDebug() << __PRETTY_FUNCTION__<< " channel: " << currentTag;
+                 //titleString += xml.text().toString();
+             }
+             else if (currentTag == "title"){
+                 qDebug() << __PRETTY_FUNCTION__<< " current tag: " << currentTag;
                  titleString += xml.text().toString();
-             else if (currentTag == "link")
+             }
+             else if (currentTag == "link"){
                  linkString += xml.text().toString();
-             else if (currentTag == "pubDate")
+                 qDebug() << __PRETTY_FUNCTION__<< " current link: " << currentTag;
+             }
+             else if (currentTag == "pubDate"){
                  dateString += xml.text().toString();
+                 qDebug() << __PRETTY_FUNCTION__<< " current date: " << currentTag;
+             }
          }
      }
      if (xml.error() && xml.error() != QXmlStreamReader::PrematureEndOfDocumentError) {
          qWarning() << "XML ERROR:" << xml.lineNumber() << ": " << xml.errorString();
-         http.abort();
+         //http.abort();
      }
  }
 

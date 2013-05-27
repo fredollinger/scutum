@@ -23,6 +23,7 @@
  */
 
 #include "scutcommon.hpp"
+#include "scutrss.hpp"
 #include "scutview.hpp"
 #include "scututil.hpp"
 #include "networkaccessmanager.hpp"
@@ -197,12 +198,20 @@ void ScutView::parseRSS(const QString &uri){
       QString url = uri;
       url = url.remove(0, QString(SCUT_RSS_FEED).size());
       url = uri2string(url);
-      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD CHROME SUPPORT"<< url;
 }
 
-/* FIXME: Need to parse rss here... */
+/* FRED FIXME: Need to parse rss here... */
 void ScutView::replyFinished(QNetworkReply *reply){
-      qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD RSS SUPPORT: Current page is: " << page()->mainFrame()->toHtml();
+     QString html = "<html>RSS Coming Soon</html>";
+     // qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD RSS SUPPORT: Current page is: " << page()->mainFrame()->toHtml();
+     QString data = page()->mainFrame()->toHtml();
+     if (ScutRSS::isRSS(data) ){
+            qDebug() << "Page is rss";
+            ScutRSS::parseXml(data);
+            page()->mainFrame()->setHtml(html,page()->mainFrame()->url());
+      }
+
+     else qDebug() << "Page is not rss";
 }
 
 } // namespace scutum
