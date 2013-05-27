@@ -34,7 +34,19 @@ ScutRSS::~ScutRSS() {
 }
 
 bool ScutRSS::isRSS(const QString &text) {
-  return text.contains("type=\"application/rss+xml\"");
+  if (text.contains("<html")){
+    qDebug() << "<html";
+    return false;
+  }
+  if (text.contains("type=\"application/rss+xml\"")){
+    qDebug() << "type=\"application/rss+xml\"";
+  }
+  else return false;
+  if (text.contains("<rss")){
+    qDebug() << "type=\"application/rss+xml\"";
+  }
+  else return false;
+  return true;
 }
 
 QString ScutRSS::parseXml(const QString &data){
@@ -43,7 +55,7 @@ QString ScutRSS::parseXml(const QString &data){
      QString dateString;
      QString linkString;
      QString description;
-     QString html = "<html><h1>RSS Reader!!</h1>";
+     QString html = "<html><h1>Scutum RSS</h1>";
 
      QXmlStreamReader xml;
      xml.addData(data);

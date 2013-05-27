@@ -20,8 +20,9 @@ void testIsRss(const QString &fn){
 
 int main(){
   
-  testIsRss("feed.rss");
-  //testIsRss("Makefile");
+  testIsRss("feed.xml");
+  //testIsRss("feed.rss");
+  //testIsRss("index.html");
 
   return 0;
 }
