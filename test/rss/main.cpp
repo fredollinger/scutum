@@ -9,8 +9,8 @@ void testIsRss(const QString &fn){
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return;
   QString text = QString(file.readAll());
   if ( ScutRSS::isRSS(text) ) {
-    qDebug() << fn << " is rss ";
-    ScutRSS::parseXml(text);
+    QString qs = ScutRSS::parseXml(text);
+    qDebug() << fn << " is rss " << qs;
   }
   else
     qDebug() << fn << " is NOT rss ";
@@ -20,8 +20,8 @@ void testIsRss(const QString &fn){
 
 int main(){
   
-  testIsRss("feed.xml");
-  testIsRss("Makefile");
+  testIsRss("feed.rss");
+  //testIsRss("Makefile");
 
   return 0;
 }

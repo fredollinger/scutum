@@ -37,14 +37,13 @@ bool ScutRSS::isRSS(const QString &text) {
   return text.contains("type=\"application/rss+xml\"");
 }
 
-void ScutRSS::parseXml(const QString &data){
+QString ScutRSS::parseXml(const QString &data){
      QString titleString;
      QString currentTag;
      QString dateString;
      QString linkString;
-     QString linkString2;
-     QString html = "<html>";
-     //QTreeWidgetItem *feed;
+     QString description;
+     QString html = "<html><h1>RSS Reader!!</h1>";
 
      QXmlStreamReader xml;
      xml.addData(data);
@@ -61,21 +60,24 @@ void ScutRSS::parseXml(const QString &data){
                     //feed->setText(2, linkString);
                     //ui->treeWidget->addTopLevelItem(feed);
 
-                    qDebug() << __PRETTY_FUNCTION__<< " title: " << titleString << " linkString: " << linkString;
+                    //qDebug() << __PRETTY_FUNCTION__<< " title: " << titleString << " linkString: " << linkString;
                  }
 
-
+                 description.clear();
                  linkString.clear();
                  titleString.clear();
                  dateString.clear();
              }
 
              currentTag = xml.name().toString();
-             qDebug() << __PRETTY_FUNCTION__<< " current tag: " << currentTag;
+             //qDebug() << __PRETTY_FUNCTION__<< " current tag: " << currentTag;
          } else if (xml.isEndElement()) {
               if (xml.name() == "item") {
 
-               qDebug() << __PRETTY_FUNCTION__<< " title: " << titleString << " linkString: " << linkString;
+               //qDebug() << __PRETTY_FUNCTION__<< " title: " << titleString << " linkString: " << linkString;
+               html = html + "<p><h2><a href=\"" + linkString +"\">" + titleString + "</a></h2></p>";
+
+               html = html + "<p><h3>" + description + "<h3></p>";
 
                  //QTreeWidgetItem *item = new QTreeWidgetItem(feed);
                  //item->setText(0, titleString);
@@ -93,17 +95,21 @@ void ScutRSS::parseXml(const QString &data){
                  qDebug() << __PRETTY_FUNCTION__<< " channel: " << currentTag;
                  //titleString += xml.text().toString();
              }
+            if (currentTag == "description"){
+                 qDebug() << __PRETTY_FUNCTION__<< " description: " << xml.text();
+                 description += xml.text().toString();
+             }
              else if (currentTag == "title"){
-                 qDebug() << __PRETTY_FUNCTION__<< " current tag: " << currentTag;
+                 //qDebug() << __PRETTY_FUNCTION__<< " current tag: " << currentTag;
                  titleString += xml.text().toString();
              }
              else if (currentTag == "link"){
                  linkString += xml.text().toString();
-                 qDebug() << __PRETTY_FUNCTION__<< " current link: " << currentTag;
+                 //qDebug() << __PRETTY_FUNCTION__<< " current link: " << currentTag;
              }
              else if (currentTag == "pubDate"){
                  dateString += xml.text().toString();
-                 qDebug() << __PRETTY_FUNCTION__<< " current date: " << currentTag;
+                 //qDebug() << __PRETTY_FUNCTION__<< " current date: " << currentTag;
              }
          }
      }
@@ -111,7 +117,10 @@ void ScutRSS::parseXml(const QString &data){
          qWarning() << "XML ERROR:" << xml.lineNumber() << ": " << xml.errorString();
          //http.abort();
      }
- }
+
+ html = html + "</html>";
+ return html;
+ } // QString ScutRSS::parseXml(const QString &data);
 
 } // namespace scutum
 // Sun Mar 31 14:00:21 PDT 2013

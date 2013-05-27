@@ -38,7 +38,7 @@ public:
   ScutRSS(void);
   ~ScutRSS(void);
   static bool isRSS(const QString&);
-  static void parseXml(const QString&);
+  static QString parseXml(const QString&);
 
 protected:
     //QHttp http;

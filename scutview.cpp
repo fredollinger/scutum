@@ -202,12 +202,11 @@ void ScutView::parseRSS(const QString &uri){
 
 /* FRED FIXME: Need to parse rss here... */
 void ScutView::replyFinished(QNetworkReply *reply){
-     QString html = "<html>RSS Coming Soon</html>";
      // qDebug() << __PRETTY_FUNCTION__ << "FIXME: STUB: ADD RSS SUPPORT: Current page is: " << page()->mainFrame()->toHtml();
      QString data = page()->mainFrame()->toHtml();
      if (ScutRSS::isRSS(data) ){
             qDebug() << "Page is rss";
-            ScutRSS::parseXml(data);
+            QString html = ScutRSS::parseXml(data);
             page()->mainFrame()->setHtml(html,page()->mainFrame()->url());
       }
 
