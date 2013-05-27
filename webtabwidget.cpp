@@ -56,6 +56,7 @@ QString WebTabWidget::shortUrl(const QUrl& url){
 }
 
 void WebTabWidget::loadTabView(QListWidgetItem *wid){
+    qDebug() << __PRETTY_FUNCTION__ << "widget text: " << wid->text();
     newWebTab(wid->text());
     WebTab *tab = qobject_cast<WebTab*>(widget(currentIndex()));
     tab->view()->loadUrl(wid->data(Qt::UserRole).toString());
@@ -102,7 +103,10 @@ void WebTabWidget::newWebTab(const QString &title){
 void WebTabWidget::adjustTitle(WebTab *tab){
     QString qs = tab->title();
 	  if (qs.count() > 10) qs.resize(10);
-    setTabText(indexOf(tab), qs);
+    if (qs.size() > 0){
+      qDebug() << __PRETTY_FUNCTION__ << " Setting Tab Text: ][" << qs << "]";
+      setTabText(indexOf(tab), qs);
+    }
 }
 
 void WebTabWidget::increaseFontSize(){

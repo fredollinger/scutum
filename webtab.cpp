@@ -110,7 +110,10 @@ void WebTab::decreaseFontSize(void) {
 }
 
 void WebTab::adjustLocation() {
-    m_locationEdit->setText(m_view->url().toString());
+    if ("" != m_view->url().toString() ){
+      qDebug() << __PRETTY_FUNCTION__ << " Setting text: ["<< m_view->url().toString() << "]";
+      m_locationEdit->setText(m_view->url().toString());
+    }
 }
 
 void WebTab::startSearch() {

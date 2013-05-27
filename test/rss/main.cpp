@@ -21,7 +21,7 @@ void testIsRss(const QString &fn){
 int main(){
   
   //testIsRss("feed.xml");
-  //testIsRss("feed.rss");
+  testIsRss("feed.rss");
   testIsRss("index.html");
 
   return 0;
