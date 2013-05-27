@@ -38,9 +38,11 @@ bool ScutRSS::isRSS(const QString &text) {
     qDebug() << "<html";
     return false;
   }
+  /*
   if (text.contains("type=\"application/rss+xml\"")){
     qDebug() << "type=\"application/rss+xml\"";
   }
+  */
   else return false;
   if (text.contains("<rss")){
     qDebug() << "type=\"application/rss+xml\"";
