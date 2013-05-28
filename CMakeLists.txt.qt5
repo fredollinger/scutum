@@ -45,6 +45,7 @@ networkaccessmanager.hpp
 scutnetworkreply.hpp
 scutview.hpp
 scututil.hpp
+scutrss.hpp
 sidepane.hpp
 webtab.hpp
 webfilter.hpp
@@ -62,6 +63,7 @@ networkaccessmanager.cpp
 scutnetworkreply.cpp
 scutview.cpp
 scututil.cpp
+scutrss.cpp
 sidepane.cpp
 webfilter.cpp
 webtab.cpp

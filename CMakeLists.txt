@@ -1,39 +1,56 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.8)
 project(scutum)
 
-FIND_PACKAGE(Qt4 REQUIRED)
+# Tell CMake to run moc when necessary:
+set(CMAKE_AUTOMOC ON)
+# As moc files are generated in the binary dir, tell CMake
+# to always look for includes there:
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-INCLUDE(${QT_USE_FILE})
-ADD_DEFINITIONS(${QT_DEFINITIONS})
+# Widgets finds its own dependencies (QtGui and QtCore).
+find_package(Qt5Widgets REQUIRED)
 
 SET(scutum_RCCS jquery.qrc)
-QT4_ADD_RESOURCES(scutum_RCC_SRCS ${scutum_RCCS})
+QT5_ADD_RESOURCES(scutum_RCC_SRCS ${scutum_RCCS})
 
-include_directories("/usr/include/qt4/QtWebKit ")
+# The Qt5Widgets_INCLUDES also includes the include directories for
+# dependencies QtCore and QtGui
+include_directories(${Qt5Widgets_INCLUDES} 
+/opt/qt5/include/Qt
+/opt/qt5/include/QtGui
+/opt/qt5/include/QtCore 
+/opt/qt5/include/QtNetwork
+/opt/qt5/include/QtWidgets 
+/opt/qt5/include/QtWebKit 
+)
 
-set(CMAKE_CXX_FLAGS "-I /usr/include/qt4/QtNetwork" )
+# We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
+add_definitions(${Qt5Widgets_DEFINITIONS})
+
+# Executables fail to build with Qt 5 in the default configuration
+# without -fPIE. We add that here.
+set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -I/opt/qt5/include -L/opt/qt5/lib -DQT5" )
 
 SET (CMAKE_EXE_LINKER_FLAGS "-lQtWebKit")
 
-SET(QT_USE_QTWEBKIT TRUE)
+qt5_wrap_ui(ui_deliciouspassword.h ui/deliciouspassword.ui)
 
 SET(scutum_HEADERS 
 deliciousbookmark.hpp
 deliciouspassword.hpp
 deliciousreply.hpp
+jsondelicious.hpp
 mainwindow.h 
 networkaccessmanager.hpp
 scutnetworkreply.hpp
-sidepane.hpp
+scutview.hpp
 scututil.hpp
 scutrss.hpp
-scutview.hpp
+sidepane.hpp
 webtab.hpp
-webtabwidget.hpp
 webfilter.hpp
+webtabwidget.hpp
 )
-
-QT4_WRAP_CPP(scutum_HEADERS_MOC ${scutum_HEADERS})
 
 set(scutum_SOURCES
 deliciousbookmark.cpp
@@ -44,19 +61,21 @@ main.cpp
 mainwindow.cpp
 networkaccessmanager.cpp
 scutnetworkreply.cpp
+scutview.cpp
 scututil.cpp
 scutrss.cpp
-scutview.cpp
 sidepane.cpp
 webfilter.cpp
 webtab.cpp
 webtabwidget.cpp
 )
 
-#target_link_libraries(scutum "")
 
-ADD_EXECUTABLE(scutum ${scutum_SOURCES} 
-    ${scutum_RCC_SRCS}
-    ${scutum_HEADERS_MOC})
-TARGET_LINK_LIBRARIES(scutum ${QT_LIBRARIES})
+add_executable(scutum 
+${scutum_SOURCES} 
+${scutum_HEADERS_MOC}
+${scutum_RCC_SRCS}
+)
 
+# The Qt5Widgets_LIBRARIES variable also includes QtGui and QtCore
+ target_link_libraries(scutum ${Qt5Widgets_LIBRARIES})

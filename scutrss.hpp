@@ -25,7 +25,7 @@
 #define __SCUT_RSS__
 
 #include <QDateTime>
-#include <QHttp>
+//#include <QHttp>
 #include <QList>
 #include <QString>
 #include <QUrl>
