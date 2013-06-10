@@ -44,7 +44,6 @@
 
 #include <QTextDocument>
 #include <QtNetwork>
-//#include <QUrlInfo>
 
 #include "deliciousreply.hpp"
 

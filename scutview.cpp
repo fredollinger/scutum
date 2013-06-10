@@ -51,6 +51,11 @@ ScutView::ScutView(QWidget* pParent)
   //downloader = new Downloader(this, newManager);
   /* END REPLACE NETWORK ACCESS MANAGER */
 
+  connect(page()->mainFrame() 
+  , SIGNAL(urlChanged (const QUrl&))
+  , this
+  , SLOT(onRedirected(const QUrl&)));
+
   connect(page() 
   , SIGNAL(unsupportedContent ( QNetworkReply* )) 
   , newManager
@@ -198,6 +203,10 @@ void ScutView::parseRSS(const QString &uri){
       QString url = uri;
       url = url.remove(0, QString(SCUT_RSS_FEED).size());
       url = uri2string(url);
+}
+
+void ScutView::onRedirected(const QUrl &url){
+  qDebug() << __PRETTY_FUNCTION__ << " url: [" << url.toString() << "]";
 }
 
 /* FRED FIXME: Need to parse rss here... */

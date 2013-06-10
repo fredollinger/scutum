@@ -58,6 +58,7 @@ public slots:
   void openInNewTab(void);
   void replyFinished(QNetworkReply*);
   void saveLink(void);
+  void onRedirected(const QUrl&);
 
 signals:
   void sigOpenInNewTab(QUrl);

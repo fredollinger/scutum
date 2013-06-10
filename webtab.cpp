@@ -27,7 +27,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QVBoxLayout>
-#include <QWebFrame>
+//#include <QWebFrame>
 namespace scutum{
 /**
  * Class constructor.
