@@ -35,6 +35,7 @@ ScutRSS::~ScutRSS() {
 
 
 bool ScutRSS::isRSS(const QString &text) {
+  return false; // FRED FIXME: HIGHLY BROKEN
   if (text.contains("<rss")){
     qDebug() << "<rss";
     return true;
