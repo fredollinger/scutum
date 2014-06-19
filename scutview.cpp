@@ -34,8 +34,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QProcess>
-#include <QWebFrame>
-#include <QWebView>
+#include "compat/scutwebkit.hpp"
 
 namespace scutum{
 ScutView::ScutView(QWidget* pParent) 

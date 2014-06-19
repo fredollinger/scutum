@@ -1,5 +1,6 @@
 # Where your uic lives:
-UIC="build/uic"
+#UIC="build/uic"
+UIC="qtchooser -run-tool=uic -qt5"
 
 BUILD_DIR="build"
 UI_FILES = FileList.new('ui/*.ui')
@@ -38,7 +39,7 @@ end
 
 desc "Build it if it has not yet been build."
 file 'build/scutum' => ['ui_deliciouspassword.h', 'ui_sidepane.h'] do
-	sh "cd build && make 2>err; cat err"
+	sh "cd build && make -j3 2>err; cat err"
 end
 
 desc "clean"
@@ -55,8 +56,8 @@ end
 desc "Setup for a qt5 build"
 desc "setup qt5"
 task :qt5 do
-  sh "mkdir -p build && rm -f build/uic && ln -s /opt/qt5/bin/uic build/uic"
-	sh "export QMAKESPEC=/opt/qt5/mkspecs/linux-g++ && export QTDIR=/opt/qt5 && export PATH=/opt/qt5/bin:$PATH && cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
+  sh "mkdir -p build"
+	sh "cp CMakeLists.txt.qt5 CMakeLists.txt && mkdir -p build && cd build && cmake .. && rake"
   puts "SUCCESS: built scutum for Qt5"
 end
 

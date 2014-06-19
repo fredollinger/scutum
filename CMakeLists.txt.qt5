@@ -16,12 +16,12 @@ QT5_ADD_RESOURCES(scutum_RCC_SRCS ${scutum_RCCS})
 # The Qt5Widgets_INCLUDES also includes the include directories for
 # dependencies QtCore and QtGui
 include_directories(${Qt5Widgets_INCLUDES} 
-/opt/qt5/include/Qt
-/opt/qt5/include/QtGui
-/opt/qt5/include/QtCore 
-/opt/qt5/include/QtNetwork
-/opt/qt5/include/QtWidgets 
-/opt/qt5/include/QtWebKit 
+/usr/include/qt5/Qt
+/usr/include/qt5/QtGui
+/usr/include/qt5/QtCore
+/usr/include/qt5/QtNetwork
+/usr/include/qt5/QtWidgets
+/usr/include/qt5/QtWebKit
 )
 
 # We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.

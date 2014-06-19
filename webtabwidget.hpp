@@ -27,7 +27,8 @@
 
 #include <QListWidgetItem>
 #include <QTabWidget>
-#include <QWebView>
+
+#include "compat/scutwebkit.hpp"
 
 namespace scutum{
 class WebTab;

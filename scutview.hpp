@@ -26,7 +26,7 @@
 #define __SCUT_VIEW__
 
 #include <QMenu>
-#include <QWebView>
+#include "compat/scutwebkit.hpp"
 
 namespace scutum{
 class ScutView: public QWebView{

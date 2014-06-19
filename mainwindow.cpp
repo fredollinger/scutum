@@ -51,6 +51,7 @@
 #include "sidepane.hpp"
 #include "networkaccessmanager.hpp"
 #include "webtab.hpp"
+#include <QNetworkProxyFactory>
 
 #ifdef QT5
 #include <QMenu>

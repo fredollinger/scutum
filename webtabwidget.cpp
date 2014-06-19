@@ -29,6 +29,8 @@
 #include <QDir>
 #include <QFile>
 #include <QGroupBox>
+#include "compat/scutstring.hpp"
+
 namespace scutum{
 /**
  * Class constructor.
@@ -198,7 +200,7 @@ bool WebTabWidget::ensureBookmarks(){
   QFile file;
   file.setFileName(":/resources/html/scutum_bookmarks.html");
   file.open(QIODevice::ReadOnly);
-  QString about = file.readAll();
+  ScutString about(file.readAll());
   file.close();
 
   if (!bmf.open(QIODevice::WriteOnly)) return false;
@@ -226,7 +228,8 @@ bool WebTabWidget::newBookmark(){
   QFile bmf; 
   bmf.setFileName(bm);
 
-  QString mark = "<LI><a href=\"" + tab()->location() + "\">" + tab()->view()->title() + "</a>\n";
+  QString qs = "<LI><a href=\"" + tab()->location() + "\">" + tab()->view()->title() + "</a>\n";
+  ScutString mark(qs);
 
   if (!bmf.open(QIODevice::Append)) return false;
   bmf.write(mark.toAscii());
